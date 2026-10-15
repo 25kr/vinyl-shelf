@@ -1,0 +1,16 @@
+{
+    "name": "vinyl-shelf",
+    "version": "0.01",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite"
+    },
+    "dependencies": {
+        "react": "^19.3.1",
+        "react-dom": "^19.3.1"
+    },
+    "devDependencies": {
+        "vite": "^8.3.4"
+    }
+}
