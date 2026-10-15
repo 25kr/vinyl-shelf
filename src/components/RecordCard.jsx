@@ -1,15 +1,15 @@
-export default function RecordCard(){
+export default function RecordCard({ title, artist, cover, accent }){
     return(
         <article className="record-card">
             <img
                 className="record-cover"
-                src="/images/star.jpg"
-                alt="star album cover by 2hollis"
+                src={cover}
+                alt={'${title} album cover by ${artist}'}
             />
 
-            <h2>star</h2>
-            <p>2hollis</p>
-            <span>In my collection</span>
+            <h2>{title}</h2>
+            <p>{artist}</p>
+            <span style={{ color: accent }}> In my collection</span>
         </article>
     );
 }
