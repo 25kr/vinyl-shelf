@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 
 
-export default function RecordCard({ title, artist, cover, accent }){
-    const [isCollected, setIsCollected] = useState(() =>{
-        return localStorage.getItem("star-collected") === "true";
+export default function RecordCard({ id, title, artist, cover, accent }){
+    const storageKey = `collection-${id}`;
+    const [isCollected, setIsCollected] = useState(() => {
+    return localStorage.getItem(storageKey) === "true";
     });
+
     useEffect(() => {
-        localStorage.setItem("star-collected", String(isCollected));
-    }, [isCollected]);
+    localStorage.setItem(storageKey, String(isCollected));
+    }, [isCollected, storageKey]);
 
     return(
         <article className="record-card">
             <img
                 className="record-cover"
                 src={cover}
-                alt={'${title} album cover by ${artist}'}
+                alt={`${title} album cover by ${artist}`}
             />
 
             <h2>{title}</h2>
