@@ -13,6 +13,7 @@ main{
 
 .record-card{
     width: 240px;
+    margin-bottom: 32px;
 }
 
 .record-cover{
@@ -55,4 +56,10 @@ main{
     border-radius: 8px;
     font-size: 14px;
     cursor: pointer;
+}
+
+.record-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 240px);
+  gap: 32px;
 }
