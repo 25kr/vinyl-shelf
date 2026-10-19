@@ -1,32 +1,22 @@
-import { useEffect, useState } from "react";
-
-
-export default function RecordCard({ id, title, artist, cover, accent }){
-    const storageKey = `collection-${id}`;
-    const [isCollected, setIsCollected] = useState(() => {
-    return localStorage.getItem(storageKey) === "true";
-    });
-
-    useEffect(() => {
-    localStorage.setItem(storageKey, String(isCollected));
-    }, [isCollected, storageKey]);
-
-    return(
-        <article className="record-card">
-            <img
-                className="record-cover"
-                src={cover}
-                alt={`${title} album cover by ${artist}`}
-            />
-
-            <h2>{title}</h2>
-            <p>{artist}</p>
-            <span style={{ color: accent }}>
-                {isCollected ? "In my collection" : "Not collected yet"}
-                </span>
-                <button onClick={() => setIsCollected(!isCollected)}>
-                    {isCollected ? "Remove from collection" : "Add to collection"}
-                </button>
-        </article>
-    );
+export default function RecordCard({ title, artist, cover, accent, isCollected, onToggle }) {
+  return (
+    <article className="record-card" style={{ "--album-accent": accent }}>
+      <div className="record-artwork">
+        <img className="record-cover" src={cover} alt={`${title} album cover by ${artist}`} />
+      </div>
+      <h2>{title}</h2>
+      <p>{artist}</p>
+      <span className="collection-badge">
+        {isCollected ? "In my collection" : "Not collected yet"}
+      </span>
+      <button
+        className="collection-button"
+        onClick={onToggle}
+        aria-pressed={isCollected}
+        aria-label={`${isCollected ? "Remove" : "Add"} ${title} ${isCollected ? "from" : "to"} collection`}
+      >
+        {isCollected ? "Remove from collection" : "Add to collection"}
+      </button>
+    </article>
+  );
 }

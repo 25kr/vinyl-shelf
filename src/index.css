@@ -1,65 +1,116 @@
-body{
-    margin: 0;
-    background-color: #121212;
-    color: #f5f5f5;
-    font-family: Arial, sans-serif;
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background-color: #121212;
+  color: #f5f5f5;
+  font-family: Arial, sans-serif;
 }
 
-main{
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 48px 24px;
+button, input { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible {
+  outline: 2px solid #f5f5f5;
+  outline-offset: 4px;
 }
 
-.record-card{
-    width: 240px;
-    margin-bottom: 32px;
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
 }
 
-.record-cover{
-    aspect-ratio: 1;
-    background-color: #292929;
-    border-radius: 8px;
-    display: block;
-    width: 100%;
-    object-fit: cover;
+.shelf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 36px;
 }
+.eyebrow { margin: 0 0 12px; color: #a3a3a3; font-size: 11px; letter-spacing: 2px; }
+h1 { margin: 0; font-size: clamp(30px, 5vw, 44px); letter-spacing: -1.5px; }
+.shelf-description { color: #a3a3a3; line-height: 1.6; }
+.collection-summary { margin: 0; flex-shrink: 0; }
+.collection-summary strong { display: block; font-size: 32px; }
+.collection-summary span { color: #a3a3a3; font-size: 13px; }
 
-.record-card h2{
-    margin: 16px 0 4px;
-    font-size: 20px;
+.shelf-controls { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 20px; }
+.search-field { flex: 1 1 240px; }
+.search-field label { display: block; margin-bottom: 10px; font-size: 13px; color: #bdbdbd; }
+.search-field input {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1px solid #414141;
+  border-radius: 10px;
+  background: #1b1b1b;
+  color: #f5f5f5;
 }
-
-.record-cover p{
-    margin: 0;
-    color: #a3a3a3;
+.filter-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-buttons button, .empty-shelf button {
+  min-height: 46px;
+  padding: 12px 16px;
+  border: 1px solid #414141;
+  border-radius: 10px;
+  background: #1b1b1b;
+  color: #c4c4c4;
 }
-
-.record-card span{
-    display: inline-block;
-    margin-top: 12px;
-    padding: 6px 10px;
-    background-color: #262626;
-    color: #e5e5e5;
-    border-radius: 20px;
-    font-size: 12px;
-}
-
-.record-card button{
-    display: block;
-    width: 100%;
-    margin-top: 12px;
-    padding: 12px;
-    background-color: #e5e5e5;
-    color: #121212;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-}
+.filter-buttons button[aria-pressed="true"] { background: #ededed; border-color: #ededed; color: #121212; }
+.results-count { color: #a3a3a3; font-size: 13px; margin: 24px 0; }
 
 .record-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 240px);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 240px));
   gap: 32px;
+}
+.record-card { width: 100%; min-width: 0; }
+.record-artwork { border-radius: 8px; overflow: hidden; background: #292929; }
+.record-cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  transition: transform 250ms ease;
+}
+.record-card h2 { margin: 16px 0 4px; font-size: 20px; overflow-wrap: anywhere; }
+.record-card p { margin: 0; color: #a3a3a3; }
+.collection-badge {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 10px;
+  background: #262626;
+  color: var(--album-accent);
+  border-radius: 20px;
+  font-size: 12px;
+}
+.collection-button {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--album-accent);
+  color: #121212;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+.collection-button[aria-pressed="true"] { background: #1b1b1b; color: var(--album-accent); border-color: #414141; }
+.empty-shelf { padding: 48px 24px; text-align: center; border: 1px dashed #414141; border-radius: 12px; }
+.empty-shelf h2 { margin-top: 0; }
+.empty-shelf p { color: #a3a3a3; line-height: 1.6; }
+.save-warning { color: #f1c48b; line-height: 1.6; }
+
+@media (hover: hover) {
+  .record-card:hover .record-cover { transform: scale(1.035); }
+}
+@media (max-width: 600px) {
+  main { padding: 32px 20px 60px; }
+  .shelf-header { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .collection-summary strong { display: inline; margin-right: 8px; font-size: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .record-cover, .collection-button { transition: none; }
+  .record-card:hover .record-cover { transform: none; }
 }
