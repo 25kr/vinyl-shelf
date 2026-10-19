@@ -1,22 +1,8 @@
 import { useEffect, useState } from "react";
 import RecordCard from "./components/RecordCard";
+import albums from "./data/albums";
 
-const albums = [
-  {
-    id: "2hollis-star",
-    title: "star",
-    artist: "2hollis",
-    cover: "/images/star.jpg",
-    accent: "#e5e5e5",
-  },
-  {
-    id: "2hollis-white_tiger",
-    title: "White Tiger",
-    artist: "2hollis",
-    cover: "/images/white_tiger.jpg",
-    accent: "#dfd7b9",
-  },
-];
+
 
 function readCollection() {
   const saved = {};
@@ -56,7 +42,6 @@ export default function App() {
     }));
   }
 
-  const collectedCount = albums.filter((album) => collection[album.id]).length;
   const query = search.trim().toLowerCase();
   const visibleAlbums = albums.filter((album) => {
     const matchesSearch = `${album.title} ${album.artist}`.toLowerCase().includes(query);
@@ -72,10 +57,6 @@ export default function App() {
           <h1>My Vinyl Shelf</h1>
           <p className="shelf-description">A home for my record collection.</p>
         </div>
-        <p className="collection-summary" role="status">
-          <strong>{collectedCount}</strong>
-          <span>{collectedCount === 1 ? "record collected" : "records collected"}</span>
-        </p>
       </header>
 
       <section className="shelf-controls" aria-label="Find records">
@@ -136,3 +117,4 @@ export default function App() {
     </main>
   );
 }
+
