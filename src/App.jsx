@@ -40,16 +40,25 @@ export default function App() {
   const [wishlist, setWishlist] = useState(() => readFlags("wishlist"));
   const [savedAlbums, setSavedAlbums] = useState(() => readFlags("saved"));
   const [route, setRoute] = useState(readRoute);
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("all");
-  const [genre, setGenre] = useState("all");
-  const [sort, setSort] = useState("catalogue");
+  // Keep each shelf's preferences while opening albums or visiting another page.
+  const [shelfPreferences, setShelfPreferences] = useState({});
+  const [returnPage, setReturnPage] = useState(() => ["home", "explore", "collection", "wishlist"].includes(route.page) ? route.page : "home");
+  const { search = "", filter = "all", genre = "all", sort = "catalogue" } = shelfPreferences[route.page] || {};
+  function setPreference(name, value) {
+    setShelfPreferences(current => ({ ...current, [route.page]: { ...current[route.page], [name]: value } }));
+  }
+  const setSearch = value => setPreference("search", value);
+  const setFilter = value => setPreference("filter", value);
+  const setGenre = value => setPreference("genre", value);
+  const setSort = value => setPreference("sort", value);
   const [saveError, setSaveError] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
 
   useEffect(() => {
     function handleNavigation() {
-      setRoute(readRoute()); setSearch(""); setFilter("all"); setGenre("all"); setSort("catalogue");
+      const nextRoute = readRoute();
+      setRoute(nextRoute);
+      if (["home", "explore", "collection", "wishlist"].includes(nextRoute.page)) setReturnPage(nextRoute.page);
       window.scrollTo(0, 0);
     }
     window.addEventListener("hashchange", handleNavigation);
@@ -110,7 +119,7 @@ export default function App() {
       </div></header>
       {route.page === "diary" ? <ListeningDiary albums={albums} tracklists={tracklists} /> : route.page === "album" ? (
         selectedAlbum ? <AlbumPage
-          key={selectedAlbum.id} album={selectedAlbum} tracks={tracklists[selectedAlbum.id] || []}
+          backPage={returnPage} key={selectedAlbum.id} album={selectedAlbum} tracks={tracklists[selectedAlbum.id] || []}
           isCollected={collection[selectedAlbum.id]} isWishlisted={wishlist[selectedAlbum.id]}
           isSaved={savedAlbums[selectedAlbum.id]} onToggleSaved={() => toggleSaved(selectedAlbum.id)}
           onToggleCollection={() => toggleCollection(selectedAlbum.id)} onToggleWishlist={() => toggleWishlist(selectedAlbum.id)}

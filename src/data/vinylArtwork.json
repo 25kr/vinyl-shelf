@@ -1,0 +1,443 @@
+{
+  "2hollis-star": {
+    "file": "2hollis-star.png",
+    "crop": [
+      58,
+      17,
+      14,
+      14
+    ],
+    "source": "https://shop.2hollis.life/products/star-2025-vinyl",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/Star.png?v=1786385486"
+  },
+  "2hollis-boy": {
+    "file": "2hollis-boy.png",
+    "crop": [
+      58,
+      17,
+      14,
+      14
+    ],
+    "source": "https://shop.2hollis.life/products/boy-2024-vinyl",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/Boy.png?v=1786385510"
+  },
+  "2hollis-2": {
+    "file": "2hollis-2.png",
+    "crop": [
+      58,
+      17,
+      14,
+      14
+    ],
+    "source": "https://shop.2hollis.life/products/2-2023-vinyl",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/2.png?v=1786385446"
+  },
+  "2hollis-white_tiger": {
+    "file": "2hollis-white_tiger.png",
+    "crop": [
+      58,
+      17,
+      14,
+      14
+    ],
+    "source": "https://shop.2hollis.life/products/white-tiger-2022-vinyl",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/WhiteTiger.png?v=1786385540"
+  },
+  "fakemink-terrified": {
+    "file": "fakemink-terrified.png",
+    "crop": [
+      51.7,
+      42.5,
+      15,
+      15
+    ],
+    "source": "https://vinceron.com/products/fakemink-terrified-exclusive-metallic-silver-color-vinyl-2lp",
+    "photoSource": "https://vinceron.com/cdn/shop/files/Fakemink-Terrified_900x.png?v=1780408466"
+  },
+  "joji-nectar": {
+    "file": "joji-nectar-label.jpg",
+    "crop": [
+      1,
+      1,
+      98,
+      98
+    ],
+    "label": "Black vinyl · Side C label",
+    "source": "https://www.lovevinylrecords.com/products/joji-nectar-2xlp-mint-m-mint-m",
+    "photoSource": "https://www.lovevinylrecords.com/cdn/shop/files/alt-indie_quABZ.jpg?v=1759150917&width=1200"
+  },
+  "joji-ballads-1": {
+    "file": "joji-ballads-1-1.jpg",
+    "crop": [
+      46.2,
+      54.7,
+      16.4,
+      14.2
+    ],
+    "label": "Black vinyl · 88rising edition",
+    "source": "https://www.turntablelab.com/products/joji-ballads-1-vinyl-lp",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0105/4542/products/joji-ballads1.jpg?v=1571265564&width=1200"
+  },
+  "joji-smithereens": {
+    "file": "joji-smithereens-1.jpg",
+    "crop": [
+      59.5,
+      69,
+      15.42,
+      10.08
+    ],
+    "source": "https://www.turntablelab.com/products/joji-smithereens-highlighter-colored-vinyl-vinyl-lp",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0105/4542/files/joji-smithereens-coloredvinyl-2_cdeb2433-5353-4087-9d12-13ffca9c0785.jpg?v=1750617345&width=1200"
+  },
+  "clairo-immunity": {
+    "file": "clairo-immunity.jpg",
+    "crop": [
+      34,
+      34,
+      32,
+      32
+    ],
+    "source": "https://www.tonevendor.com/products/clairo-2-immunity-lp-album",
+    "photoSource": "https://www.tonevendor.com/cdn/shop/products/14225762-31959380635c591478582635c5914785831666996500635c591478588.jpg?v=1680521422&width=1445"
+  },
+  "clairo-sling": {
+    "file": "clairo-sling-1.jpg",
+    "crop": [
+      59.58,
+      68,
+      14.5,
+      8.25
+    ],
+    "source": "https://www.turntablelab.com/products/clairo-sling-vinyl-lp",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0105/4542/files/clairo-sing-blackvinyl-2.jpg?v=1708360220&width=1200",
+    "colour": "black",
+    "label": "Black vinyl · Full Side A label"
+  },
+  "clairo-charm": {
+    "file": "clairo-charm-disc.png",
+    "crop": [
+      0,
+      0,
+      100,
+      100
+    ],
+    "mode": "disc",
+    "label": "Pink and white marble · Blood Records edition",
+    "colour": "pink",
+    "source": "https://blood-records.co.uk/products/clairo",
+    "photoSource": "https://blood-records.co.uk/cdn/shop/files/Clairo_3000x3000.png?v=1720024480"
+  },
+  "mac-demarco-salad-days": {
+    "file": "mac-demarco-salad-days.jpg",
+    "crop": [
+      4.6,
+      18.5,
+      90.8,
+      63.1
+    ],
+    "mode": "disc",
+    "label": "Lemonade yellow · Newbury Comics edition",
+    "colour": "yellow",
+    "source": "https://www.newburycomics.com/products/mac_demarco-salad_days_exclusive_lp_lemonade",
+    "photoSource": "https://www.newburycomics.com/cdn/shop/products/Mac-DeMarco-Salad-Days-Exclusive-Color-Vinyl-LP-2485323-1_1024x1024.jpg?v=1612389745"
+  },
+  "mac-demarco-2": {
+    "file": "mac-demarco-2.jpg",
+    "crop": [
+      1,
+      1,
+      98,
+      98
+    ],
+    "label": "Black vinyl · Captured Tracks CT-164 · Side A",
+    "source": "https://uk.rarevinyl.com/nl/products/mac-demarco-2-two-plus-poster-us-vinyl-lp-album-record-ct-164-820536",
+    "photoSource": "https://uk.rarevinyl.com/cdn/shop/products/mac-demarco-2-two-plus-poster-us-vinyl-lp-album-record-q0elptw820536-820536b.jpg?v=1705645044&width=1280"
+  },
+  "mac-demarco-this-old-dog": {
+    "file": "mac-demarco-this-old-dog.jpg",
+    "crop": [
+      1,
+      1,
+      98,
+      98
+    ],
+    "label": "Black vinyl · Captured Tracks CT-260 · Side A",
+    "source": "https://rovakk.com/en/products/mac-demarco-this-old-dog-used",
+    "photoSource": "https://rovakk.com/cdn/shop/files/P5270106.jpg?v=1748409252&width=1200"
+  },
+  "tame-impala-currents": {
+    "file": "tame-impala-currents-label.jpg",
+    "crop": [
+      0,
+      0,
+      100,
+      100
+    ],
+    "mode": "disc",
+    "label": "Purple disc · Yellow and purple edition · Side D",
+    "colour": "purple",
+    "source": "https://eil.com/shop/moreinfo.asp?catalogid=680370",
+    "photoSource": "https://images.eil.com/large_image/TAME_IMPALA_CURRENTS%2B-%2BYELLOW%2B%26%2BPURPLE%2BVINYL-680370c.jpg"
+  },
+  "tame-impala-lonerism": {
+    "file": "tame-impala-lonerism-label.jpg",
+    "crop": [
+      1,
+      1,
+      98,
+      98
+    ],
+    "label": "Black vinyl · Modular MODVL161 · Side A",
+    "source": "https://vinylpursuit.com/en-us/products/tame-impala-lonerism",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0535/5493/8031/products/Vinyl--Pursuit-Album-Tame-Impala-Lonerism-Label-4.jpg?v=1670463828"
+  },
+  "tame-impala-the-slow-rush": {
+    "file": "tame-impala-the-slow-rush-label.jpg",
+    "crop": [
+      1,
+      1,
+      98,
+      98
+    ],
+    "mode": "disc",
+    "label": "Red disc · Red and blue HMV edition · Side A",
+    "colour": "red",
+    "source": "https://eu.rarevinyl.com/de/products/tame-impala-the-slow-rush-red-and-blue-vinyl-plus-bonus-7-plus-shrink-uk-2-lp-vinyl-record-double-0846007-810213",
+    "photoSource": "https://eu.rarevinyl.com/cdn/shop/products/tame-impala-the-slow-rush-red-and-blue-vinyl-plus-bonus-7-plus-shrink-uk-2-lp-vinyl-record-double-x9v2lth810213-810213b_1280x1286.jpg?v=1708747676"
+  },
+  "weezer-blue": {
+    "file": "weezer-blue-label.jpg",
+    "crop": [
+      5,
+      4,
+      90,
+      92
+    ],
+    "label": "Black vinyl · Geffen 2016 remaster · Side A",
+    "source": "https://jp.rarevinyl.com/products/weezer-weezer-the-blue-album-180gm-uk-vinyl-lp-album-record-00602547945396-845366",
+    "photoSource": "https://jp.rarevinyl.com/cdn/shop/files/weezer-weezer-the-blue-album-180gm-uk-vinyl-lp-album-record-weelpwe845366-845366b.jpg?v=1736236849&width=1280"
+  },
+  "weezer-pinkerton": {
+    "file": "weezer-pinkerton-label.jpg",
+    "crop": [
+      33,
+      28,
+      31,
+      31
+    ],
+    "label": "Black vinyl · Geffen DGC-25007 · Side A",
+    "source": "https://www.ebay.com/itm/196126452827",
+    "photoSource": "https://i.ebayimg.com/images/g/uRQAAOSw4ZZlddvq/s-l1200.jpg"
+  },
+  "frou-frou-details": {
+    "file": "frou-full-disc.jpg",
+    "crop": [
+      2.5,
+      0.5,
+      95,
+      95
+    ],
+    "label": "Purple and tangerine mix · Interscope Vinyl Collective",
+    "colour": "purple",
+    "source": "https://www.bigdawgrecords.com/products/frou-frou-details-2xlp-album-club-ltd-num-re-pur-mint-m",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0689/2408/0376/files/36608578-3709658869a8ff101723669a8ff1017237177268302469a8ff101723c.jpg?v=1777409395",
+    "mode": "disc"
+  },
+  "steve-lacy-gemini-rights": {
+    "file": "steve-lacy-gemini-rights-1.jpg",
+    "crop": [
+      43.2,
+      70.5,
+      16.4,
+      8.2
+    ],
+    "source": "https://www.turntablelab.com/products/steve-lacy-gemini-rights-vinyl-lp",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0105/4542/products/stevelacy-geminirights-blackvinyl-2.jpg?v=1667516293&width=1200"
+  },
+  "steve-lacy-apollo-xxi": {
+    "file": "steve-lacy-apollo-xxi-1.jpg",
+    "crop": [
+      29.17,
+      40.5,
+      13.33,
+      12.42
+    ],
+    "source": "https://www.turntablelab.com/products/steve-lacy-apollo-xxi-the-internet-vinyl-lp",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0105/4542/products/stevelacy-apollo-blackvinyl-2.jpg?v=1591031907&width=1200"
+  },
+  "beabadoobee-beatopia": {
+    "file": "beabadoobee-beatopia-clear.png",
+    "crop": [
+      36,
+      35,
+      30,
+      30
+    ],
+    "source": "https://vertigovinyl.com/beabadoobee",
+    "photoSource": "https://images.squarespace-cdn.com/content/v1/5f4a6763a23dbb3ab86255f7/5223f931-26e2-4dfa-86c0-553ccd1e22dd/10.png",
+    "label": "Green vinyl · Side A label"
+  },
+  "beabadoobee-this-is-how-tomorrow-moves": {
+    "file": "beabadoobee-this-is-how-tomorrow-moves-1.jpg",
+    "crop": [
+      54.75,
+      54.33,
+      8.42,
+      5.92
+    ],
+    "source": "https://www.turntablelab.com/products/beabadoobee-this-is-how-tomorrow-moves-colored-vinyl-vinyl-lp",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0105/4542/files/bebaddoobeee-thisis-coloredvinyl-2.jpg?v=1723582733&width=1200",
+    "colour": "blue",
+    "label": "Light blue vinyl · Store edition"
+  },
+  "cigarettes-after-sex-self-titled": {
+    "file": "cigarettes-after-sex-self-titled-label.jpg",
+    "crop": [
+      1,
+      1,
+      98,
+      98
+    ],
+    "mode": "disc",
+    "label": "Grey vinyl · Rough Trade edition · Side B",
+    "colour": "silver",
+    "source": "https://uk.rarevinyl.com/products/cigarettes-after-sex-cigarettes-after-sex-grey-vinyl-uk-vinyl-lp-album-record-ptkf2146-3-797903",
+    "photoSource": "https://uk.rarevinyl.com/cdn/shop/products/cigarettes-after-sex-cigarettes-after-sex-grey-vinyl-uk-vinyl-lp-album-record-4uhlpci797903-797903b.jpg?v=1708033643&width=1280"
+  },
+  "cigarettes-after-sex-cry": {
+    "file": "cigarettes-after-sex-cry-label.jpg",
+    "crop": [
+      1,
+      1,
+      98,
+      98
+    ],
+    "mode": "disc",
+    "label": "Grey vinyl · Rough Trade edition · Side A",
+    "colour": "silver",
+    "source": "https://uk.rarevinyl.com/products/cigarettes-after-sex-cry-grey-vinyl-uk-vinyl-lp-album-record-ptkf2173-6-817187",
+    "photoSource": "https://uk.rarevinyl.com/cdn/shop/products/cigarettes-after-sex-cry-grey-vinyl-uk-vinyl-lp-album-record-4uhlpcr817187-817187b.jpg?v=1705572490&width=1280"
+  },
+  "radiohead-in-rainbows": {
+    "file": "radiohead-in-rainbows.jpg",
+    "crop": [
+      1,
+      1,
+      98,
+      98
+    ],
+    "label": "Black vinyl · XL XLLP324 · Side One",
+    "source": "https://uk.rarevinyl.com/es/products/radiohead-in-rainbows-shrink-uk-vinyl-lp-album-record-xllp324-816907",
+    "photoSource": "https://uk.rarevinyl.com/cdn/shop/products/radiohead-in-rainbows-shrink-uk-vinyl-lp-album-record-r-hlpin816907-816907b.jpg?v=1706074642&width=1280"
+  },
+  "radiohead-ok-computer": {
+    "file": "radiohead-ok-computer-label.jpg",
+    "crop": [
+      3,
+      2,
+      94,
+      96
+    ],
+    "label": "Black vinyl · Parlophone NODATA 02 · Side A",
+    "source": "https://uk.rarevinyl.com/ja/products/radiohead-ok-computer-180gm-vg-uk-2-lp-vinyl-record-double-nodata02-867471",
+    "photoSource": "https://uk.rarevinyl.com/cdn/shop/files/radiohead-ok-computer-180gm-vg-uk-2-lp-vinyl-record-double-r-h2lok867471-867471b_1000x982.jpg?v=1750435840"
+  },
+  "asap-rocky-long-live-asap": {
+    "file": "asap-rocky-long-live-asap.jpg",
+    "crop": [
+      0,
+      0,
+      100,
+      100
+    ],
+    "mode": "disc",
+    "label": "Orange vinyl · RCA / Polo Grounds · Side 1",
+    "colour": "orange",
+    "source": "https://www.hhv.de/en/records/item/a-ap-rocky-long-live-a-ap-orange-vinyl-edition-300195",
+    "photoSource": "https://a3.cdn.hhv.de/items/images/generated/970x970/00300/300195/4-a-ap-rocky-long-live-a-ap-orange-vinyl-edition.webp"
+  },
+  "asap-rocky-at-long-last-asap": {
+    "file": "asap-rocky-at-long-last-asap-1.jpg",
+    "crop": [
+      49,
+      42.4,
+      13.4,
+      12.3
+    ],
+    "source": "https://www.turntablelab.com/products/a-ap-rocky-at-long-last-a-ap-vinyl-2lp",
+    "photoSource": "https://cdn.shopify.com/s/files/1/0105/4542/products/asaprocky-atlonglastasap-2.jpg?v=1571264620&width=1200"
+  },
+  "lana-del-rey-born-to-die": {
+    "file": "lana-del-rey-born-to-die-label.jpg",
+    "crop": [
+      6,
+      5,
+      89,
+      91
+    ],
+    "label": "Black vinyl · Interscope B0016425-01 · Side A",
+    "source": "https://www.highnotes.ca/products/lana-del-rey-born-to-die-lp-album-re-mem-new-vinyl",
+    "photoSource": "https://www.highnotes.ca/cdn/shop/files/16005081-47920696628ec5e64deaa628ec5e64deab1653523942628ec5e64deaf.jpg?v=1759469359"
+  },
+  "lana-del-rey-ultraviolence": {
+    "file": "lana-del-rey-ultraviolence-label.jpg",
+    "crop": [
+      4,
+      5,
+      92,
+      90
+    ],
+    "label": "Blue disc · Blue and violet alternate-cover reissue",
+    "colour": "blue",
+    "source": "https://www.bigdawgrecords.com/products/lana-del-rey-ultraviolence-lp-blu-lp-vio-album-ltd-re-rp-alt-mint-m",
+    "photoSource": "https://www.bigdawgrecords.com/cdn/shop/products/28432840-39247593652ffd2ba329c652ffd2ba329d1697643819652ffd2ba32a2.jpg?v=1709888248&width=1445"
+  },
+  "lana-del-rey-norman-fucking-rockwell": {
+    "file": "nfr-label-artwork.jpg",
+    "crop": [
+      0,
+      0,
+      100,
+      100
+    ],
+    "source": "https://shoplanadelrey.com/products/nfr-black-vinyl",
+    "photoSource": "https://cdn.shopify.com/s/files/1/1828/6307/files/B2D---Vinyl_0003_NFR---Vinyl.png?v=1700523753",
+    "kind": "label-artwork",
+    "artworkNote": "Printed label artwork matched to the official store mock-up. The surrounding disc and lighting are stylised."
+  },
+  "lana-del-rey-ocean-blvd": {
+    "file": "lana-del-rey-ocean-blvd.png",
+    "crop": [
+      52.5,
+      40.5,
+      19,
+      19
+    ],
+    "source": "https://shoplanadelrey.com/products/did-you-know-that-there-s-a-tunnel-under-ocean-blvd-exclusive-white-vinyl",
+    "photoSource": "https://cdn.shopify.com/s/files/1/1828/6307/products/LDREXCLUWHITELP-UPDATED.png?v=1670361173"
+  },
+  "deftones-white-pony": {
+    "file": "deftones-white-pony-label.jpg",
+    "crop": [
+      1,
+      1,
+      98,
+      98
+    ],
+    "label": "Black vinyl · Maverick 524901-1 · Side A",
+    "source": "https://uk.rarevinyl.com/products/deftones-white-pony-us-2-lp-vinyl-record-double-524901-1-823128",
+    "photoSource": "https://uk.rarevinyl.com/cdn/shop/products/deftones-white-pony-us-2-lp-vinyl-record-double-dft2lwh823128-823128b.jpg?v=1705369022&width=1280"
+  },
+  "deftones-around-the-fur": {
+    "file": "deftones-around-the-fur-label.jpg",
+    "crop": [
+      1,
+      1,
+      98,
+      98
+    ],
+    "label": "Black vinyl · Maverick 45831-1 · Side One",
+    "source": "https://uk.rarevinyl.com/products/deftones-around-the-fur-180gram-us-vinyl-lp-album-record-45831-1-823123",
+    "photoSource": "https://uk.rarevinyl.com/cdn/shop/products/deftones-around-the-fur-180gram-us-vinyl-lp-album-record-dftlpar823123-823123b.jpg?v=1705401317&width=1280"
+  }
+}

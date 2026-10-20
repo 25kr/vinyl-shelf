@@ -1,5 +1,6 @@
 // Checked 20 October 2026. A fallback preview does not confirm a physical release.
 import pressingAdditions from "./pressingAdditions";
+import vinylArtwork from "./vinylArtwork.json";
 
 const blackPreview = {
   colour: "black",
@@ -28,5 +29,18 @@ const pressings = {
 };
 
 export function getPressing(id) {
-  return pressings[id] || { colour: "none", available: false, label: "No vinyl release confirmed" };
+  const pressing = pressings[id] || { colour: "none", available: false, label: "No vinyl release confirmed" };
+  const art = vinylArtwork[id];
+  if (!art) return pressing;
+  return {
+    ...pressing,
+    ...art,
+    colour: art.colour || pressing.colour,
+    label: art.label || pressing.label.replace(" · Illustrated disc", "").replace(" · Black disc illustration", ""),
+    verified: true,
+    artwork: `${import.meta.env.BASE_URL}images/vinyl/${art.file}`,
+    note: art.artworkNote || (art.mode === "disc"
+      ? "Record photograph from the linked edition. The preview shows the photographed side."
+      : "Centre-label photograph from the linked edition. The surrounding disc and lighting are stylised. Labels may differ between sides and editions."),
+  };
 }

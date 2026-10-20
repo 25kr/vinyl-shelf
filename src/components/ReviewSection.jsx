@@ -7,6 +7,7 @@ function trackKey(track) {
 function loadReviews(albumId, tracks) {
   try {
     const saved = JSON.parse(localStorage.getItem(`vinyl-shelf-reviews:${albumId}`) || "[]");
+
     const targets = new Set(["album", ...tracks.map(trackKey)]);
     if (!Array.isArray(saved)) throw new Error("Invalid reviews");
     const reviews = saved.filter((review) => review && typeof review.id === "string"
@@ -29,7 +30,8 @@ export default function ReviewSection({ album, tracks, target, onTargetChange })
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [view, setView] = useState("all");
-  const targets = [{ id: "album", title: `${album.title} · Full album` }, ...tracks.map((track) => ({ id: trackKey(track), title: `${track.number}. ${track.title}` }))];
+  const multipleDiscs = new Set(tracks.map(track => track.disc)).size > 1;
+  const targets = [{ id: "album", title: `${album.title} · Full album` }, ...tracks.map((track) => ({ id: trackKey(track), title: `${multipleDiscs ? `Disc ${track.disc} · ` : ""}${track.number}. ${track.title}` }))];
   const visible = stored.reviews.filter((review) => view === "all" || (view === "album" ? review.target === "album" : review.target !== "album"));
 
   // Save first, then update the screen. A failed save keeps the draft intact.

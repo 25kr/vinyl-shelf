@@ -8,15 +8,16 @@ function formatDuration(milliseconds) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 }
 
-export default function AlbumPage({ album, tracks, isCollected, isWishlisted, isSaved, onToggleSaved, onToggleCollection, onToggleWishlist, saveWarning }) {
+export default function AlbumPage({ backPage = "home", album, tracks, isCollected, isWishlisted, isSaved, onToggleSaved, onToggleCollection, onToggleWishlist, saveWarning }) {
   const pressing = getPressing(album.id);
   const [reviewTarget, setReviewTarget] = useState("album");
+  const discGroups = Object.entries(Object.groupBy(tracks, track => track.disc || 1));
   const duration = Math.round(tracks.reduce((total, track) => total + (track.durationMs || 0), 0) / 60000);
 
 
   return (
     <main className="album-page" id="main-content" tabIndex="-1">
-      <a className="back-link" href="#/">&larr; Back to shelf</a>
+      <a className="back-link" href={backPage === "home" ? "#/" : `#/${backPage}`}>&larr; Back to {({ home: "shelf", explore: "Explore", collection: "collection", wishlist: "wishlist" })[backPage]}</a>
       <header className="album-hero">
         <div className="album-cover-frame">
           <img className="album-page-cover" src={album.cover} alt={`${album.title} album cover by ${album.artist}`} width="600" height="600" />
@@ -53,8 +54,9 @@ export default function AlbumPage({ album, tracks, isCollected, isWishlisted, is
           <table className="track-table">
             <caption className="visually-hidden">Tracks on {album.title} by {album.artist}</caption>
             <thead><tr><th scope="col">#</th><th scope="col">Title</th><th scope="col">Time</th></tr></thead>
-            <tbody>
-              {tracks.map((track) => (
+            {discGroups.map(([disc, discTracks]) => <tbody key={disc}>
+              {discGroups.length > 1 && <tr className="disc-heading"><th colSpan="3" scope="rowgroup">Disc {disc}</th></tr>}
+              {discTracks.map((track) => (
                 <tr key={`${track.disc}-${track.number}`}>
                   <td>{track.number}</td>
                   <td><button className="track-review-button" aria-label={`Review ${track.title}`} onClick={() => {
@@ -64,7 +66,7 @@ export default function AlbumPage({ album, tracks, isCollected, isWishlisted, is
                   <td>{formatDuration(track.durationMs)}</td>
                 </tr>
               ))}
-            </tbody>
+            </tbody>)}
           </table>
           <a className="source-link" href={album.source} target="_blank" rel="noreferrer">Album and track information from Apple Music ↗</a>
         </section>

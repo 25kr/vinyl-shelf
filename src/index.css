@@ -45,17 +45,17 @@ h1 { font-size: clamp(34px, 4.4vw, 64px); line-height: 1.12; letter-spacing: -2p
 .record-sleeve { position: absolute; display: block; inset: 0; }
 .record-cover { position: absolute; z-index: 2; display: block; top: 7.8%; left: 1%; width: 64%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 3px; box-shadow: 0 16px 24px -12px #333a3555, 2px 2px 3px #0002; transition: transform 650ms cubic-bezier(.22, 1, .36, 1); }
 .vinyl-record { position: absolute; top: 7.8%; left: 1%; width: 64%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; box-shadow: 3px 14px 24px -10px #333a3560; transform: translateX(50%); transition: transform 650ms cubic-bezier(.22, 1, .36, 1); }
-.vinyl-disc { --disc-base: #161918; position: relative; display: block; width: 100%; height: 100%; border-radius: 50%; background: repeating-radial-gradient(circle, transparent 0 2px, #ffffff13 2px 2.7px, transparent 2.7px 4px), conic-gradient(from 25deg, #ffffff00, #ffffff27 13%, #ffffff00 25%, #ffffff00 45%, #ffffff25 64%, #ffffff00 80%), var(--disc-base); border: 1px solid #ffffff30; box-shadow: 3px 14px 24px -10px #333a3560, inset 0 0 0 5px #0002; transform: rotate(-18deg); transition: transform 1100ms cubic-bezier(.22, 1, .36, 1); }
+.vinyl-disc { --disc-base: #161918; position: relative; display: block; width: 100%; height: 100%; border-radius: 50%; background: repeating-radial-gradient(circle, transparent 0 2px, #ffffff13 2px 2.7px, transparent 2.7px 4px), conic-gradient(from 25deg, #ffffff00, #ffffff27 13%, #ffffff00 25%, #ffffff00 45%, #ffffff25 64%, #ffffff00 80%), var(--disc-base); border: 1px solid #ffffff30; box-shadow: 3px 14px 24px -10px #333a3560, inset 0 0 0 5px #0002; transform: rotate(0deg); transition: transform 850ms cubic-bezier(.22, 1, .36, 1); }
 .vinyl-silver .vinyl-disc { --disc-base: #b8bdc0; }
 .vinyl-label { position: absolute; inset: 33%; border-radius: 50%; background-size: cover; background-position: center; box-shadow: 0 0 0 3px #0002; }
 .vinyl-label::after { content: ""; position: absolute; width: 8%; aspect-ratio: 1; top: 46%; left: 46%; border-radius: 50%; background: #f1efe7; box-shadow: 0 0 0 2px #0003; }
 .record-artwork:focus-visible .vinyl-record { transform: translateX(54.5%); }
-.record-artwork:focus-visible .vinyl-disc { transform: rotate(20deg); }
+.record-artwork:focus-visible .vinyl-disc { transform: rotate(12deg); }
 .record-artwork:focus-visible .record-cover { transform: translateY(-3px) rotate(-1deg); }
 .sleeve-only .record-cover { left: 16%; }
 @media (hover: hover) {
   .record-artwork:hover .vinyl-record { transform: translateX(54.5%); }
-  .record-artwork:hover .vinyl-disc { transform: rotate(20deg); }
+  .record-artwork:hover .vinyl-disc { transform: rotate(12deg); }
   .record-artwork:hover .record-cover { transform: translateY(-3px) rotate(-1deg); }
 }
 
@@ -272,3 +272,17 @@ input::placeholder, textarea::placeholder { color: #72786d; }
 .vinyl-red .pressing-swatch { background: #c5433c; }
 .vinyl-white .vinyl-disc { --disc-base: #e8e5de; }
 .vinyl-white .pressing-swatch { background: #e8e5de; }
+
+.track-table .disc-heading th { padding: 25px 0 12px; text-align: left; color: var(--accent); font-size: 12px; letter-spacing: 1px; border-bottom: 1px solid var(--line); }
+
+/* Actual edition photographs replace the album-cover centre placeholders. */
+.vinyl-label { overflow: hidden; background-color: #e5dfcd; }
+.vinyl-photo { display: block; position: absolute; max-width: none; }
+.vinyl-disc.is-photographed-disc { overflow: hidden; background: transparent; border: 0; }
+.vinyl-disc { transform-origin: 50% 50%; }
+.vinyl-orange .vinyl-disc { --disc-base: #d18720; }
+.vinyl-purple .vinyl-disc { --disc-base: #714b88; }
+.vinyl-blue .vinyl-disc { --disc-base: #4caac5; }
+.vinyl-orange .pressing-swatch { background: #d18720; }
+.vinyl-purple .pressing-swatch { background: #714b88; }
+.vinyl-blue .pressing-swatch { background: #4caac5; }

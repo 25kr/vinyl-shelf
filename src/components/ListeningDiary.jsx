@@ -36,6 +36,7 @@ export default function ListeningDiary({ albums, tracklists }) {
   const [error, setError] = useState("");
   const selectedAlbum = albums.find((album) => album.id === albumId);
   const tracks = tracklists[albumId] || [];
+  const multipleDiscs = new Set(tracks.map(track => track.disc)).size > 1;
   const sortedEntries = [...stored.entries].sort((a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt));
   const months = Object.groupBy(sortedEntries, (entry) => entry.date.slice(0, 7));
 
@@ -78,7 +79,7 @@ export default function ListeningDiary({ albums, tracklists }) {
           <p className="review-status" role="status">{status}</p>
           <form className="diary-form" onSubmit={handleSubmit}>
             <label htmlFor="diary-album">Album</label><select id="diary-album" value={albumId} onChange={(event) => { setAlbumId(event.target.value); setTarget("album"); }}>{albums.map((album) => <option key={album.id} value={album.id}>{album.title} · {album.artist}</option>)}</select>
-            <label htmlFor="diary-target">What did you listen to?</label><select id="diary-target" value={target} onChange={(event) => setTarget(event.target.value)}><option value="album">The full album</option>{tracks.map((track) => <option key={trackId(track)} value={trackId(track)}>{track.number}. {track.title}</option>)}</select>
+            <label htmlFor="diary-target">What did you listen to?</label><select id="diary-target" value={target} onChange={(event) => setTarget(event.target.value)}><option value="album">The full album</option>{tracks.map((track) => <option key={trackId(track)} value={trackId(track)}>{multipleDiscs ? `Disc ${track.disc} · ` : ""}{track.number}. {track.title}</option>)}</select>
             <label htmlFor="diary-date">Listening date</label><input id="diary-date" type="date" required max={dateValue()} value={date} onChange={(event) => setDate(event.target.value)} />
             <label className="diary-repeat" htmlFor="diary-repeat"><input id="diary-repeat" type="checkbox" checked={repeat} onChange={(event) => setRepeat(event.target.checked)} /><span>A repeat listen</span><span aria-hidden="true">↻</span></label>
             <label htmlFor="diary-note">A little note <span className="optional-label">Optional</span></label><textarea id="diary-note" rows="3" maxLength="500" value={note} onChange={(event) => setNote(event.target.value)} placeholder="Rain outside. Headphones on. This one on repeat." />
