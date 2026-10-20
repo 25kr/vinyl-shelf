@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getPressing } from "../data/pressings";
 
 function formatDuration(milliseconds) {
   if (!Number.isFinite(milliseconds)) return "—";
@@ -9,6 +10,7 @@ function formatDuration(milliseconds) {
 export default function AlbumPage({ album, tracks, isCollected, isWishlisted, onToggleCollection, onToggleWishlist, story, onSaveStory, saveWarning }) {
   const [draft, setDraft] = useState(story);
   const [storyStatus, setStoryStatus] = useState("");
+  const pressing = getPressing(album.id);
   const duration = Math.round(tracks.reduce((total, track) => total + (track.durationMs || 0), 0) / 60000);
 
   function handleSave(event) {
@@ -29,6 +31,11 @@ export default function AlbumPage({ album, tracks, isCollected, isWishlisted, on
           <h1>{album.title}</h1>
           <p className="album-artist">{album.artist}</p>
           <p className="album-runtime">{tracks.length} tracks &middot; {duration} min</p>
+          <div className={`pressing-info vinyl-${pressing.colour}`}>
+            <p className="pressing-name"><span className="pressing-swatch" aria-hidden="true" />{pressing.label}</p>
+            <p className="pressing-note">{pressing.note}</p>
+            {pressing.source && <a className="pressing-source" href={pressing.source} target="_blank" rel="noreferrer">{pressing.verified ? "View this edition" : "View artist's vinyl listing"} ↗</a>}
+          </div>
           <span className="collection-badge">{isCollected ? "In my collection" : "Not collected yet"}</span>
           <div className="album-buttons">
             <button className="collection-button" aria-pressed={isCollected} onClick={onToggleCollection}>

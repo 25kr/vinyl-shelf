@@ -1,10 +1,12 @@
+import RecordSleeve from "./RecordSleeve";
+
 export default function RecordCard({ id, title, artist, cover, year, type, isCollected, isWishlisted, hasStory, onToggle, onToggleWishlist }) {
   const albumUrl = `#/album/${encodeURIComponent(id)}`;
 
   return (
     <article className="record-card">
       <a className="record-artwork" href={albumUrl} aria-label={`View ${title} by ${artist} and its track list`}>
-        <img className="record-cover" src={cover} alt={`${title} album cover by ${artist}`} loading="lazy" width="600" height="600" />
+        <RecordSleeve id={id} title={title} artist={artist} cover={cover} />
         <span className="cover-hint" aria-hidden="true">Explore record &rarr;</span>
       </a>
       <div className="record-details">
