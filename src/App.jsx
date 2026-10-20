@@ -12,13 +12,6 @@ function readFlags(prefix) {
     catch { return [id, false]; }
   }));
 }
-function readStories() {
-  try {
-    const saved = JSON.parse(localStorage.getItem("vinyl-shelf-stories") || "{}");
-    if (!saved || typeof saved !== "object" || Array.isArray(saved)) return {};
-    return Object.fromEntries(Object.entries(saved).filter(([, value]) => typeof value === "string"));
-  } catch { return {}; }
-}
 function readRoute() {
   const hash = window.location.hash || "#/";
   if (hash.startsWith("#/album/")) {
@@ -45,7 +38,6 @@ export default function App() {
   const [collection, setCollection] = useState(() => readFlags("collection"));
   const [wishlist, setWishlist] = useState(() => readFlags("wishlist"));
   const [savedAlbums, setSavedAlbums] = useState(() => readFlags("saved"));
-  const [stories, setStories] = useState(readStories);
   const [route, setRoute] = useState(readRoute);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
@@ -84,11 +76,6 @@ export default function App() {
     if (getPressing(id).available) setWishlist((current) => ({ ...current, [id]: !current[id] }));
   }
   function toggleSaved(id) { setSavedAlbums((current) => ({ ...current, [id]: !current[id] })); }
-  function saveStory(id, text) {
-    const next = { ...stories, [id]: text };
-    try { localStorage.setItem("vinyl-shelf-stories", JSON.stringify(next)); setStories(next); return true; }
-    catch { return false; }
-  }
   function resetFilters() { setSearch(""); setFilter("all"); setGenre("all"); setSort("catalogue"); }
 
   const saveWarning = saveError && <p className="save-warning" role="alert">Your browser could not save these changes. They may reset after refreshing.</p>;
@@ -126,7 +113,7 @@ export default function App() {
           isCollected={collection[selectedAlbum.id]} isWishlisted={wishlist[selectedAlbum.id]}
           isSaved={savedAlbums[selectedAlbum.id]} onToggleSaved={() => toggleSaved(selectedAlbum.id)}
           onToggleCollection={() => toggleCollection(selectedAlbum.id)} onToggleWishlist={() => toggleWishlist(selectedAlbum.id)}
-          story={stories[selectedAlbum.id] || ""} onSaveStory={(text) => saveStory(selectedAlbum.id, text)} saveWarning={saveWarning}
+          saveWarning={saveWarning}
         /> : <main id="main-content" tabIndex="-1"><h1>Record not found</h1><a className="back-link" href="#/">Back to shelf</a></main>
       ) : (
         <main id="main-content" className={`shelf-page page-${route.page}`} tabIndex="-1">

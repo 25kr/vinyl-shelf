@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { getPressing } from "../data/pressings";
 
 function formatDuration(milliseconds) {
@@ -7,17 +6,10 @@ function formatDuration(milliseconds) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 }
 
-export default function AlbumPage({ album, tracks, isCollected, isWishlisted, isSaved, onToggleSaved, onToggleCollection, onToggleWishlist, story, onSaveStory, saveWarning }) {
-  const [draft, setDraft] = useState(story);
-  const [storyStatus, setStoryStatus] = useState("");
+export default function AlbumPage({ album, tracks, isCollected, isWishlisted, isSaved, onToggleSaved, onToggleCollection, onToggleWishlist, saveWarning }) {
   const pressing = getPressing(album.id);
   const duration = Math.round(tracks.reduce((total, track) => total + (track.durationMs || 0), 0) / 60000);
 
-  function handleSave(event) {
-    event.preventDefault();
-    const saved = onSaveStory(draft);
-    setStoryStatus(saved ? "Saved on this browser." : "Could not save. Please keep a copy of your story and try again.");
-  }
 
   return (
     <main className="album-page" id="main-content" tabIndex="-1">
@@ -68,27 +60,6 @@ export default function AlbumPage({ album, tracks, isCollected, isWishlisted, is
             </tbody>
           </table>
           <a className="source-link" href={album.source} target="_blank" rel="noreferrer">Album and track information from Apple Music ↗</a>
-        </section>
-        <section className="story-section" aria-labelledby="story-heading">
-          <p className="eyebrow">MORE THAN A RECORD</p>
-          <h2 id="story-heading">The story behind it</h2>
-          <p>Where did you find it? What makes it yours?</p>
-          <form onSubmit={handleSave}>
-            <label className="visually-hidden" htmlFor="record-story">Your story about {album.title}</label>
-            <textarea
-              id="record-story"
-              rows="7"
-              maxLength="2000"
-              placeholder="A gift, a late-night discovery, a favourite record shop..."
-              value={draft}
-              onChange={(event) => { setDraft(event.target.value); setStoryStatus(""); }}
-            />
-            <div className="story-footer">
-              <span>{draft.length} / 2000</span>
-              <button className="collection-button" type="submit">Save story</button>
-            </div>
-            <p className="story-status" role="status">{storyStatus || (draft !== story ? "Unsaved changes" : "Your story is saved only on this browser.")}</p>
-          </form>
         </section>
       </div>
     </main>
