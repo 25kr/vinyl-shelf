@@ -4,7 +4,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite"
+        "dev": "vite",
+        "build": "vite build",
+        "build:pages": "vite build --base=/vinyl-shelf/",
+        "preview": "vite preview"
     },
     "dependencies": {
         "react": "^19.3.1",

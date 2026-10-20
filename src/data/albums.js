@@ -10,7 +10,7 @@ const albums = [
     artist: "2hollis",
     year: 2025,
     type: "Album",
-    cover: "/images/star.jpg",
+    cover: `${import.meta.env.BASE_URL}images/star.jpg`,
     source: "https://music.apple.com/us/album/star/1803726233",
   },
   {
@@ -20,7 +20,7 @@ const albums = [
     artist: "2hollis",
     year: 2024,
     type: "Album",
-    cover: "/images/2hollis-boy.jpg",
+    cover: `${import.meta.env.BASE_URL}images/2hollis-boy.jpg`,
     source: "https://music.apple.com/us/album/boy/1746250658",
   },
   {
@@ -30,7 +30,7 @@ const albums = [
     artist: "2hollis",
     year: 2023,
     type: "Album",
-    cover: "/images/2hollis-2.jpg",
+    cover: `${import.meta.env.BASE_URL}images/2hollis-2.jpg`,
     source: "https://music.apple.com/us/album/2/1687014179",
   },
   {
@@ -40,7 +40,7 @@ const albums = [
     artist: "2hollis",
     year: 2022,
     type: "Album",
-    cover: "/images/white_tiger.jpg",
+    cover: `${import.meta.env.BASE_URL}images/white_tiger.jpg`,
     source: "https://music.apple.com/us/album/white-tiger/1895754601",
   },
   {
@@ -50,7 +50,7 @@ const albums = [
     artist: "fakemink",
     year: 2026,
     type: "Album",
-    cover: "/images/fakemink-terrified.jpg",
+    cover: `${import.meta.env.BASE_URL}images/fakemink-terrified.jpg`,
     source: "https://music.apple.com/us/album/terrified/6804863642",
   },
   {
@@ -60,7 +60,7 @@ const albums = [
     artist: "fakemink",
     year: 2026,
     type: "EP",
-    cover: "/images/fakemink-the-boy-who-cried-terrified.jpg",
+    cover: `${import.meta.env.BASE_URL}images/fakemink-the-boy-who-cried-terrified.jpg`,
     source: "https://music.apple.com/us/album/the-boy-who-cried-terrified/6804861821",
   },
   {
@@ -70,7 +70,7 @@ const albums = [
     artist: "fakemink",
     year: 2023,
     type: "Mixtape",
-    cover: "/images/fakemink-londons-saviour.jpg",
+    cover: `${import.meta.env.BASE_URL}images/fakemink-londons-saviour.jpg`,
     source: "https://music.apple.com/us/album/londons-saviour/6804850775",
   },
 ];
