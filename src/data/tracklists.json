@@ -1,0 +1,604 @@
+{
+  "2hollis-star": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "beginning",
+      "durationMs": 88235,
+      "url": "https://music.apple.com/us/album/beginning/1803726233?i=1803726234&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "flash",
+      "durationMs": 164118,
+      "url": "https://music.apple.com/us/album/flash/1803726233?i=1803726236&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "cope",
+      "durationMs": 165517,
+      "url": "https://music.apple.com/us/album/cope/1803726233?i=1803726237&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "you",
+      "durationMs": 143731,
+      "url": "https://music.apple.com/us/album/you/1803726233?i=1803726239&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "tell me",
+      "durationMs": 236151,
+      "url": "https://music.apple.com/us/album/tell-me/1803726233?i=1803726241&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "destroy me",
+      "durationMs": 163655,
+      "url": "https://music.apple.com/us/album/destroy-me/1803726233?i=1803726248&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "burn",
+      "durationMs": 217895,
+      "url": "https://music.apple.com/us/album/burn/1803726233?i=1803726249&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "girl",
+      "durationMs": 186122,
+      "url": "https://music.apple.com/us/album/girl/1803726233?i=1803726250&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "dream rain sports",
+      "durationMs": 128000,
+      "url": "https://music.apple.com/us/album/dream-rain-sports/1803726233?i=1803726252&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "nice",
+      "durationMs": 142493,
+      "url": "https://music.apple.com/us/album/nice/1803726233?i=1803726253&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "nerve",
+      "durationMs": 175875,
+      "url": "https://music.apple.com/us/album/nerve/1803726233?i=1803726255&uo=4"
+    },
+    {
+      "number": 12,
+      "disc": 1,
+      "title": "ego",
+      "durationMs": 64000,
+      "url": "https://music.apple.com/us/album/ego/1803726233?i=1803726257&uo=4"
+    },
+    {
+      "number": 13,
+      "disc": 1,
+      "title": "sidekick",
+      "durationMs": 78400,
+      "url": "https://music.apple.com/us/album/sidekick/1803726233?i=1803726258&uo=4"
+    },
+    {
+      "number": 14,
+      "disc": 1,
+      "title": "eldest child",
+      "durationMs": 158628,
+      "url": "https://music.apple.com/us/album/eldest-child/1803726233?i=1803726530&uo=4"
+    },
+    {
+      "number": 15,
+      "disc": 1,
+      "title": "safe",
+      "durationMs": 172910,
+      "url": "https://music.apple.com/us/album/safe/1803726233?i=1803726531&uo=4"
+    }
+  ],
+  "2hollis-boy": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "you once said my name for the first time",
+      "durationMs": 360805,
+      "url": "https://music.apple.com/us/album/you-once-said-my-name-for-the-first-time/1746250658?i=1746250659&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "two bad",
+      "durationMs": 214761,
+      "url": "https://music.apple.com/us/album/two-bad/1746250658?i=1746250665&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "sister",
+      "durationMs": 215814,
+      "url": "https://music.apple.com/us/album/sister/1746250658?i=1746250850&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "crush",
+      "durationMs": 146225,
+      "url": "https://music.apple.com/us/album/crush/1746250658?i=1746250853&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "i saw it flash before me",
+      "durationMs": 158897,
+      "url": "https://music.apple.com/us/album/i-saw-it-flash-before-me/1746250658?i=1746250855&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "say it",
+      "durationMs": 80586,
+      "url": "https://music.apple.com/us/album/say-it/1746250658?i=1746250857&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "say it again",
+      "durationMs": 147564,
+      "url": "https://music.apple.com/us/album/say-it-again/1746250658?i=1746250860&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "teenage soldier",
+      "durationMs": 186067,
+      "url": "https://music.apple.com/us/album/teenage-soldier/1746250658?i=1746250861&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "lie",
+      "durationMs": 143000,
+      "url": "https://music.apple.com/us/album/lie/1746250658?i=1746250862&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "promise",
+      "durationMs": 146565,
+      "url": "https://music.apple.com/us/album/promise/1746250658?i=1746250863&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "3",
+      "durationMs": 147961,
+      "url": "https://music.apple.com/us/album/3/1746250658?i=1746250864&uo=4"
+    },
+    {
+      "number": 12,
+      "disc": 1,
+      "title": "light",
+      "durationMs": 165429,
+      "url": "https://music.apple.com/us/album/light/1746250658?i=1746250865&uo=4"
+    },
+    {
+      "number": 13,
+      "disc": 1,
+      "title": "mountain",
+      "durationMs": 142258,
+      "url": "https://music.apple.com/us/album/mountain/1746250658?i=1746250868&uo=4"
+    }
+  ],
+  "2hollis-2": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "all 2s",
+      "durationMs": 167449,
+      "url": "https://music.apple.com/us/album/all-2s/1687014179?i=1687014189&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "poster boy",
+      "durationMs": 121089,
+      "url": "https://music.apple.com/us/album/poster-boy/1687014179?i=1687014447&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "GOD",
+      "durationMs": 186391,
+      "url": "https://music.apple.com/us/album/god/1687014179?i=1687014448&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "trust",
+      "durationMs": 171496,
+      "url": "https://music.apple.com/us/album/trust/1687014179?i=1687014453&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "FORFEIT",
+      "durationMs": 170665,
+      "url": "https://music.apple.com/us/album/forfeit/1687014179?i=1687014454&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "nothing2 lose",
+      "durationMs": 142038,
+      "url": "https://music.apple.com/us/album/nothing2-lose/1687014179?i=1687014457&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "blackbirds",
+      "durationMs": 163442,
+      "url": "https://music.apple.com/us/album/blackbirds/1687014179?i=1687014464&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "fame runner",
+      "durationMs": 217262,
+      "url": "https://music.apple.com/us/album/fame-runner/1687014179?i=1687014591&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "2 u",
+      "durationMs": 149181,
+      "url": "https://music.apple.com/us/album/2-u/1687014179?i=1687014601&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "PLASTER",
+      "durationMs": 260282,
+      "url": "https://music.apple.com/us/album/plaster/1687014179?i=1687014604&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "it will never be the same",
+      "durationMs": 284007,
+      "url": "https://music.apple.com/us/album/it-will-never-be-the-same/1687014179?i=1687014606&uo=4"
+    }
+  ],
+  "2hollis-white_tiger": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "gate",
+      "durationMs": 78000,
+      "url": "https://music.apple.com/us/album/gate/1895754601?i=6764375864&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "king of the darkness",
+      "durationMs": 162000,
+      "url": "https://music.apple.com/us/album/king-of-the-darkness/1895754601?i=6764376072&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "give it up",
+      "durationMs": 114000,
+      "url": "https://music.apple.com/us/album/give-it-up/1895754601?i=6764376076&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "i do",
+      "durationMs": 176000,
+      "url": "https://music.apple.com/us/album/i-do/1895754601?i=6764376078&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "actor",
+      "durationMs": 207500,
+      "url": "https://music.apple.com/us/album/actor/1895754601?i=6764376082&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "white tiger",
+      "durationMs": 114188,
+      "url": "https://music.apple.com/us/album/white-tiger/1895754601?i=6764376087&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "the light upon the surface that beckoned deep into the moment and the tiger stepped forth",
+      "durationMs": 169500,
+      "url": "https://music.apple.com/us/album/the-light-upon-the-surface-that-beckoned-deep-into/1895754601?i=6764376090&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "raise",
+      "durationMs": 187968,
+      "url": "https://music.apple.com/us/album/raise/1895754601?i=6764376181&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "safety",
+      "durationMs": 148282,
+      "url": "https://music.apple.com/us/album/safety/1895754601?i=6764376182&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "i always questioned it",
+      "durationMs": 89744,
+      "url": "https://music.apple.com/us/album/i-always-questioned-it/1895754601?i=6764376184&uo=4"
+    }
+  ],
+  "fakemink-terrified": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "Terrified .",
+      "durationMs": 91000,
+      "url": "https://music.apple.com/us/album/terrified/6804863642?i=6804863644&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "All Eyes On Me",
+      "durationMs": 197933,
+      "url": "https://music.apple.com/us/album/all-eyes-on-me/6804863642?i=6804863649&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Playlist .",
+      "durationMs": 158111,
+      "url": "https://music.apple.com/us/album/playlist/6804863642?i=6804863650&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "Creep",
+      "durationMs": 139207,
+      "url": "https://music.apple.com/us/album/creep/6804863642?i=6804863651&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "Like A Virgin",
+      "durationMs": 154716,
+      "url": "https://music.apple.com/us/album/like-a-virgin/6804863642?i=6804863652&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "Jungle-Affair .",
+      "durationMs": 97620,
+      "url": "https://music.apple.com/us/album/jungle-affair/6804863642?i=6804863653&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "51 Ttashpel Pony Ave .",
+      "durationMs": 125332,
+      "url": "https://music.apple.com/us/album/51-ttashpel-pony-ave/6804863642?i=6804863654&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "Hard Candy",
+      "durationMs": 142986,
+      "url": "https://music.apple.com/us/album/hard-candy/6804863642?i=6804863656&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "Rewind",
+      "durationMs": 151087,
+      "url": "https://music.apple.com/us/album/rewind/6804863642?i=6804863657&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "Essex Girls .",
+      "durationMs": 170625,
+      "url": "https://music.apple.com/us/album/essex-girls/6804863642?i=6804863658&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "Night , Blooming Jasmine .",
+      "durationMs": 178868,
+      "url": "https://music.apple.com/us/album/night-blooming-jasmine/6804863642?i=6804863659&uo=4"
+    },
+    {
+      "number": 12,
+      "disc": 1,
+      "title": "Wrong Relief",
+      "durationMs": 141159,
+      "url": "https://music.apple.com/us/album/wrong-relief/6804863642?i=6804863660&uo=4"
+    },
+    {
+      "number": 13,
+      "disc": 1,
+      "title": "Fire & Ice .",
+      "durationMs": 422933,
+      "url": "https://music.apple.com/us/album/fire-ice/6804863642?i=6804863662&uo=4"
+    },
+    {
+      "number": 14,
+      "disc": 1,
+      "title": "Kiss Of Death",
+      "durationMs": 172375,
+      "url": "https://music.apple.com/us/album/kiss-of-death/6804863642?i=6804863663&uo=4"
+    },
+    {
+      "number": 15,
+      "disc": 1,
+      "title": "Creed .",
+      "durationMs": 176702,
+      "url": "https://music.apple.com/us/album/creed/6804863642?i=6804863664&uo=4"
+    },
+    {
+      "number": 16,
+      "disc": 1,
+      "title": "Tell Me What You're Missing .",
+      "durationMs": 152688,
+      "url": "https://music.apple.com/us/album/tell-me-what-youre-missing/6804863642?i=6804863755&uo=4"
+    },
+    {
+      "number": 17,
+      "disc": 1,
+      "title": "Forget me Not .",
+      "durationMs": 189644,
+      "url": "https://music.apple.com/us/album/forget-me-not/6804863642?i=6804863756&uo=4"
+    },
+    {
+      "number": 18,
+      "disc": 1,
+      "title": "Rétard Angel .",
+      "durationMs": 172870,
+      "url": "https://music.apple.com/us/album/r%C3%A9tard-angel/6804863642?i=6804863759&uo=4"
+    },
+    {
+      "number": 19,
+      "disc": 1,
+      "title": "Etna .",
+      "durationMs": 297250,
+      "url": "https://music.apple.com/us/album/etna/6804863642?i=6804863760&uo=4"
+    }
+  ],
+  "fakemink-the-boy-who-cried-terrified": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "Blow The Speaker .",
+      "durationMs": 145375,
+      "url": "https://music.apple.com/us/album/blow-the-speaker/6804861821?i=6804861822&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "Young Millionaire .",
+      "durationMs": 110813,
+      "url": "https://music.apple.com/us/album/young-millionaire/6804861821?i=6804861823&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Dumb .",
+      "durationMs": 97000,
+      "url": "https://music.apple.com/us/album/dumb/6804861821?i=6804861824&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "Mr. Chow .",
+      "durationMs": 145740,
+      "url": "https://music.apple.com/us/album/mr-chow/6804861821?i=6804861825&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "The Mercer .",
+      "durationMs": 95000,
+      "url": "https://music.apple.com/us/album/the-mercer/6804861821?i=6804861826&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "Milk & Honey .",
+      "durationMs": 124519,
+      "url": "https://music.apple.com/us/album/milk-honey/6804861821?i=6804861827&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "fml .",
+      "durationMs": 160870,
+      "url": "https://music.apple.com/us/album/fml/6804861821?i=6804861828&uo=4"
+    }
+  ],
+  "fakemink-londons-saviour": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "Kill Everything",
+      "durationMs": 187967,
+      "url": "https://music.apple.com/us/album/kill-everything/6804850775?i=6804850778&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "Phantas-Ma-Goria",
+      "durationMs": 86521,
+      "url": "https://music.apple.com/us/album/phantas-ma-goria/6804850775?i=6804850779&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Just Kitten",
+      "durationMs": 198013,
+      "url": "https://music.apple.com/us/album/just-kitten/6804850775?i=6804850781&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "Air Head",
+      "durationMs": 77404,
+      "url": "https://music.apple.com/us/album/air-head/6804850775?i=6804850782&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "Fleeting Feeling",
+      "durationMs": 50229,
+      "url": "https://music.apple.com/us/album/fleeting-feeling/6804850775?i=6804850783&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "London Life",
+      "durationMs": 213063,
+      "url": "https://music.apple.com/us/album/london-life/6804850775?i=6804850784&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "Loser Monologue",
+      "durationMs": 185283,
+      "url": "https://music.apple.com/us/album/loser-monologue/6804850775?i=6804850785&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "Celebrity Deathmatch",
+      "durationMs": 182654,
+      "url": "https://music.apple.com/us/album/celebrity-deathmatch/6804850775?i=6804851146&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "One More, Then I’ll Sleep",
+      "durationMs": 99146,
+      "url": "https://music.apple.com/us/album/one-more-then-ill-sleep/6804850775?i=6804851147&uo=4"
+    }
+  ]
+}
