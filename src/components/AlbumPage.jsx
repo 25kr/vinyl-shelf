@@ -7,7 +7,7 @@ function formatDuration(milliseconds) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 }
 
-export default function AlbumPage({ album, tracks, isCollected, isWishlisted, onToggleCollection, onToggleWishlist, story, onSaveStory, saveWarning }) {
+export default function AlbumPage({ album, tracks, isCollected, isWishlisted, isSaved, onToggleSaved, onToggleCollection, onToggleWishlist, story, onSaveStory, saveWarning }) {
   const [draft, setDraft] = useState(story);
   const [storyStatus, setStoryStatus] = useState("");
   const pressing = getPressing(album.id);
@@ -20,7 +20,7 @@ export default function AlbumPage({ album, tracks, isCollected, isWishlisted, on
   }
 
   return (
-    <main className="album-page">
+    <main className="album-page" id="main-content" tabIndex="-1">
       <a className="back-link" href="#/">&larr; Back to shelf</a>
       <header className="album-hero">
         <div className="album-cover-frame">
@@ -36,14 +36,16 @@ export default function AlbumPage({ album, tracks, isCollected, isWishlisted, on
             <p className="pressing-note">{pressing.note}</p>
             {pressing.source && <a className="pressing-source" href={pressing.source} target="_blank" rel="noreferrer">{pressing.verified ? "View this edition" : "View artist's vinyl listing"} ↗</a>}
           </div>
-          <span className="collection-badge">{isCollected ? "In my collection" : "Not collected yet"}</span>
+          {pressing.available && <span className="collection-badge">{isCollected ? "In my collection" : "Not collected yet"}</span>}
           <div className="album-buttons">
+            {pressing.available ? <>
             <button className="collection-button" aria-pressed={isCollected} onClick={onToggleCollection}>
               {isCollected ? "Remove from collection" : "Add to collection"}
             </button>
             <button className="wishlist-button" aria-pressed={isWishlisted} onClick={onToggleWishlist}>
               {isWishlisted ? "On my wishlist" : "Add to wishlist"}
             </button>
+            </> : <button className="collection-button" aria-pressed={Boolean(isSaved)} onClick={onToggleSaved}>{isSaved ? "Remove saved album" : "Save album"}</button>}
           </div>
         </div>
       </header>

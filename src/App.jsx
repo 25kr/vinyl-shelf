@@ -1,220 +1,144 @@
 import { useEffect, useState } from "react";
 import RecordCard from "./components/RecordCard";
 import AlbumPage from "./components/AlbumPage";
+import LoginDialog from "./components/LoginDialog";
 import albums from "./data/albums";
+import { getPressing } from "./data/pressings";
 import tracklists from "./data/tracklists.json";
 
 function readFlags(prefix) {
-  const saved = {};
-  for (const album of albums) {
-    try {
-      saved[album.id] = localStorage.getItem(`${prefix}-${album.id}`) === "true";
-    } catch {
-      saved[album.id] = false;
-    }
-  }
-  return saved;
+  return Object.fromEntries(albums.map(({ id }) => {
+    try { return [id, localStorage.getItem(`${prefix}-${id}`) === "true"]; }
+    catch { return [id, false]; }
+  }));
 }
-
 function readStories() {
   try {
     const saved = JSON.parse(localStorage.getItem("vinyl-shelf-stories") || "{}");
     if (!saved || typeof saved !== "object" || Array.isArray(saved)) return {};
     return Object.fromEntries(Object.entries(saved).filter(([, value]) => typeof value === "string"));
-  } catch {
-    return {};
-  }
+  } catch { return {}; }
 }
-
-function readAlbumId() {
-  if (!window.location.hash.startsWith("#/album/")) return "";
-  try {
-    return decodeURIComponent(window.location.hash.slice(8));
-  } catch {
-    return "unknown";
+function readRoute() {
+  const hash = window.location.hash || "#/";
+  if (hash.startsWith("#/album/")) {
+    try { return { page: "album", id: decodeURIComponent(hash.slice(8)) }; }
+    catch { return { page: "album", id: "unknown" }; }
   }
+  const page = hash.slice(2);
+  return { page: ["explore", "collection", "wishlist"].includes(page) ? page : "home" };
 }
-
 const artists = [...new Set(albums.map((album) => album.artist))];
+const pageCopy = {
+  home: ["THE LISTENING ROOM", "A place for your records.", "Old favourites. New discoveries. A shelf that feels like you."],
+  explore: ["FOLLOW YOUR CURIOSITY", "Find your next favourite.", "Explore the music. Keep the albums that stay with you."],
+  collection: ["THE ONES YOU KEEP", "Your collection.", "Every record has a story. Start yours here."],
+  wishlist: ["SOMEDAY, ON YOUR SHELF", "Your next finds.", "A little room for the records you’re dreaming of."],
+};
 
 export default function App() {
   const [collection, setCollection] = useState(() => readFlags("collection"));
   const [wishlist, setWishlist] = useState(() => readFlags("wishlist"));
+  const [savedAlbums, setSavedAlbums] = useState(() => readFlags("saved"));
   const [stories, setStories] = useState(readStories);
-  const [albumId, setAlbumId] = useState(readAlbumId);
+  const [route, setRoute] = useState(readRoute);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [artist, setArtist] = useState("all");
   const [sort, setSort] = useState("catalogue");
   const [saveError, setSaveError] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
 
   useEffect(() => {
     function handleNavigation() {
-      setAlbumId(readAlbumId());
+      setRoute(readRoute()); setSearch(""); setArtist("all"); setFilter("all"); setSort("catalogue");
       window.scrollTo(0, 0);
     }
     window.addEventListener("hashchange", handleNavigation);
     return () => window.removeEventListener("hashchange", handleNavigation);
   }, []);
-
   useEffect(() => {
     try {
-      for (const album of albums) {
-        localStorage.setItem(`collection-${album.id}`, String(collection[album.id]));
-        localStorage.setItem(`wishlist-${album.id}`, String(wishlist[album.id]));
+      for (const { id } of albums) {
+        localStorage.setItem(`collection-${id}`, String(Boolean(collection[id])));
+        localStorage.setItem(`wishlist-${id}`, String(Boolean(wishlist[id])));
+        localStorage.setItem(`saved-${id}`, String(Boolean(savedAlbums[id])));
       }
       setSaveError(false);
-    } catch {
-      setSaveError(true);
-    }
-  }, [collection, wishlist]);
+    } catch { setSaveError(true); }
+  }, [collection, wishlist, savedAlbums]);
 
-  const selectedAlbum = albums.find((album) => album.id === albumId);
-
+  const selectedAlbum = albums.find((album) => album.id === route.id);
   useEffect(() => {
-    document.title = selectedAlbum
-      ? `${selectedAlbum.title} by ${selectedAlbum.artist} | Vinyl Shelf`
-      : "Vinyl Shelf";
+    document.title = selectedAlbum ? `${selectedAlbum.title} by ${selectedAlbum.artist} | Vinyl Shelf` : "Vinyl Shelf";
   }, [selectedAlbum]);
-
   function toggleCollection(id) {
-    setCollection((current) => ({ ...current, [id]: !current[id] }));
+    if (getPressing(id).available) setCollection((current) => ({ ...current, [id]: !current[id] }));
   }
-
   function toggleWishlist(id) {
-    setWishlist((current) => ({ ...current, [id]: !current[id] }));
+    if (getPressing(id).available) setWishlist((current) => ({ ...current, [id]: !current[id] }));
   }
-
+  function toggleSaved(id) { setSavedAlbums((current) => ({ ...current, [id]: !current[id] })); }
   function saveStory(id, text) {
     const next = { ...stories, [id]: text };
-    try {
-      localStorage.setItem("vinyl-shelf-stories", JSON.stringify(next));
-      setStories(next);
-      return true;
-    } catch {
-      return false;
-    }
+    try { localStorage.setItem("vinyl-shelf-stories", JSON.stringify(next)); setStories(next); return true; }
+    catch { return false; }
   }
+  function resetFilters() { setSearch(""); setFilter("all"); setArtist("all"); setSort("catalogue"); }
 
-  function resetFilters() {
-    setSearch("");
-    setFilter("all");
-    setArtist("all");
-  }
-
-  const saveWarning = saveError && (
-    <p className="save-warning" role="alert">
-      Your browser could not save these changes. They may reset after refreshing.
-    </p>
-  );
-
-  if (albumId) {
-    if (!selectedAlbum) {
-      return <main><h1>Record not found</h1><a className="back-link" href="#/">Back to shelf</a></main>;
-    }
-    return (
-      <AlbumPage
-        key={selectedAlbum.id}
-        album={selectedAlbum}
-        tracks={tracklists[selectedAlbum.id] || []}
-        isCollected={collection[selectedAlbum.id]}
-        isWishlisted={wishlist[selectedAlbum.id]}
-        onToggleCollection={() => toggleCollection(selectedAlbum.id)}
-        onToggleWishlist={() => toggleWishlist(selectedAlbum.id)}
-        story={stories[selectedAlbum.id] || ""}
-        onSaveStory={(text) => saveStory(selectedAlbum.id, text)}
-        saveWarning={saveWarning}
-      />
-    );
-  }
-
+  const saveWarning = saveError && <p className="save-warning" role="alert">Your browser could not save these changes. They may reset after refreshing.</p>;
   const query = search.trim().toLowerCase();
   const visibleAlbums = albums.filter((album) => {
-    const matchesSearch = `${album.title} ${album.artist}`.toLowerCase().includes(query);
-    const matchesArtist = artist === "all" || album.artist === artist;
-    const matchesFilter = filter === "all"
-      || (filter === "collected" && collection[album.id])
-      || (filter === "wishlist" && wishlist[album.id]);
-    return matchesSearch && matchesArtist && matchesFilter;
+    const vinyl = getPressing(album.id).available;
+    const matchesPage = route.page === "explore" || (route.page === "home" && vinyl)
+      || (route.page === "collection" && vinyl && collection[album.id])
+      || (route.page === "wishlist" && vinyl && wishlist[album.id]);
+    const matchesFilter = filter === "all" || (filter === "vinyl" && vinyl) || (filter === "saved" && savedAlbums[album.id]);
+    return matchesPage && matchesFilter && (artist === "all" || album.artist === artist)
+      && `${album.title} ${album.artist}`.toLowerCase().includes(query);
   });
-
   if (sort === "newest") visibleAlbums.sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
   if (sort === "oldest") visibleAlbums.sort((a, b) => a.year - b.year || a.title.localeCompare(b.title));
   if (sort === "title") visibleAlbums.sort((a, b) => a.title.localeCompare(b.title));
+  const copy = pageCopy[route.page] || pageCopy.home;
 
   return (
-    <main>
-      <header className="shelf-header">
-        <div>
-          <p className="eyebrow">YOUR MUSIC. YOUR SHELF.</p>
-          <h1>My Vinyl Shelf</h1>
-          <p className="shelf-description">A home for my record collection.</p>
-        </div>
-      </header>
-
-      <section className="shelf-controls" aria-label="Find records">
-        <div className="search-field">
-          <label htmlFor="record-search">Search your shelf</label>
-          <input
-            id="record-search"
-            type="search"
-            placeholder="Album or artist..."
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-          />
-        </div>
-        <div className="select-field">
-          <label htmlFor="artist-filter">Artist</label>
-          <select id="artist-filter" value={artist} onChange={(event) => setArtist(event.target.value)}>
-            <option value="all">All artists</option>
-            {artists.map((name) => <option key={name} value={name}>{name}</option>)}
-          </select>
-        </div>
-        <div className="select-field">
-          <label htmlFor="record-sort">Sort by</label>
-          <select id="record-sort" value={sort} onChange={(event) => setSort(event.target.value)}>
-            <option value="catalogue">Shelf order</option>
-            <option value="newest">Newest year</option>
-            <option value="oldest">Oldest year</option>
-            <option value="title">Album A-Z</option>
-          </select>
-        </div>
-      </section>
-
-      <div className="shelf-tabs">
-        <div className="filter-buttons" role="group" aria-label="Filter records">
-          <button aria-pressed={filter === "all"} onClick={() => setFilter("all")}>All records</button>
-          <button aria-pressed={filter === "collected"} onClick={() => setFilter("collected")}>My collection</button>
-          <button aria-pressed={filter === "wishlist"} onClick={() => setFilter("wishlist")}>Wishlist</button>
-        </div>
-        {(search || artist !== "all" || filter !== "all") && (
-          <button className="text-button" onClick={resetFilters}>Clear filters</button>
-        )}
-      </div>
-
-      {saveWarning}
-      <p className="results-count" role="status">Showing {visibleAlbums.length} of {albums.length} records</p>
-      <div className="record-grid">
-        {visibleAlbums.map((album) => (
-          <RecordCard
-            key={album.id}
-            {...album}
-            isCollected={collection[album.id]}
-            isWishlisted={wishlist[album.id]}
-            hasStory={Boolean(stories[album.id]?.trim())}
-            onToggle={() => toggleCollection(album.id)}
-            onToggleWishlist={() => toggleWishlist(album.id)}
-          />
-        ))}
-      </div>
-
-      {visibleAlbums.length === 0 && (
-        <div className="empty-shelf">
-          <h2>{query || artist !== "all" ? "No matching records" : filter === "wishlist" ? "Your next finds belong here" : "Your collection starts here"}</h2>
-          <p>Try different filters, or browse all records to find something for your shelf.</p>
-          <button onClick={resetFilters}>Show all records</button>
-        </div>
+    <>
+      <div className="ambient-background" aria-hidden="true"><span /><span /><span /></div>
+      <a className="skip-link" href="#main-content" onClick={(event) => { event.preventDefault(); document.getElementById("main-content")?.focus(); }}>Skip to content</a>
+      <header className="site-header"><div className="nav-inner">
+        <a className="wordmark" href="#/" aria-label="Vinyl Shelf home"><span className="brand-record" aria-hidden="true" />shelf<span className="brand-dot">.</span></a>
+        <nav aria-label="Main navigation">
+          {[["home", "Home", "#/"], ["explore", "Explore", "#/explore"], ["collection", "My collection", "#/collection"], ["wishlist", "Wishlist", "#/wishlist"]].map(([page, label, href]) => <a key={page} href={href} aria-current={route.page === page ? "page" : undefined}>{label}</a>)}
+        </nav>
+        <button className="login-button" onClick={() => setLoginOpen(true)}>Log in <span aria-hidden="true">↗</span></button>
+      </div></header>
+      {route.page === "album" ? (
+        selectedAlbum ? <AlbumPage
+          key={selectedAlbum.id} album={selectedAlbum} tracks={tracklists[selectedAlbum.id] || []}
+          isCollected={collection[selectedAlbum.id]} isWishlisted={wishlist[selectedAlbum.id]}
+          isSaved={savedAlbums[selectedAlbum.id]} onToggleSaved={() => toggleSaved(selectedAlbum.id)}
+          onToggleCollection={() => toggleCollection(selectedAlbum.id)} onToggleWishlist={() => toggleWishlist(selectedAlbum.id)}
+          story={stories[selectedAlbum.id] || ""} onSaveStory={(text) => saveStory(selectedAlbum.id, text)} saveWarning={saveWarning}
+        /> : <main id="main-content" tabIndex="-1"><h1>Record not found</h1><a className="back-link" href="#/">Back to shelf</a></main>
+      ) : (
+        <main id="main-content" className={`shelf-page page-${route.page}`} tabIndex="-1">
+          <header className="shelf-header"><div><p className="eyebrow">{copy[0]}</p><h1>{copy[1]}</h1><p className="shelf-description">{copy[2]}</p></div>{route.page === "home" && <a className="browse-link" href="#/explore">Explore all albums <span aria-hidden="true">↗</span></a>}</header>
+          {route.page === "explore" && <section className="browse-controls" aria-label="Find albums">
+            <div className="shelf-controls">
+              <div className="search-field"><label htmlFor="record-search">Search albums</label><input id="record-search" type="search" placeholder="An album, an artist, a new obsession…" value={search} onChange={(event) => setSearch(event.target.value)} /></div>
+              <div className="select-field"><label htmlFor="artist-filter">Artist</label><select id="artist-filter" value={artist} onChange={(event) => setArtist(event.target.value)}><option value="all">All artists</option>{artists.map((name) => <option key={name}>{name}</option>)}</select></div>
+              <div className="select-field"><label htmlFor="record-sort">Sort by</label><select id="record-sort" value={sort} onChange={(event) => setSort(event.target.value)}><option value="catalogue">Shelf order</option><option value="newest">Newest year</option><option value="oldest">Oldest year</option><option value="title">Album A–Z</option></select></div>
+            </div>
+            <div className="shelf-tabs"><div className="filter-buttons" role="group" aria-label="Filter albums">{[["all", "All albums"], ["vinyl", "On vinyl"], ["saved", "Saved albums"]].map(([value, label]) => <button key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{label}</button>)}</div>{(search || artist !== "all" || filter !== "all" || sort !== "catalogue") && <button className="text-button" onClick={resetFilters}>Clear filters</button>}</div>
+          </section>}
+          {saveWarning}
+          <section className="record-grid" aria-label={route.page === "explore" ? "Album gallery" : "Vinyl gallery"}>{visibleAlbums.map((album) => <RecordCard key={album.id} {...album} />)}</section>
+          {!visibleAlbums.length && <div className="empty-shelf"><p className="eyebrow">ROOM FOR SOMETHING GOOD</p><h2>{route.page === "collection" ? "Your collection starts here." : route.page === "wishlist" ? "Dream a little. Dig a little." : "Nothing here just yet."}</h2><p>{route.page === "explore" ? "Try another search, or save an album from its page." : "Open an album to add a record to your shelf."}</p>{route.page === "explore" ? <button className="collection-button" onClick={resetFilters}>Show all albums</button> : <a className="primary-link" href="#/explore">Explore albums ↗</a>}</div>}
+        </main>
       )}
-    </main>
+      <footer className="site-footer"><a className="footer-brand" href="#/">shelf.</a><p>Keep what moves you.</p><span>For the love of the record.</span></footer>
+      {loginOpen && <LoginDialog onClose={() => setLoginOpen(false)} />}
+    </>
   );
 }
