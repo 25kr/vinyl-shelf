@@ -89,7 +89,7 @@ export default function App() {
     const matchesFilter = filter === "all" || (filter === "vinyl" && vinyl);
     const albumGenres = album.genres || [];
     const matchesGenre = genre === "all" || albumGenres.includes(genre);
-    const searchable = normaliseSearch(`${album.title} ${album.artist} ${albumGenres.join(" ")} ${albumGenres.join(" ").replace(/[-/]/g, "")}`);
+    const searchable = normaliseSearch(`${album.title} ${album.artist} ${album.artist.replace(/\$/g, "s").replace(/[^\p{L}\p{N}]/gu, "")} ${albumGenres.join(" ")} ${albumGenres.join(" ").replace(/[-/]/g, "")}`);
     return matchesPage && matchesFilter && matchesGenre && searchWords.every((word) => searchable.includes(word));
   });
   if (sort === "newest") visibleAlbums.sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));

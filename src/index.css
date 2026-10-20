@@ -260,3 +260,15 @@ input::placeholder, textarea::placeholder { color: #72786d; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Colours from the documented vinyl editions in the catalogue. */
+.vinyl-yellow .vinyl-disc { --disc-base: #dbe62b; }
+.vinyl-yellow .pressing-swatch { background: #dbe62b; }
+.vinyl-pink .vinyl-disc { --disc-base: #edbdd1; }
+.vinyl-pink .pressing-swatch { background: #edbdd1; }
+.vinyl-green .vinyl-disc { --disc-base: #30664b; }
+.vinyl-green .pressing-swatch { background: #30664b; }
+.vinyl-red .vinyl-disc { --disc-base: #c5433c; }
+.vinyl-red .pressing-swatch { background: #c5433c; }
+.vinyl-white .vinyl-disc { --disc-base: #e8e5de; }
+.vinyl-white .pressing-swatch { background: #e8e5de; }

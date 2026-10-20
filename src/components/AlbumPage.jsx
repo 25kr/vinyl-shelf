@@ -30,7 +30,7 @@ export default function AlbumPage({ album, tracks, isCollected, isWishlisted, is
           <div className={`pressing-info vinyl-${pressing.colour}`}>
             <p className="pressing-name"><span className="pressing-swatch" aria-hidden="true" />{pressing.label}</p>
             <p className="pressing-note">{pressing.note}</p>
-            {pressing.source && <a className="pressing-source" href={pressing.source} target="_blank" rel="noreferrer">{pressing.verified ? "View this edition" : "View artist's vinyl listing"} ↗</a>}
+            {pressing.source && <a className="pressing-source" href={pressing.source} target="_blank" rel="noreferrer">{pressing.verified ? "View this edition" : "View vinyl release"} ↗</a>}
           </div>
           {pressing.available && <span className="collection-badge">{isCollected ? "In my collection" : "Not collected yet"}</span>}
           <div className="album-buttons">
