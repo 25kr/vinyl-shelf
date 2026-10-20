@@ -15,7 +15,7 @@ export default function RecordSleeve({ id, title, artist, cover }) {
     <span className={`record-sleeve vinyl-${pressing.colour}${pressing.available ? " has-vinyl" : " sleeve-only"}`}>
       {pressing.available && <span className="vinyl-record" aria-hidden="true">
         <span className={`vinyl-disc${pressing.artwork ? " has-photo" : ""}${pressing.mode === "disc" ? " is-photographed-disc" : ""}`}>
-          {pressing.mode === "disc" ? <VinylPhoto pressing={pressing} /> : <span className="vinyl-label">{pressing.artwork && <VinylPhoto pressing={pressing} />}</span>}
+          {pressing.mode === "disc" ? <VinylPhoto pressing={pressing} /> : <span className={pressing.preservePhotoHole ? "vinyl-label preserve-photo-hole" : "vinyl-label"}>{pressing.artwork && <VinylPhoto pressing={pressing} />}</span>}
         </span>
       </span>}
       <img className="record-cover" src={cover} alt={`${title} album cover by ${artist}`} loading="lazy" width="600" height="600" />

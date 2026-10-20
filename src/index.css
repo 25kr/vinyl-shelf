@@ -286,3 +286,6 @@ input::placeholder, textarea::placeholder { color: #72786d; }
 .vinyl-orange .pressing-swatch { background: #d18720; }
 .vinyl-purple .pressing-swatch { background: #714b88; }
 .vinyl-blue .pressing-swatch { background: #4caac5; }
+
+/* Keep the photographed spindle hole instead of drawing a second one. */
+.preserve-photo-hole::after { display: none; }

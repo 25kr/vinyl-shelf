@@ -2,46 +2,50 @@
   "2hollis-star": {
     "file": "2hollis-star.png",
     "crop": [
-      58,
-      17,
-      14,
-      14
+      61,
+      17.71,
+      14.29,
+      14.29
     ],
     "source": "https://shop.2hollis.life/products/star-2025-vinyl",
-    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/Star.png?v=1786385486"
+    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/Star.png?v=1786385486",
+    "preservePhotoHole": true
   },
   "2hollis-boy": {
     "file": "2hollis-boy.png",
     "crop": [
-      58,
-      17,
-      14,
-      14
+      59.07,
+      18,
+      14.57,
+      14.57
     ],
     "source": "https://shop.2hollis.life/products/boy-2024-vinyl",
-    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/Boy.png?v=1786385510"
+    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/Boy.png?v=1786385510",
+    "preservePhotoHole": true
   },
   "2hollis-2": {
     "file": "2hollis-2.png",
     "crop": [
-      58,
-      17,
-      14,
-      14
+      58.36,
+      17.64,
+      14.43,
+      14.43
     ],
     "source": "https://shop.2hollis.life/products/2-2023-vinyl",
-    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/2.png?v=1786385446"
+    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/2.png?v=1786385446",
+    "preservePhotoHole": true
   },
   "2hollis-white_tiger": {
     "file": "2hollis-white_tiger.png",
     "crop": [
-      58,
-      17,
-      14,
-      14
+      58.64,
+      17.64,
+      16.29,
+      16.29
     ],
     "source": "https://shop.2hollis.life/products/white-tiger-2022-vinyl",
-    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/WhiteTiger.png?v=1786385540"
+    "photoSource": "https://cdn.shopify.com/s/files/1/0623/4223/4182/files/WhiteTiger.png?v=1786385540",
+    "preservePhotoHole": true
   },
   "fakemink-terrified": {
     "file": "fakemink-terrified.png",
@@ -408,13 +412,14 @@
   "lana-del-rey-ocean-blvd": {
     "file": "lana-del-rey-ocean-blvd.png",
     "crop": [
-      52.5,
-      40.5,
-      19,
-      19
+      50.6,
+      42.6,
+      16,
+      16
     ],
     "source": "https://shoplanadelrey.com/products/did-you-know-that-there-s-a-tunnel-under-ocean-blvd-exclusive-white-vinyl",
-    "photoSource": "https://cdn.shopify.com/s/files/1/1828/6307/products/LDREXCLUWHITELP-UPDATED.png?v=1670361173"
+    "photoSource": "https://cdn.shopify.com/s/files/1/1828/6307/products/LDREXCLUWHITELP-UPDATED.png?v=1670361173",
+    "preservePhotoHole": true
   },
   "deftones-white-pony": {
     "file": "deftones-white-pony-label.jpg",
