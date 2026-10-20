@@ -1,9 +1,11 @@
 // Released album catalogue checked against Apple Music on 19 October 2026.
 // The Boy who cried Terrified is an EP, included in Apple Music's Albums section.
 // Pirouette is upcoming (11 November 2026), so it is not included yet.
+// Genre labels follow each album's linked Apple Music listing (20 October 2026).
 const albums = [
   {
     id: "2hollis-star",
+    genres: ["Pop"],
     title: "star",
     artist: "2hollis",
     year: 2025,
@@ -13,6 +15,7 @@ const albums = [
   },
   {
     id: "2hollis-boy",
+    genres: ["Pop"],
     title: "boy",
     artist: "2hollis",
     year: 2024,
@@ -22,6 +25,7 @@ const albums = [
   },
   {
     id: "2hollis-2",
+    genres: ["Electronic"],
     title: "2",
     artist: "2hollis",
     year: 2023,
@@ -31,6 +35,7 @@ const albums = [
   },
   {
     id: "2hollis-white_tiger",
+    genres: ["Alternative"],
     title: "White Tiger",
     artist: "2hollis",
     year: 2022,
@@ -40,6 +45,7 @@ const albums = [
   },
   {
     id: "fakemink-terrified",
+    genres: ["Hip-Hop/Rap"],
     title: "Terrified .",
     artist: "fakemink",
     year: 2026,
@@ -49,6 +55,7 @@ const albums = [
   },
   {
     id: "fakemink-the-boy-who-cried-terrified",
+    genres: ["Hip-Hop/Rap"],
     title: "The Boy who cried Terrified .",
     artist: "fakemink",
     year: 2026,
@@ -58,6 +65,7 @@ const albums = [
   },
   {
     id: "fakemink-londons-saviour",
+    genres: ["Hip-Hop/Rap"],
     title: "London's Saviour",
     artist: "fakemink",
     year: 2023,

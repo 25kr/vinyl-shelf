@@ -31,6 +31,7 @@ export default function AlbumPage({ album, tracks, isCollected, isWishlisted, is
           <h1>{album.title}</h1>
           <p className="album-artist">{album.artist}</p>
           <p className="album-runtime">{tracks.length} tracks &middot; {duration} min</p>
+          <div className="genre-tags" role="group" aria-label="Album genres">{(album.genres || []).map((genre) => <span key={genre}>{genre}</span>)}</div>
           <div className={`pressing-info vinyl-${pressing.colour}`}>
             <p className="pressing-name"><span className="pressing-swatch" aria-hidden="true" />{pressing.label}</p>
             <p className="pressing-note">{pressing.note}</p>
@@ -66,7 +67,7 @@ export default function AlbumPage({ album, tracks, isCollected, isWishlisted, is
               ))}
             </tbody>
           </table>
-          <a className="source-link" href={album.source} target="_blank" rel="noreferrer">Track information from Apple Music ↗</a>
+          <a className="source-link" href={album.source} target="_blank" rel="noreferrer">Album and track information from Apple Music ↗</a>
         </section>
         <section className="story-section" aria-labelledby="story-heading">
           <p className="eyebrow">MORE THAN A RECORD</p>

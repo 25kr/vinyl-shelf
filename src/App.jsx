@@ -28,7 +28,12 @@ function readRoute() {
   const page = hash.slice(2);
   return { page: ["explore", "collection", "wishlist"].includes(page) ? page : "home" };
 }
-const artists = [...new Set(albums.map((album) => album.artist))];
+const genres = [...new Set(albums.flatMap((album) => album.genres || []))].sort();
+
+function normaliseSearch(text) {
+  return text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+}
+
 const pageCopy = {
   home: ["THE LISTENING ROOM", "A place for your records.", "Old favourites. New discoveries. A shelf that feels like you."],
   explore: ["FOLLOW YOUR CURIOSITY", "Find your next favourite.", "Explore the music. Keep the albums that stay with you."],
@@ -44,14 +49,14 @@ export default function App() {
   const [route, setRoute] = useState(readRoute);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
-  const [artist, setArtist] = useState("all");
+  const [genre, setGenre] = useState("all");
   const [sort, setSort] = useState("catalogue");
   const [saveError, setSaveError] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
 
   useEffect(() => {
     function handleNavigation() {
-      setRoute(readRoute()); setSearch(""); setArtist("all"); setFilter("all"); setSort("catalogue");
+      setRoute(readRoute()); setSearch(""); setFilter("all"); setGenre("all"); setSort("catalogue");
       window.scrollTo(0, 0);
     }
     window.addEventListener("hashchange", handleNavigation);
@@ -84,18 +89,20 @@ export default function App() {
     try { localStorage.setItem("vinyl-shelf-stories", JSON.stringify(next)); setStories(next); return true; }
     catch { return false; }
   }
-  function resetFilters() { setSearch(""); setFilter("all"); setArtist("all"); setSort("catalogue"); }
+  function resetFilters() { setSearch(""); setFilter("all"); setGenre("all"); setSort("catalogue"); }
 
   const saveWarning = saveError && <p className="save-warning" role="alert">Your browser could not save these changes. They may reset after refreshing.</p>;
-  const query = search.trim().toLowerCase();
+  const searchWords = normaliseSearch(search).split(/\s+/).filter(Boolean);
   const visibleAlbums = albums.filter((album) => {
     const vinyl = getPressing(album.id).available;
     const matchesPage = route.page === "explore" || (route.page === "home" && vinyl)
       || (route.page === "collection" && vinyl && collection[album.id])
       || (route.page === "wishlist" && vinyl && wishlist[album.id]);
-    const matchesFilter = filter === "all" || (filter === "vinyl" && vinyl) || (filter === "saved" && savedAlbums[album.id]);
-    return matchesPage && matchesFilter && (artist === "all" || album.artist === artist)
-      && `${album.title} ${album.artist}`.toLowerCase().includes(query);
+    const matchesFilter = filter === "all" || (filter === "vinyl" && vinyl);
+    const albumGenres = album.genres || [];
+    const matchesGenre = genre === "all" || albumGenres.includes(genre);
+    const searchable = normaliseSearch(`${album.title} ${album.artist} ${albumGenres.join(" ")} ${albumGenres.join(" ").replace(/[-/]/g, "")}`);
+    return matchesPage && matchesFilter && matchesGenre && searchWords.every((word) => searchable.includes(word));
   });
   if (sort === "newest") visibleAlbums.sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
   if (sort === "oldest") visibleAlbums.sort((a, b) => a.year - b.year || a.title.localeCompare(b.title));
@@ -126,11 +133,11 @@ export default function App() {
           <header className="shelf-header"><div><p className="eyebrow">{copy[0]}</p><h1>{copy[1]}</h1><p className="shelf-description">{copy[2]}</p></div>{route.page === "home" && <a className="browse-link" href="#/explore">Explore all albums <span aria-hidden="true">↗</span></a>}</header>
           {route.page === "explore" && <section className="browse-controls" aria-label="Find albums">
             <div className="shelf-controls">
-              <div className="search-field"><label htmlFor="record-search">Search albums</label><input id="record-search" type="search" placeholder="An album, an artist, a new obsession…" value={search} onChange={(event) => setSearch(event.target.value)} /></div>
-              <div className="select-field"><label htmlFor="artist-filter">Artist</label><select id="artist-filter" value={artist} onChange={(event) => setArtist(event.target.value)}><option value="all">All artists</option>{artists.map((name) => <option key={name}>{name}</option>)}</select></div>
+              <div className="search-field"><label htmlFor="record-search">Search albums</label><input id="record-search" type="search" placeholder="Album, artist or genre…" value={search} onChange={(event) => setSearch(event.target.value)} /></div>
+              <div className="select-field"><label htmlFor="genre-filter">Genre</label><select id="genre-filter" value={genre} onChange={(event) => setGenre(event.target.value)}><option value="all">All genres</option>{genres.map((name) => <option key={name}>{name}</option>)}</select></div>
               <div className="select-field"><label htmlFor="record-sort">Sort by</label><select id="record-sort" value={sort} onChange={(event) => setSort(event.target.value)}><option value="catalogue">Shelf order</option><option value="newest">Newest year</option><option value="oldest">Oldest year</option><option value="title">Album A–Z</option></select></div>
             </div>
-            <div className="shelf-tabs"><div className="filter-buttons" role="group" aria-label="Filter albums">{[["all", "All albums"], ["vinyl", "On vinyl"], ["saved", "Saved albums"]].map(([value, label]) => <button key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{label}</button>)}</div>{(search || artist !== "all" || filter !== "all" || sort !== "catalogue") && <button className="text-button" onClick={resetFilters}>Clear filters</button>}</div>
+            <div className="shelf-tabs"><div className="filter-buttons" role="group" aria-label="Filter albums">{[["all", "All albums"], ["vinyl", "On vinyl"]].map(([value, label]) => <button key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{label}</button>)}</div>{(search || genre !== "all" || filter !== "all" || sort !== "catalogue") && <button className="text-button" onClick={resetFilters}>Clear filters</button>}</div>
           </section>}
           {saveWarning}
           <section className="record-grid" aria-label={route.page === "explore" ? "Album gallery" : "Vinyl gallery"}>{visibleAlbums.map((album) => <RecordCard key={album.id} {...album} />)}</section>
