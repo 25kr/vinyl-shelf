@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import RecordCard from "./components/RecordCard";
 import AlbumPage from "./components/AlbumPage";
 import LoginDialog from "./components/LoginDialog";
+import ListeningDiary from "./components/ListeningDiary";
 import albums from "./data/albums";
 import { getPressing } from "./data/pressings";
 import tracklists from "./data/tracklists.json";
@@ -19,7 +20,7 @@ function readRoute() {
     catch { return { page: "album", id: "unknown" }; }
   }
   const page = hash.slice(2);
-  return { page: ["explore", "collection", "wishlist"].includes(page) ? page : "home" };
+  return { page: ["explore", "collection", "wishlist", "diary"].includes(page) ? page : "home" };
 }
 const genres = [...new Set(albums.flatMap((album) => album.genres || []))].sort();
 
@@ -103,11 +104,11 @@ export default function App() {
       <header className="site-header"><div className="nav-inner">
         <a className="wordmark" href="#/" aria-label="Vinyl Shelf home"><span className="brand-record" aria-hidden="true" />shelf<span className="brand-dot">.</span></a>
         <nav aria-label="Main navigation">
-          {[["home", "Home", "#/"], ["explore", "Explore", "#/explore"], ["collection", "My collection", "#/collection"], ["wishlist", "Wishlist", "#/wishlist"]].map(([page, label, href]) => <a key={page} href={href} aria-current={route.page === page ? "page" : undefined}>{label}</a>)}
+          {[["home", "Home", "#/"], ["explore", "Explore", "#/explore"], ["collection", "My collection", "#/collection"], ["wishlist", "Wishlist", "#/wishlist"], ["diary", "Diary", "#/diary"]].map(([page, label, href]) => <a key={page} href={href} aria-current={route.page === page ? "page" : undefined}>{label}</a>)}
         </nav>
         <button className="login-button" onClick={() => setLoginOpen(true)}>Log in <span aria-hidden="true">↗</span></button>
       </div></header>
-      {route.page === "album" ? (
+      {route.page === "diary" ? <ListeningDiary albums={albums} tracklists={tracklists} /> : route.page === "album" ? (
         selectedAlbum ? <AlbumPage
           key={selectedAlbum.id} album={selectedAlbum} tracks={tracklists[selectedAlbum.id] || []}
           isCollected={collection[selectedAlbum.id]} isWishlisted={wishlist[selectedAlbum.id]}
