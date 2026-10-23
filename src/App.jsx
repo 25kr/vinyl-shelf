@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import RecordCard from "./components/RecordCard";
+import RecordSleeve from "./components/RecordSleeve";
 import AlbumPage from "./components/AlbumPage";
 import LoginDialog from "./components/LoginDialog";
 import ListeningDiary from "./components/ListeningDiary";
@@ -29,9 +30,23 @@ function normaliseSearch(text) {
   return text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 }
 
-const pageTitles = { home: "The shelf", explore: "Explore", collection: "My collection", wishlist: "Wishlist" };
+const pageTitles = { home: "The record wall", explore: "Explore", collection: "My collection", wishlist: "Wishlist" };
+
+function pickFeaturedRecord() {
+  const vinyls = albums.filter(album => getPressing(album.id).available);
+  let previousId;
+  try { previousId = sessionStorage.getItem("vinyl-shelf-featured-record"); } catch { /* Browser storage is optional. */ }
+  const choices = vinyls.filter(album => album.id !== previousId);
+  const pool = choices.length ? choices : vinyls;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
 
 export default function App() {
+  // Choose once per page load, so normal interactions never change the feature.
+  const [featuredRecord] = useState(pickFeaturedRecord);
+  useEffect(() => {
+    try { if (featuredRecord) sessionStorage.setItem("vinyl-shelf-featured-record", featuredRecord.id); } catch { /* Browser storage is optional. */ }
+  }, [featuredRecord]);
   const [collection, setCollection] = useState(() => readFlags("collection"));
   const [wishlist, setWishlist] = useState(() => readFlags("wishlist"));
   const [savedAlbums, setSavedAlbums] = useState(() => readFlags("saved"));
@@ -123,6 +138,10 @@ export default function App() {
         /> : <main id="main-content" tabIndex="-1"><h1>Record not found</h1><a className="back-link" href="#/">Back to shelf</a></main>
       ) : (
         <main id="main-content" className={`shelf-page page-${route.page}`} tabIndex="-1">
+          {route.page === "home" && <section className="home-feature" aria-labelledby="home-feature-title">
+            <div className="home-feature-copy"><span className="feature-kicker"><span className="live-dot" /> SIDE A / DISCOVER</span><h2 id="home-feature-title">Good records.<br />Great company.</h2><p>Find your next favourite. Make it part of your shelf.</p><a className="feature-link" href="#/explore">Explore records <span aria-hidden="true">↗</span></a></div>
+            {featuredRecord && <a className="feature-record record-artwork" href={`#/album/${encodeURIComponent(featuredRecord.id)}`} aria-label={`Discover ${featuredRecord.title} by ${featuredRecord.artist}`}><RecordSleeve id={featuredRecord.id} title={featuredRecord.title} artist={featuredRecord.artist} cover={featuredRecord.cover} /></a>}
+          </section>}
           <header className="shelf-header compact-page-bar"><h1>{pageTitle}</h1>{route.page === "home" && <a className="browse-link" href="#/explore">Explore all albums <span aria-hidden="true">↗</span></a>}</header>
           {route.page === "explore" && <section className="browse-controls" aria-label="Find albums">
             <div className="shelf-controls">
