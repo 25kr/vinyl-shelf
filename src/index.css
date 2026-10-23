@@ -414,3 +414,32 @@ main { padding-top: 28px; padding-bottom: 60px; }
   .diary-dialog[open] { animation: none; }
 }
 .diary-dialog .diary-repeat > span:last-child { margin-left: 0; color: var(--ink); font-size: 12px; }
+
+/* One diary feed, with a dedicated page for writing. */
+.diary-preview-note { color: var(--muted); font-size: 11px; line-height: 1.7; margin: -6px 0 16px; }
+.demo-review-badge { display: inline-block; margin-left: 9px; background: #f0eadd; color: #796846; border-radius: 20px; padding: 3px 7px; font-size: 9px; font-weight: 400; }
+.diary-composer-page { max-width: 620px; margin: 0 auto; padding: 28px; background: #fffef9ed; border: 1px solid var(--line); border-radius: 16px; }
+.diary-composer-page .back-link { margin-bottom: 24px; font-size: 12px; }
+.diary-composer-page h1 { font-size: 28px; margin: 0; letter-spacing: -.6px; }
+.diary-composer-page .diary-repeat > span:last-child { margin-left: 0; color: var(--ink); font-size: 12px; }
+.diary-composer-page .star-option.is-selected { color: #365e48; }
+.diary-composer-page input, .diary-composer-page select, .diary-composer-page textarea { background: #fffef9; }
+.review-arriving { animation: review-flight 1050ms cubic-bezier(.2,.75,.2,1) both; position: relative; z-index: 1; }
+.review-arriving:focus { outline: none; }
+@keyframes review-flight {
+  0% { opacity: 0; transform: translate(100px, 170px) rotate(7deg) scale(.78); box-shadow: 0 28px 70px #283c3230; }
+  25% { opacity: 1; }
+  75% { transform: translate(-5px, -6px) rotate(-.5deg) scale(1.01); }
+  100% { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); box-shadow: 0 3px 10px #27352204; }
+}
+@media(max-width:700px) {
+  .diary-composer-page { padding: 20px 18px; }
+  .diary-composer-page h1 { font-size: 24px; }
+  @keyframes review-flight {
+    0% { opacity: 0; transform: translate(0, 100px) rotate(4deg) scale(.85); }
+    30% { opacity: 1; }
+    80% { transform: translateY(-5px) scale(1.01); }
+    100% { opacity: 1; transform: none; }
+  }
+}
+@media(prefers-reduced-motion:reduce) { .review-arriving { animation: none; } }
