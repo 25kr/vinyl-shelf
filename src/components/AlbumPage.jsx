@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { getPressing } from "../data/pressings";
-import ReviewSection from "./ReviewSection";
 
 function formatDuration(milliseconds) {
   if (!Number.isFinite(milliseconds)) return "—";
@@ -10,7 +8,6 @@ function formatDuration(milliseconds) {
 
 export default function AlbumPage({ backPage = "home", album, tracks, isCollected, isWishlisted, isSaved, onToggleSaved, onToggleCollection, onToggleWishlist, saveWarning }) {
   const pressing = getPressing(album.id);
-  const [reviewTarget, setReviewTarget] = useState("album");
   const discGroups = Object.entries(Object.groupBy(tracks, track => track.disc || 1));
   const duration = Math.round(tracks.reduce((total, track) => total + (track.durationMs || 0), 0) / 60000);
 
@@ -43,12 +40,11 @@ export default function AlbumPage({ backPage = "home", album, tracks, isCollecte
               {isWishlisted ? "On my wishlist" : "Add to wishlist"}
             </button>
             </> : <button className="collection-button" aria-pressed={Boolean(isSaved)} onClick={onToggleSaved}>{isSaved ? "Remove saved album" : "Save album"}</button>}
-            <button className="wishlist-button" onClick={() => { setReviewTarget("album"); document.getElementById("review-target")?.focus(); }}>Write a review ↓</button>
           </div>
         </div>
       </header>
       {saveWarning}
-      <div className="album-content">
+      <div className="album-content album-content-tracks">
         <section className="track-section" aria-labelledby="tracklist-heading">
           <h2 id="tracklist-heading">Track list</h2>
           <table className="track-table">
@@ -59,10 +55,7 @@ export default function AlbumPage({ backPage = "home", album, tracks, isCollecte
               {discTracks.map((track) => (
                 <tr key={`${track.disc}-${track.number}`}>
                   <td>{track.number}</td>
-                  <td><button className="track-review-button" aria-label={`Review ${track.title}`} onClick={() => {
-                    setReviewTarget(`${track.disc}-${track.number}`);
-                    document.getElementById("review-target")?.focus();
-                  }}>{track.title}<span aria-hidden="true">Review ↗</span></button></td>
+                  <td>{track.title}</td>
                   <td>{formatDuration(track.durationMs)}</td>
                 </tr>
               ))}
@@ -70,7 +63,6 @@ export default function AlbumPage({ backPage = "home", album, tracks, isCollecte
           </table>
           <a className="source-link" href={album.source} target="_blank" rel="noreferrer">Album and track information from Apple Music ↗</a>
         </section>
-        <ReviewSection album={album} tracks={tracks} target={reviewTarget} onTargetChange={setReviewTarget} />
       </div>
     </main>
   );

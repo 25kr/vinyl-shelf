@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const storageKey = "vinyl-shelf-listening-diary";
 function dateValue(date = new Date()) {
@@ -29,6 +29,16 @@ export default function ListeningDiary({ albums, tracklists }) {
   const [target, setTarget] = useState("album");
   const [date, setDate] = useState(dateValue);
   const [note, setNote] = useState("");
+  const [rating, setRating] = useState(0);
+  const [feed, setFeed] = useState("mine");
+  const [composerOpen, setComposerOpen] = useState(false);
+  // Keep older album-page reviews visible without guessing a listening date.
+  const [earlierReviews] = useState(() => albums.flatMap(album => {
+    try {
+      const reviews = JSON.parse(localStorage.getItem(`vinyl-shelf-reviews:${album.id}`) || "[]");
+      return Array.isArray(reviews) ? reviews.filter(review => review && typeof review.id === "string" && typeof review.text === "string" && Number.isInteger(review.rating) && review.rating >= 1 && review.rating <= 5).map(review => ({ ...review, album })) : [];
+    } catch { return []; }
+  }));
   const [repeat, setRepeat] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
@@ -38,7 +48,7 @@ export default function ListeningDiary({ albums, tracklists }) {
   const tracks = tracklists[albumId] || [];
   const multipleDiscs = new Set(tracks.map(track => track.disc)).size > 1;
   const sortedEntries = [...stored.entries].sort((a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt));
-  const months = Object.groupBy(sortedEntries, (entry) => entry.date.slice(0, 7));
+
 
   function save(entries) {
     try {
@@ -47,20 +57,22 @@ export default function ListeningDiary({ albums, tracklists }) {
     } catch { setError("Could not save your diary. Your entry is still in the form; keep a copy and try again."); return false; }
   }
   function resetForm() {
-    setTarget("album"); setDate(dateValue()); setNote(""); setRepeat(false); setEditingId(null);
+    setTarget("album"); setDate(dateValue()); setNote(""); setRating(0); setRepeat(false); setEditingId(null);
   }
+  function startListen() { resetForm(); setError(""); setStatus(""); setComposerOpen(true); }
   function handleSubmit(event) {
     event.preventDefault(); setStatus("");
     if (!selectedAlbum || !validDate(date) || date > dateValue()) { setError("Choose an album and a valid listening date, today or earlier."); return; }
+    if (!Number.isInteger(rating) || rating < 1 || rating > 5) { setError("Choose a rating from 1 to 5 stars before logging your listen."); return; }
     const previous = stored.entries.find((entry) => entry.id === editingId);
-    const entry = { id: previous?.id || crypto.randomUUID(), albumId, target, date, note: note.trim(), repeat, createdAt: previous?.createdAt || new Date().toISOString() };
+    const entry = { id: previous?.id || crypto.randomUUID(), albumId, target, date, rating, note: note.trim(), repeat, createdAt: previous?.createdAt || new Date().toISOString() };
     const next = editingId ? stored.entries.map((item) => item.id === editingId ? entry : item) : [entry, ...stored.entries];
-    if (save(next)) { resetForm(); setStatus(editingId ? "Diary entry updated." : "Listen added to your diary."); }
+    if (save(next)) { resetForm(); setFeed("mine"); setComposerOpen(false); setStatus(editingId ? "Diary entry updated." : "Listen added to your diary."); }
   }
   function edit(entry) {
-    setAlbumId(entry.albumId); setTarget(entry.target); setDate(entry.date); setNote(entry.note); setRepeat(entry.repeat);
+    setAlbumId(entry.albumId); setTarget(entry.target); setDate(entry.date); setNote(entry.note); setRating(Number.isInteger(entry.rating) && entry.rating >= 1 && entry.rating <= 5 ? entry.rating : 0); setRepeat(entry.repeat);
     setEditingId(entry.id); setDeletingId(null); setStatus(""); setError("");
-    document.getElementById("diary-album")?.focus();
+    setComposerOpen(true);
   }
   function remove(id) {
     if (save(stored.entries.filter((entry) => entry.id !== id))) {
@@ -70,40 +82,65 @@ export default function ListeningDiary({ albums, tracklists }) {
   }
 
   return (
-    <main id="main-content" className="diary-page" tabIndex="-1">
-      <header className="shelf-header"><div><p className="eyebrow">ONE LISTEN AT A TIME</p><h1>Your listening diary.</h1><p className="shelf-description">A little record of what you played, and when.</p></div><span className="review-privacy">Private preview · Saved in this browser</span></header>
-      <div className="diary-layout">
-        <aside className="diary-composer" aria-labelledby="diary-form-heading">
-          <div className="diary-composer-heading"><img src={selectedAlbum?.cover} alt="" width="60" height="60" /><div><p className="eyebrow">ON THE RECORD</p><h2 id="diary-form-heading">{editingId ? "Edit your listen" : "Log a listen"}</h2></div></div>
-          {(error || stored.warning) && <p className="save-warning" role="alert">{error || stored.warning}</p>}
-          <p className="review-status" role="status">{status}</p>
-          <form className="diary-form" onSubmit={handleSubmit}>
-            <label htmlFor="diary-album">Album</label><select id="diary-album" value={albumId} onChange={(event) => { setAlbumId(event.target.value); setTarget("album"); }}>{albums.map((album) => <option key={album.id} value={album.id}>{album.title} · {album.artist}</option>)}</select>
-            <label htmlFor="diary-target">What did you listen to?</label><select id="diary-target" value={target} onChange={(event) => setTarget(event.target.value)}><option value="album">The full album</option>{tracks.map((track) => <option key={trackId(track)} value={trackId(track)}>{multipleDiscs ? `Disc ${track.disc} · ` : ""}{track.number}. {track.title}</option>)}</select>
-            <label htmlFor="diary-date">Listening date</label><input id="diary-date" type="date" required max={dateValue()} value={date} onChange={(event) => setDate(event.target.value)} />
-            <label className="diary-repeat" htmlFor="diary-repeat"><input id="diary-repeat" type="checkbox" checked={repeat} onChange={(event) => setRepeat(event.target.checked)} /><span>A repeat listen</span><span aria-hidden="true">↻</span></label>
-            <label htmlFor="diary-note">A little note <span className="optional-label">Optional</span></label><textarea id="diary-note" rows="3" maxLength="500" value={note} onChange={(event) => setNote(event.target.value)} placeholder="Rain outside. Headphones on. This one on repeat." />
-            <div className="review-form-actions"><button type="submit" className="collection-button">{editingId ? "Save entry" : "Log listen"}</button>{editingId && <button type="button" className="text-button" onClick={() => { resetForm(); setError(""); setStatus(""); }}>Cancel editing</button>}</div>
-          </form>
-        </aside>
-        <section className="diary-timeline" aria-labelledby="diary-timeline-heading"><div className="diary-timeline-heading"><h2 id="diary-timeline-heading">The listening log</h2><span>NEWEST FIRST</span></div>
-          {!sortedEntries.length && <div className="diary-empty"><span className="brand-record" aria-hidden="true" /><p className="eyebrow">THE FIRST PAGE IS YOURS</p><h3>What’s on the turntable?</h3><p>Log your first album or track.<br />Your listening days will unfold here.</p></div>}
-          {Object.entries(months).map(([month, entries]) => <section className="diary-month" key={month} aria-label={new Date(`${month}-01T12:00:00`).toLocaleDateString("en-GB", { month: "long", year: "numeric" })}>
-            <h3>{new Date(`${month}-01T12:00:00`).toLocaleDateString("en-GB", { month: "long", year: "numeric" })}</h3>
-            {entries.map((entry) => {
-              const album = albums.find((item) => item.id === entry.albumId);
-              const track = (tracklists[entry.albumId] || []).find((item) => trackId(item) === entry.target);
-              const listenedDate = new Date(`${entry.date}T12:00:00`);
-              return <article key={entry.id} className="diary-entry" aria-label={`Listen: ${track?.title || album.title}, ${entry.date}`}>
-                <time className="diary-day" dateTime={entry.date}><strong>{listenedDate.getDate()}</strong><span>{listenedDate.toLocaleDateString("en-GB", { weekday: "short" })}</span></time>
-                <a href={`#/album/${encodeURIComponent(album.id)}`} className="diary-cover-link" aria-label={`Open ${album.title}`}><img src={album.cover} alt="" width="72" height="72" loading="lazy" /></a>
-                <div className="diary-entry-content"><p className="diary-entry-type">{track ? "TRACK" : "ALBUM"}{entry.repeat && <span className="diary-repeat-badge">↻ Repeat listen</span>}</p><h4><a href={`#/album/${encodeURIComponent(album.id)}`}>{track?.title || album.title}</a></h4><p className="diary-entry-artist">{album.artist}{track ? ` · ${album.title}` : ""}</p>{entry.note && <p className="diary-entry-note">{entry.note}</p>}<div className="diary-entry-actions"><button type="button" className="text-button" onClick={() => edit(entry)}>Edit entry</button><button type="button" className="text-button" onClick={() => setDeletingId(entry.id)}>Delete entry</button></div>
-                {deletingId === entry.id && <div className="review-delete-confirm"><p>Delete this diary entry?</p><button type="button" className="delete-button" onClick={() => remove(entry.id)}>Delete</button><button type="button" className="text-button" onClick={() => setDeletingId(null)}>Keep entry</button></div>}</div>
-              </article>;
-            })}
-          </section>)}
-        </section>
+    <main id="main-content" className="diary-page diary-feed-page" tabIndex="-1">
+      <header className="diary-page-bar">
+        <div className="diary-title"><h1>Diary</h1><span>{stored.entries.length} {stored.entries.length === 1 ? "listen" : "listens"}</span></div>
+        <button type="button" className="diary-create-button" onClick={startListen}><span aria-hidden="true">＋</span> Log a listen</button>
+      </header>
+      <div className="diary-feed-toolbar">
+        <div className="diary-view-buttons" role="group" aria-label="Diary feed">
+          <button type="button" aria-pressed={feed === "mine"} onClick={() => setFeed("mine")}>My diary</button>
+          <button type="button" aria-pressed={feed === "community"} onClick={() => setFeed("community")}>Community</button>
+        </div>
+        <span className="diary-storage-note">Saved on this device</span>
       </div>
+      <p className="diary-feedback" role="status">{!composerOpen && status}</p>
+      {stored.warning && <p className="save-warning" role="alert">{stored.warning}</p>}
+      <section className="diary-review-feed" aria-label={feed === "mine" ? "Your listening diary" : "Community reviews"}>
+        {feed === "community" ? <div className="diary-feed-empty"><span className="brand-record" aria-hidden="true" /><h2>A little quiet here. For now.</h2><p>Discover other people’s reviews once community accounts are available.</p><span className="diary-coming-soon">Coming soon</span></div> : <>
+          {!sortedEntries.length && <div className="diary-feed-empty"><span className="brand-record" aria-hidden="true" /><h2>Your next listen starts here.</h2><p>Pick an album or a track, leave a rating, and make it part of your diary.</p></div>}
+          {sortedEntries.map(entry => {
+            const album = albums.find(item => item.id === entry.albumId);
+            const track = (tracklists[entry.albumId] || []).find(item => trackId(item) === entry.target);
+            return <article className="diary-entry review-feed-card" key={entry.id} aria-label={`Listen: ${track?.title || album.title}, ${entry.date}`}>
+              <div className="feed-reviewer"><span className="feed-avatar" aria-hidden="true">Y</span><div><strong>Your review</strong><span>{track ? "Track" : "Album"}{entry.repeat ? " · Repeat listen" : ""}</span></div><time title="Entry added" dateTime={entry.createdAt}>{new Date(entry.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</time></div>
+              <div className="feed-album"><a className="diary-cover-link" href={`#/album/${encodeURIComponent(album.id)}`} aria-label={`Open ${album.title}`}><img src={album.cover} width="64" height="64" alt="" loading="lazy" /></a><div><h2><a href={`#/album/${encodeURIComponent(album.id)}`}>{track?.title || album.title}</a></h2><p>{album.artist}{track ? ` · ${album.title}` : ""}</p></div></div>
+              <DiaryStars value={entry.rating} />
+              {entry.note && <p className="diary-entry-note">{entry.note}</p>}
+              <footer className="feed-card-footer"><span>Listened {new Date(`${entry.date}T12:00:00`).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}</span><div className="diary-entry-actions"><button type="button" onClick={() => edit(entry)}>Edit entry</button><button type="button" onClick={() => setDeletingId(entry.id)}>Delete entry</button></div></footer>
+              {deletingId === entry.id && <div className="review-delete-confirm"><p>Delete this diary entry?</p><button type="button" className="delete-button" onClick={() => remove(entry.id)}>Delete</button><button type="button" className="text-button" onClick={() => setDeletingId(null)}>Keep entry</button></div>}
+            </article>;
+          })}
+          {earlierReviews.length > 0 && <section className="diary-archive" aria-label="Earlier reviews"><h2>Earlier reviews</h2><p>Kept from your album pages. These don’t have a listening date.</p>{earlierReviews.map(review => <article className="review-feed-card diary-archived-review" key={`${review.album.id}-${review.id}`}><div className="feed-album"><a className="diary-cover-link" href={`#/album/${encodeURIComponent(review.album.id)}`}><img src={review.album.cover} alt="" width="64" height="64" loading="lazy" /></a><div><h3><a href={`#/album/${encodeURIComponent(review.album.id)}`}>{review.album.title}</a></h3><p>{review.album.artist}{review.target !== "album" ? ` · ${(tracklists[review.album.id] || []).find(track => trackId(track) === review.target)?.title || "Track review"}` : ""}</p></div></div><DiaryStars value={review.rating} /><p className="diary-entry-note">{review.text}</p>{typeof review.story === "string" && review.story && <p className="diary-entry-note">{review.story}</p>}</article>)}</section>}
+        </>}
+      </section>
+      {composerOpen && <DiaryComposer album={selectedAlbum} editing={Boolean(editingId)} onClose={() => setComposerOpen(false)}>
+        {error && <p className="save-warning" role="alert">{error}</p>}
+        <form className="diary-form" onSubmit={handleSubmit}>
+          <label htmlFor="diary-album">Album</label><select id="diary-album" autoFocus value={albumId} onChange={event => { setAlbumId(event.target.value); setTarget("album"); }}>{albums.map(album => <option key={album.id} value={album.id}>{album.title} · {album.artist}</option>)}</select>
+          <div className="diary-form-row"><div><label htmlFor="diary-target">Album or track</label><select id="diary-target" value={target} onChange={event => setTarget(event.target.value)}><option value="album">The full album</option>{tracks.map(track => <option key={trackId(track)} value={trackId(track)}>{multipleDiscs ? `Disc ${track.disc} · ` : ""}{track.number}. {track.title}</option>)}</select></div><div><label htmlFor="diary-date">Listening date</label><input id="diary-date" type="date" required max={dateValue()} value={date} onChange={event => setDate(event.target.value)} /></div></div>
+          <fieldset className="diary-rating"><legend>Your rating</legend><div className="rating-options">{[1, 2, 3, 4, 5].map(value => <label key={value} className={`star-option${value <= rating ? " is-selected" : ""}`}><input type="radio" name="diary-rating" value={value} required checked={rating === value} onChange={() => setRating(value)} aria-label={`${value} ${value === 1 ? "star" : "stars"}`} /><span aria-hidden="true">★</span></label>)}</div></fieldset>
+          <label htmlFor="diary-note">Your review <span className="optional-label">Optional</span></label><textarea id="diary-note" rows="4" maxLength="500" value={note} onChange={event => setNote(event.target.value)} placeholder="What stayed with you? Or the story of how you found it…" />
+          <label className="diary-repeat" htmlFor="diary-repeat"><input id="diary-repeat" type="checkbox" checked={repeat} onChange={event => setRepeat(event.target.checked)} /><span>I’ve listened to this before</span></label>
+          <div className="diary-dialog-actions"><span>Saved on this device</span><button type="submit" className="diary-create-button">{editingId ? "Save entry" : "Log listen"}</button></div>
+        </form>
+      </DiaryComposer>}
     </main>
   );
+}
+
+function DiaryStars({ value }) {
+  const valid = Number.isInteger(value) && value >= 1 && value <= 5;
+  return <div className="diary-entry-rating feed-rating" role="img" aria-label={valid ? `${value} out of 5 stars` : "Not rated"}>{valid ? [1, 2, 3, 4, 5].map(star => <span key={star} className={star <= value ? "rating-tile is-filled" : "rating-tile"} aria-hidden="true">★</span>) : <span className="feed-unrated">Not rated</span>}</div>;
+}
+
+function DiaryComposer({ album, editing, onClose, children }) {
+  const dialog = useRef(null);
+  useEffect(() => {
+    const element = dialog.current;
+    element.showModal();
+    element.querySelector("#diary-album")?.focus();
+    return () => element.close();
+  }, []);
+  return <dialog ref={dialog} className="diary-dialog" aria-labelledby="diary-form-heading" onClose={onClose} onClick={event => { if (event.target === event.currentTarget) onClose(); }}><div className="diary-dialog-content"><header className="diary-dialog-heading"><img src={album?.cover} alt="" width="44" height="44" /><h2 id="diary-form-heading">{editing ? "Edit your listen" : "Log a listen"}</h2><button type="button" className="diary-dialog-close" aria-label="Close listening form" onClick={onClose}>×</button></header>{children}</div></dialog>;
 }

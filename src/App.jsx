@@ -28,12 +28,7 @@ function normaliseSearch(text) {
   return text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 }
 
-const pageCopy = {
-  home: ["THE LISTENING ROOM", "A place for your records.", "Old favourites. New discoveries. A shelf that feels like you."],
-  explore: ["FOLLOW YOUR CURIOSITY", "Find your next favourite.", "Explore the music. Keep the albums that stay with you."],
-  collection: ["THE ONES YOU KEEP", "Your collection.", "Every record has a story. Start yours here."],
-  wishlist: ["SOMEDAY, ON YOUR SHELF", "Your next finds.", "A little room for the records you’re dreaming of."],
-};
+const pageTitles = { home: "The shelf", explore: "Explore", collection: "My collection", wishlist: "Wishlist" };
 
 export default function App() {
   const [collection, setCollection] = useState(() => readFlags("collection"));
@@ -104,7 +99,7 @@ export default function App() {
   if (sort === "newest") visibleAlbums.sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
   if (sort === "oldest") visibleAlbums.sort((a, b) => a.year - b.year || a.title.localeCompare(b.title));
   if (sort === "title") visibleAlbums.sort((a, b) => a.title.localeCompare(b.title));
-  const copy = pageCopy[route.page] || pageCopy.home;
+  const pageTitle = pageTitles[route.page] || pageTitles.home;
 
   return (
     <>
@@ -127,7 +122,7 @@ export default function App() {
         /> : <main id="main-content" tabIndex="-1"><h1>Record not found</h1><a className="back-link" href="#/">Back to shelf</a></main>
       ) : (
         <main id="main-content" className={`shelf-page page-${route.page}`} tabIndex="-1">
-          <header className="shelf-header"><div><p className="eyebrow">{copy[0]}</p><h1>{copy[1]}</h1><p className="shelf-description">{copy[2]}</p></div>{route.page === "home" && <a className="browse-link" href="#/explore">Explore all albums <span aria-hidden="true">↗</span></a>}</header>
+          <header className="shelf-header compact-page-bar"><h1>{pageTitle}</h1>{route.page === "home" && <a className="browse-link" href="#/explore">Explore all albums <span aria-hidden="true">↗</span></a>}</header>
           {route.page === "explore" && <section className="browse-controls" aria-label="Find albums">
             <div className="shelf-controls">
               <div className="search-field"><label htmlFor="record-search">Search albums</label><input id="record-search" type="search" placeholder="Album, artist or genre…" value={search} onChange={(event) => setSearch(event.target.value)} /></div>
