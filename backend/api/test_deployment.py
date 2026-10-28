@@ -14,7 +14,7 @@ class ProductionConfigurationTests(SimpleTestCase):
     def test_production_settings_fail_closed_and_pass_deployment_checks(self):
         env = {**os.environ, "DJANGO_SETTINGS_MODULE": "config.settings.production",
             "DJANGO_SECRET_KEY": "test-only-secret-not-for-a-real-deployment-" * 2,
-            "DJANGO_ALLOWED_HOSTS": "beta.example.com", "RENDER_EXTERNAL_HOSTNAME": "",
+            "DJANGO_ALLOWED_HOSTS": "beta.example.com", "RENDER_EXTERNAL_HOSTNAME": "", "DJANGO_SECRET_KEY_EXTRA": "",
             "DATABASE_URL": "postgresql://unused:unused@localhost/unused", "REDIS_URL": "redis://localhost:6379"}
         backend = Path(__file__).resolve().parents[1]
         response = subprocess.run([sys.executable, "manage.py", "check", "--deploy", "--fail-level", "ERROR"],
@@ -22,6 +22,11 @@ class ProductionConfigurationTests(SimpleTestCase):
         self.assertEqual(response.returncode, 0, response.stderr)
         # HSTS preload is intentionally off for this temporary shared-hostname beta.
         self.assertNotIn("ERRORS:", response.stderr)
+        split_env = {**env, "DJANGO_SECRET_KEY": "aB3dE5gH7jK9mN2pQ4sT6vW8yZ1cF0iL",
+                     "DJANGO_SECRET_KEY_EXTRA": "zX9vB7nM5kJ3hG1fD2sA4pO6iU8yT0rE"}
+        response = subprocess.run([sys.executable, "manage.py", "check", "--deploy", "--fail-level", "ERROR"],
+            cwd=backend, env=split_env, capture_output=True, text=True)
+        self.assertEqual(response.returncode, 0, response.stderr)
         for changes in [{"DATABASE_URL": "sqlite:///local.db"}, {"REDIS_URL": ""},
                         {"DJANGO_SECRET_KEY": "short"}, {"DJANGO_ALLOWED_HOSTS": "*"}]:
             response = subprocess.run([sys.executable, "-c", "import config.settings.production"],

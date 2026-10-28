@@ -4,6 +4,8 @@ import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from .base import *
 
+# Render generates 32-character values. Combine two independent generated parts.
+SECRET_KEY = SECRET_KEY + os.environ.get("DJANGO_SECRET_KEY_EXTRA", "")
 if len(SECRET_KEY) < 50:
     raise ImproperlyConfigured("Production requires a secret key of at least 50 characters.")
 _hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "").strip()
