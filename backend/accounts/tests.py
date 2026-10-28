@@ -167,3 +167,93 @@ class InviteSignupTests(TestCase):
         from django.db import IntegrityError, transaction
         with self.assertRaises(IntegrityError), transaction.atomic():
             get_user_model().objects.create_user(username="LISTENER", password="unused")
+
+
+class MemberProfileTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = get_user_model().objects.create_user(username="profile-owner", email="private@example.test")
+        cls.other = get_user_model().objects.create_user(username="profile-other")
+
+    def setUp(self):
+        cache.clear()
+        self.client.force_login(self.owner)
+
+    def picture(self, kind="PNG", size=(320, 280)):
+        from io import BytesIO
+        from PIL import Image
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        data = BytesIO()
+        Image.new("RGB", size, "red").save(data, format=kind)
+        return SimpleUploadedFile("picture.png", data.getvalue(), content_type="image/png")
+
+    def test_member_only_and_private_fields(self):
+        url = f"/api/auth/profiles/{self.owner.pk}/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(set(response.json()["profile"]), {"id", "username", "bio", "avatarUrl"})
+        self.assertNotIn("private@example.test", response.content.decode())
+        self.assertIn("no-store", response["Cache-Control"])
+        self.client.logout()
+        self.assertEqual(self.client.get(url).status_code, 401)
+        self.assertEqual(self.client.post("/api/auth/profile/", {"bio": "hello"}).status_code, 401)
+        self.assertEqual(self.client.get(f"/api/auth/profiles/{self.owner.pk}/avatar/").status_code, 401)
+
+    def test_own_bio_photo_and_removal(self):
+        from io import BytesIO
+        from PIL import Image
+        response = self.client.post("/api/auth/profile/", {"bio": "My music", "avatar": self.picture()})
+        self.assertEqual(response.status_code, 200)
+        profile = response.json()["profile"]
+        self.assertIn("?v=", profile["avatarUrl"])
+        self.owner.refresh_from_db()
+        self.other.refresh_from_db()
+        self.assertEqual(self.owner.bio, "My music")
+        self.assertEqual(self.other.bio, "")
+        with Image.open(BytesIO(bytes(self.owner.avatar_data))) as picture:
+            self.assertEqual(picture.size, (256, 256))
+            self.assertEqual(picture.format, "JPEG")
+            self.assertFalse(picture.getexif())
+        self.assertEqual(self.client.get(profile["avatarUrl"]).get("Content-Type"), "image/jpeg")
+        self.assertEqual(self.client.post("/api/auth/profile/", {"removeAvatar": "true"}).status_code, 200)
+        self.owner.refresh_from_db()
+        self.assertFalse(self.owner.avatar_data)
+        self.assertEqual(self.client.get(profile["avatarUrl"]).status_code, 404)
+
+    def test_invalid_images_and_fields_leave_account_unchanged(self):
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        bad = SimpleUploadedFile("fake.jpg", b"<svg>not a photograph</svg>", content_type="image/jpeg")
+        for payload in [{"avatar": bad}, {"username": "hijacked"}, {"is_staff": "true"},
+                        {"bio": "x" * 241}, {"avatar": self.picture(size=(4000, 3100))}]:
+            self.assertEqual(self.client.post("/api/auth/profile/", payload).status_code, 400)
+        large = SimpleUploadedFile("huge.jpg", b"x" * (2 * 1024 * 1024 + 1))
+        self.assertEqual(self.client.post("/api/auth/profile/", {"avatar": large}).status_code, 413)
+        self.owner.refresh_from_db()
+        self.assertFalse(self.owner.avatar_data)
+        self.assertFalse(self.owner.is_staff)
+        self.assertEqual(self.owner.username, "profile-owner")
+
+    def test_csrf_required(self):
+        client = Client(enforce_csrf_checks=True)
+        client.force_login(self.owner)
+        self.assertEqual(client.post("/api/auth/profile/", {"bio": "forged"}).status_code, 403)
+
+    def test_profile_pagination_only_contains_requested_authors_reviews(self):
+        from reviews.models import Review
+        for i in range(21):
+            Review.objects.create(owner=self.owner, album_id="star", rating=5, client_id=str(i))
+        Review.objects.create(owner=self.other, album_id="star", rating=1, client_id="other")
+        first = self.client.get(f"/api/auth/profiles/{self.owner.pk}/").json()
+        self.assertEqual(first["count"], 21)
+        self.assertEqual(len(first["results"]), 20)
+        self.assertEqual(first["nextPage"], 2)
+        second = self.client.get(f"/api/auth/profiles/{self.owner.pk}/?page=2").json()
+        self.assertEqual(len(second["results"]), 1)
+        self.assertTrue(all(item["author"]["id"] == self.owner.pk for item in first["results"]))
+        self.assertEqual(self.client.get(f"/api/auth/profiles/{self.owner.pk}/?page=0").status_code, 400)
+        self.assertEqual(self.client.get("/api/auth/profiles/999999/").status_code, 404)
+
+    def test_database_rejects_case_duplicate_username(self):
+        from django.db import IntegrityError, transaction
+        with self.assertRaises(IntegrityError), transaction.atomic():
+            get_user_model().objects.create_user(username="PROFILE-OWNER")

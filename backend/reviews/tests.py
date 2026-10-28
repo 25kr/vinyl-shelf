@@ -30,7 +30,7 @@ class ReviewOwnershipTests(TestCase):
 
     def test_create_sets_author_from_session_and_returns_only_public_profile(self):
         data = self.create()
-        self.assertEqual(data["author"], {"id": self.alice.pk, "username": "alice"})
+        self.assertEqual(data["author"], {"id": self.alice.pk, "username": "alice", "avatarUrl": None})
         self.assertEqual(Review.objects.get(pk=data["id"]).owner, self.alice)
         forged = self.write("post", "/api/reviews/", {**self.payload, "owner": self.bob.pk})
         self.assertEqual(forged.status_code, 400)

@@ -6,6 +6,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_http_methods
 from .forms import ReviewForm
 from .models import Review
+from accounts.profiles import avatar_url
 
 
 def serialize(review):
@@ -13,7 +14,7 @@ def serialize(review):
             "date": review.listened_on.isoformat() if review.listened_on else None, "rating": review.rating,
             "note": review.note, "repeat": review.repeat, "clientId": review.client_id,
             "createdAt": review.created_at.isoformat(), "updatedAt": review.updated_at.isoformat(),
-            "author": {"id": review.owner_id, "username": review.owner.username}}
+            "author": {"id": review.owner_id, "username": review.owner.username, "avatarUrl": avatar_url(review.owner)}}
 
 
 def validated_payload(request, client_id=None):
@@ -51,7 +52,7 @@ def review_list(request):
                 raise ValueError
         except ValueError:
             return JsonResponse({"error": "Invalid review page."}, status=400)
-        pages = Paginator(Review.objects.select_related("owner").all(), 20)
+        pages = Paginator(Review.objects.select_related("owner").defer("owner__avatar_data").all(), 20)
         try:
             page = pages.page(page_number)
         except EmptyPage:

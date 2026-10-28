@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import RecordCard from "./components/RecordCard";
 import RecordSleeve from "./components/RecordSleeve";
 import AlbumPage from "./components/AlbumPage";
+import ProfilePage from "./components/ProfilePage";
 import LoginDialog from "./components/LoginDialog";
 import useAuth from "./hooks/useAuth";
 import ListeningDiary from "./components/ListeningDiary";
@@ -12,6 +13,7 @@ import useShelfFlags from "./hooks/useShelfFlags";
 
 function readRoute() {
   const [hash, query = ""] = (window.location.hash || "#/").split("?");
+  if (/^#\/profile\/\d+$/.test(hash)) return { page: "profile", id: hash.slice(10) };
   if (hash.startsWith("#/album/")) {
     try { return { page: "album", id: decodeURIComponent(hash.slice(8)) }; }
     catch { return { page: "album", id: "unknown" }; }
@@ -72,7 +74,7 @@ export default function App() {
     window.addEventListener("hashchange", handleNavigation);
     return () => window.removeEventListener("hashchange", handleNavigation);
   }, []);
-  const selectedAlbum = albums.find((album) => album.id === route.id);
+  const selectedAlbum = route.page === "album" ? albums.find((album) => album.id === route.id) : undefined;
   useEffect(() => {
     document.title = selectedAlbum ? `${selectedAlbum.title} by ${selectedAlbum.artist} | Vinyl Shelf` : "Vinyl Shelf";
   }, [selectedAlbum]);
@@ -114,7 +116,7 @@ export default function App() {
         <button className="login-button" onClick={() => setLoginOpen(true)} aria-label={auth.user ? `Account: ${auth.user.username}` : "Log in"}><span className="login-button-label">{auth.user ? auth.user.username : "Log in"}</span><span aria-hidden="true">↗</span></button>
       </div></header>
       {auth.user && <p className="auth-storage-notice" role="status">Signed in as {auth.user.username}. Reviews are saved to your account. Your collection and wishlist are still saved on this device.</p>}
-      {["diary", "review"].includes(route.page) ? <ListeningDiary key={auth.enabled ? auth.user?.id || "guest" : "demo"} auth={auth} onLogin={() => setLoginOpen(true)} albums={albums} tracklists={tracklists} writing={route.page === "review"} requestedAlbumId={route.albumId} /> : route.page === "album" ? (
+      {route.page === "profile" ? <ProfilePage key={`${route.id}:${auth.user?.id || "guest"}`} userId={route.id} auth={auth} onLogin={() => setLoginOpen(true)} albums={albums} tracklists={tracklists} /> : ["diary", "review"].includes(route.page) ? <ListeningDiary key={auth.enabled ? auth.user?.id || "guest" : "demo"} auth={auth} onLogin={() => setLoginOpen(true)} albums={albums} tracklists={tracklists} writing={route.page === "review"} requestedAlbumId={route.albumId} /> : route.page === "album" ? (
         selectedAlbum ? <AlbumPage
           backPage={returnPage} key={selectedAlbum.id} album={selectedAlbum} tracks={tracklists[selectedAlbum.id] || []}
           isCollected={collection[selectedAlbum.id]} isWishlisted={wishlist[selectedAlbum.id]}

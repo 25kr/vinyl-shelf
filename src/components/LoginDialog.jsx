@@ -51,6 +51,7 @@ export default function LoginDialog({ onClose, auth }) {
         <span className="brand-record login-record" aria-hidden="true" />
         <h2 id="login-title" tabIndex="-1">{auth.user ? "Your account" : signup ? "Join the shelf." : "Welcome back."}</h2>
         <p id="login-description">{!auth.enabled ? "This public demo saves collections and reviews in your browser. Account sign-in is not available here yet." : auth.user ? `Signed in as ${auth.user.username}. Reviews are saved to your account. Collections and wishlists are still saved on this device.` : signup ? "Have an invite? Create your account to join the private beta." : "Log in with your username and password."}</p>
+        {auth.user && <a className="primary-link" href={`#/profile/${auth.user.id}`} onClick={onClose}>View my profile ↗</a>}
         {auth.user?.isStaff && <a className="primary-link admin-link" href="/admin/" target="_blank" rel="noreferrer">Open admin ↗</a>}
         {error && <div className="auth-error" role="alert"><p>{error}</p>{Object.entries(fields).map(([name, messages]) => <p key={name}>{name === "__all__" ? "" : `${({ password1: "Password", password2: "Confirm password", username: "Username", email: "Email" })[name] || name}: `}{messages.map(item => item.message).join(" ")}</p>)}</div>}
         {!auth.enabled ? <button className="collection-button" onClick={onClose}>Keep exploring ↗</button> : auth.user ? <button className="collection-button" type="button" onClick={logout} disabled={auth.busy}>{auth.busy ? "Logging out…" : "Log out"}</button> : <>

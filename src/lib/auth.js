@@ -5,7 +5,8 @@ export async function authRequest(endpoint, options = {}) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 10000);
   try {
-    const response = await fetch(`/api/auth/${endpoint}/`, {
+    const [path, query] = endpoint.split("?");
+    const response = await fetch(`/api/auth/${path}/${query ? `?${query}` : ""}`, {
       ...options, credentials: "same-origin", mode: "same-origin", cache: "no-store", signal: controller.signal,
       headers: { Accept: "application/json", ...options.headers },
     });

@@ -6,6 +6,10 @@ from django.db.models.functions import Lower
 class User(AbstractUser):
     """Listener accounts; username spelling is unique regardless of case."""
 
+    bio = models.CharField(max_length=240, blank=True)
+    avatar_data = models.BinaryField(blank=True, default=bytes)
+    avatar_version = models.CharField(max_length=64, blank=True)
+
     class Meta(AbstractUser.Meta):
         constraints = [models.UniqueConstraint(Lower("username"), name="account_username_case_unique")]
 
