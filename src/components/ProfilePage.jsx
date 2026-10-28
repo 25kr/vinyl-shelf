@@ -44,7 +44,7 @@ export default function ProfilePage({ userId, auth, onLogin, albums, tracklists 
     } catch (failure) { setError(failure.message); }
     finally { setBusy(false); }
   }
-  return <main id="main-content" tabIndex="-1" className="profile-page">
+  return <main id="main-content" tabIndex="-1" className="profile-page diary-feed-page">
     <a className="back-link" href="#/diary">← Back to diary</a>
     {!auth.enabled || (!auth.loading && !auth.user) ? <section className="profile-empty"><h1>Meet the listeners.</h1><p>Log in to view member profiles.</p><button className="collection-button" onClick={onLogin}>Log in</button></section> : <>
       {error && <p className="auth-error" role="alert">{error}</p>}
