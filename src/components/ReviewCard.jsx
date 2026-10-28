@@ -6,7 +6,7 @@ export default function ReviewCard({ entry, album, track, arriving, arrivalRef, 
   return (
     <article ref={arriving ? arrivalRef : undefined} tabIndex={arriving ? -1 : undefined} className={`diary-entry review-feed-card${arriving ? " review-arriving" : ""}`} aria-label={`Listen: ${track?.title || album.title}, ${entry.date || "no listening date"}`}>
       <div className="feed-reviewer">
-        <span className="feed-avatar" aria-hidden="true">{entry.author?.avatarUrl ? <img src={entry.author.avatarUrl} alt="" width="40" height="40" loading="lazy" /> : authorName[0].toUpperCase()}</span>
+        {entry.author?.id ? <a className="feed-avatar" href={`#/profile/${entry.author.id}`} aria-label={`View ${authorName}’s profile`}>{entry.author.avatarUrl ? <img src={entry.author.avatarUrl} alt="" width="40" height="40" loading="lazy" /> : authorName[0].toUpperCase()}</a> : <span className="feed-avatar" aria-hidden="true">{authorName[0].toUpperCase()}</span>}
         <div><strong>{entry.author?.id ? <a href={`#/profile/${entry.author.id}`}>{authorName}</a> : authorName}</strong><span>{track ? "Track" : "Album"}</span></div>
         <time title="Entry added" dateTime={entry.createdAt}>{new Date(entry.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</time>
       </div>

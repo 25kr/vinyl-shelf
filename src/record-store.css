@@ -242,3 +242,23 @@ input, select, textarea { background: #f9f9f5c9; border-color: #19191930; border
  .profile-edit-actions button { flex: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .profile-studio { animation: none; } .profile-photo-picker { transition: none; } }
+
+.account-menu-links { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
+.account-menu-links .primary-link { flex: 1; display: flex; align-items: center; justify-content: center; margin: 0; min-height: 46px; padding: 12px 18px; box-sizing: border-box; border-radius: 8px; white-space: nowrap; }
+a.feed-avatar { text-decoration: none; color: inherit; flex-shrink: 0; }
+a.feed-avatar:focus-visible { outline: 3px solid #9876ab; outline-offset: 3px; }
+.photo-cropper { padding: 20px; margin: 0 0 24px; border: 1px solid #d9cddd; border-radius: 16px; background: #fffdf9; }
+.photo-crop-heading h3 { font: 600 17px Arial, sans-serif; margin: 0 0 8px; }
+.profile-studio .photo-crop-heading p { font-size: 12px; color: #807185; margin-bottom: 18px; }
+.photo-crop-stage { position: relative; width: min(100%, 300px); aspect-ratio: 1; overflow: hidden; margin: auto; background: #ded6e1; touch-action: none; cursor: grab; border-radius: 12px; }
+.photo-crop-stage:active { cursor: grabbing; }
+.photo-crop-stage img { position: absolute; max-width: none; user-select: none; pointer-events: none; }
+.photo-crop-mask { position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 100px #24162b83; border: 2px solid #fff9; pointer-events: none; }
+.photo-crop-stage:focus-visible { outline: 3px solid #9876ab; outline-offset: 4px; }
+.photo-crop-heading h3:focus { outline: none; }
+.profile-studio .crop-keyboard-hint { font-size: 11px; color: #8a7d8e; margin: 12px 0 18px; text-align: center; }
+.photo-zoom-label { display: flex; justify-content: space-between; font-size: 12px; color: #69556f; }
+.photo-cropper input[type=range] { width: 100%; min-height: 44px; accent-color: #70577e; }
+.photo-crop-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 12px; }
+.photo-crop-actions .collection-button { padding: 12px 20px; border-radius: 8px; background: #66506f; }
+@media(max-width: 420px) { .account-menu-links { flex-direction: column; } .photo-cropper { padding: 14px; } .photo-crop-actions button { flex: 1; } }
