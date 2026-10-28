@@ -44,3 +44,7 @@ Checked 20 October 2026. Previews show a selected photographed edition and side;
 ## EDM additions — 28 October 2026
 
 Telos: official Zedd black-vinyl product photograph, cropped to its unobstructed centre label. Worlds: official pearl 10th anniversary mockup, cropped to the unobstructed right disc label. Source image files are unchanged; crops are applied in CSS. Both preserve the photographed spindle hole. Other new albums use explicitly illustrative previews until exact unobstructed pressing photographs are available.
+
+### Worlds centre-label correction — 28 October 2026
+
+The original artist mockup has a second record overlapping its centre label. The active Worlds preview now uses the complete Side D label from [Turntable Lab's photograph of the same pearl anniversary edition](https://www.turntablelab.com/products/porter-robinson-worlds-colored-vinyl-vinyl-2lp). The original photo is saved unchanged; a rectangular CSS crop compensates for the photographed perspective and maps the unobstructed label into the round preview. This replaces the earlier overlapping mockup crop.

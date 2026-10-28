@@ -458,17 +458,17 @@
     "preservePhotoHole": true
   },
   "porter-robinson-worlds": {
-    "file": "porter-robinson-worlds.png",
+    "file": "porter-robinson-worlds-label.jpg",
     "crop": [
-      67.3,
-      41.3,
-      15,
-      15
+      60.5,
+      71.6,
+      15.4,
+      9.5
     ],
     "colour": "white",
     "source": "https://store.porterrobinson.com/products/porter-robinson-worlds-vinyl-1",
-    "photoSource": "https://store.porterrobinson.com/cdn/shop/files/Web-1.png?v=1741809881",
+    "photoSource": "https://www.turntablelab.com/cdn/shop/files/porterrobinson-worlds-colroedvinyl-2.jpg?v=1738701030",
     "preservePhotoHole": true,
-    "artworkNote": "Pearl anniversary edition confirmed by the artist. The preview uses a photographed centre label with stylised disc lighting. Track list follows the original digital album; the anniversary pressing also adds Hollowheart."
+    "artworkNote": "Pearl 10th anniversary edition. Side D centre label photographed by Turntable Lab; perspective is corrected by the preview crop. Disc lighting is stylised. The digital track list follows the original album; the anniversary pressing also adds Hollowheart."
   }
 }
