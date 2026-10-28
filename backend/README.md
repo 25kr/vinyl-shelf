@@ -166,3 +166,8 @@ The GitHub Pages static demo has no signup form or Django backend. Test accounts
 exist only in isolated test databases. Before private-beta hosting, complete shared
 rate limiting, HTTPS/session deployment checks, email verification/reset, backups
 and a moderation policy.
+
+
+Temporary Render deployment: see docs/HOSTING.md and render.yaml. Admins can now
+create single-use invites in Django admin; the terminal command is still available
+locally. The free deployment initializes 29kr once from a private hosting secret.
