@@ -11,7 +11,8 @@
     "backend": ".\\backend\\.venv\\Scripts\\python.exe backend/manage.py runserver 127.0.0.1:8000",
     "backend:check": ".\\backend\\.venv\\Scripts\\python.exe backend/manage.py check",
     "backend:test": ".\\backend\\.venv\\Scripts\\python.exe backend/manage.py test api accounts reviews",
-    "backend:user": ".\\backend\\.venv\\Scripts\\python.exe backend/manage.py create_listener"
+    "backend:user": ".\\backend\\.venv\\Scripts\\python.exe backend/manage.py create_listener",
+    "backend:invite": ".\\backend\\.venv\\Scripts\\python.exe backend/manage.py create_invite"
   },
   "dependencies": {
     "react": "^19.3.1",

@@ -155,3 +155,9 @@ input, select, textarea { background: #f9f9f5c9; border-color: #19191930; border
 
 /* Keep the account label below the composer divider. */
 .diary-composer-page .diary-preview-note { margin: 16px 0; }
+
+.auth-switch { margin-top: 22px; min-height: 44px; }
+.auth-password-hint, .auth-field-error { font-size: 12px; line-height: 1.6; margin: 0; }
+.auth-field-error { color: #792e23; }
+.auth-error p { margin: 0 0 6px; }
+.login-dialog { max-height: calc(100dvh - 32px); overflow-y: auto; }

@@ -12,7 +12,11 @@ export async function authRequest(endpoint, options = {}) {
     const type = response.headers.get("content-type") || "";
     if (!type.includes("application/json")) throw new Error("Sign-in is unavailable right now. Please try again.");
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Sign-in is unavailable right now. Please try again.");
+    if (!response.ok) {
+      const failure = new Error(data.error || "Account service is unavailable right now. Please try again.");
+      failure.fields = data.fields || {};
+      throw failure;
+    }
     return data;
   } catch (error) {
     if (error.name === "AbortError" || error instanceof TypeError) {

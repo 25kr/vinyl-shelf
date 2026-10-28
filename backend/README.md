@@ -93,8 +93,8 @@ Only enable VITE_ENABLE_BACKEND=true for a build served with its own /api backen
 The current login limiter allows 20 attempts per five-minute window per remote
 address using Django's local-process cache. This is a development guard, not a
 completed production brute-force defence. Hosting needs a shared cache or gateway
-limiter, a reviewed proxy/IP policy and deployment testing. Invite-only signup,
-password reset and account deletion remain future work. Do not deploy local DEBUG
+limiter, a reviewed proxy/IP policy and deployment testing. Password reset,
+email verification and account deletion remain future work. Do not deploy local DEBUG
 settings. Tests exercise CSRF/origin rejection, generic failures, persistence,
 logout invalidation, request validation and rate limits.
 
@@ -126,10 +126,43 @@ Vite proxy; the direct backend address is http://127.0.0.1:8000/admin/. Use your
 existing username and password. Staff permissions are never granted by a public
 endpoint. Superuser access permits user administration and review moderation;
 owner and import identifiers cannot be reassigned through the review admin.
-This milestone does not make the app production-ready: invitations, moderation
+This milestone does not make the app production-ready: moderation
 policy, shared login throttling, hosting and backups still need completing.
 
 The review validation snapshot is backend/reviews/catalogue.json. When changing
 the album catalogue, update this snapshot from src/data/tracklists.json as well;
 each album maps to its list of disc-number track identifiers. Keep existing IDs
 stable so saved reviews retain their album/track relationships.
+
+
+## Invite-only beta signup
+
+On the local site, open Log in, then Have an invite? Sign up. Enter a username,
+email, password, confirmation and invite code. Successful signup starts a session.
+Every new signup has is_staff=False and is_superuser=False. Existing admin roles
+are unchanged. Email is collected but not verified or used to sign in yet.
+
+Create a code privately in the project terminal:
+
+```powershell
+npm.cmd run backend:invite -- --label "Friend beta" --days 7
+```
+
+The terminal displays the code once. Share it privately with the intended tester.
+Each code creates one account, expires after seven days by default (1-30 days
+configurable), and is stored only as a SHA-256 hash. Never commit codes or put them
+in frontend source. In Django admin, Invitations lists expiry/usage; deleting an
+unused invitation revokes it. Used invitations cannot be reused even if their
+account is later deleted. No emails are sent automatically.
+
+POST /api/auth/signup/ accepts username, email, password1, password2 and inviteCode.
+CSRF/origin checks, Django password validators, case-insensitive database username
+uniqueness, atomic invite consumption and explicit rejection of extra fields are
+enforced. Invalid form submissions keep the invite usable. Ten signup attempts per
+remote IP per five minutes are allowed by the local cache limiter; configure a
+shared production limiter before hosting. Codes are never returned by the API.
+
+The GitHub Pages static demo has no signup form or Django backend. Test accounts
+exist only in isolated test databases. Before private-beta hosting, complete shared
+rate limiting, HTTPS/session deployment checks, email verification/reset, backups
+and a moderation policy.

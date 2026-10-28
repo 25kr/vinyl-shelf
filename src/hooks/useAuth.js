@@ -18,11 +18,16 @@ export default function useAuth() {
     try { const data = await authMutation("login", { username, password }); setUser(data.user); }
     finally { setBusy(false); }
   }
+  async function signup(details) {
+    setBusy(true);
+    try { const data = await authMutation("signup", details); setUser(data.user); }
+    finally { setBusy(false); }
+  }
   async function logout() {
     setBusy(true);
     try { const data = await authMutation("logout"); setUser(data.user); }
     finally { setBusy(false); }
   }
   async function refresh() { const data = await authRequest("session"); setUser(data.user); return data; }
-  return { enabled: authEnabled, user, loading, busy, login, logout, refresh };
+  return { enabled: authEnabled, user, loading, busy, login, signup, logout, refresh };
 }

@@ -79,5 +79,91 @@ class SessionAuthenticationTests(TestCase):
             self.assertEqual(response.status_code, 429)
             self.assertEqual(response["Retry-After"], "300")
 
-    def test_public_registration_is_not_available(self):
-        self.assertEqual(self.client.get("/api/auth/signup/").status_code, 404)
+    def test_signup_requires_post(self):
+        self.assertEqual(self.client.get("/api/auth/signup/").status_code, 405)
+
+from datetime import timedelta
+import hashlib
+from django.utils import timezone
+from .models import Invitation
+
+
+class InviteSignupTests(TestCase):
+    def setUp(self):
+        cache.clear()
+        self.client = Client(enforce_csrf_checks=True)
+        self.user = get_user_model().objects.create_user(username="listener", password="unused")
+        self.code = "private-test-invite-with-enough-entropy"
+        self.invite = Invitation.objects.create(code_hash=hashlib.sha256(self.code.encode()).hexdigest(),
+            expires_at=timezone.now() + timedelta(days=7))
+        self.details = {"username": "new-listener", "email": "listener@example.com",
+            "password1": "Cobalt-orbit-records-741!", "password2": "Cobalt-orbit-records-741!", "inviteCode": self.code}
+
+    csrf = SessionAuthenticationTests.csrf
+    post = SessionAuthenticationTests.post
+
+    def signup(self, **changes):
+        return self.post("/api/auth/signup/", {**self.details, **changes})
+
+    def test_signup_hashes_password_logs_in_and_never_grants_admin(self):
+        response = self.signup()
+        self.assertEqual(response.status_code, 201)
+        user = get_user_model().objects.get(username="new-listener")
+        self.assertTrue(user.check_password(self.details["password1"]))
+        self.assertNotEqual(user.password, self.details["password1"])
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
+        self.assertEqual(user.email, self.details["email"])
+        self.assertEqual(response.json()["user"]["id"], user.pk)
+        self.assertNotIn("email", response.json()["user"])
+        self.invite.refresh_from_db()
+        self.assertEqual(self.invite.used_by, user)
+        self.assertIsNotNone(self.invite.used_at)
+        self.assertNotIn(self.code, self.invite.code_hash)
+        self.assertEqual(self.client.get("/admin/").status_code, 302)
+        self.client.logout()
+        self.assertEqual(self.signup(username="another").status_code, 400)
+
+    def test_invalid_expired_and_revoked_invites_create_no_users(self):
+        self.assertEqual(self.signup(inviteCode="wrong").status_code, 400)
+        self.invite.expires_at = timezone.now() - timedelta(seconds=1)
+        self.invite.save()
+        self.assertEqual(self.signup().status_code, 400)
+        self.invite.delete()
+        self.assertEqual(self.signup().status_code, 400)
+        self.assertFalse(get_user_model().objects.filter(username="new-listener").exists())
+
+    def test_bad_fields_do_not_consume_invite(self):
+        for change in [{"username": "LISTENER"}, {"email": "invalid"}, {"password2": "mismatch"},
+                       {"password1": "12345678", "password2": "12345678"}, {"username": "bad space"}]:
+            response = self.signup(**change)
+            self.assertEqual(response.status_code, 400)
+        self.invite.refresh_from_db()
+        self.assertIsNone(self.invite.used_at)
+        self.assertEqual(self.signup().status_code, 201)
+
+    def test_signup_blocks_privilege_fields_and_malformed_values(self):
+        for data in [{**self.details, "is_staff": True}, {**self.details, "is_superuser": True},
+                     {**self.details, "username": []}, [], None]:
+            self.assertEqual(self.post("/api/auth/signup/", data).status_code, 400)
+        self.assertIsNone(Invitation.objects.get(pk=self.invite.pk).used_at)
+
+    def test_signup_requires_csrf_origin_and_post(self):
+        self.assertEqual(self.client.post("/api/auth/signup/", "{}", content_type="application/json").status_code, 403)
+        self.assertEqual(self.post("/api/auth/signup/", self.details, HTTP_ORIGIN="https://evil.example").status_code, 403)
+        self.assertEqual(self.client.get("/api/auth/signup/").status_code, 405)
+
+    def test_signup_rate_limit_and_authenticated_account_guard(self):
+        for _ in range(10):
+            self.assertEqual(self.signup(inviteCode="wrong").status_code, 400)
+        response = self.signup()
+        self.assertEqual(response.status_code, 429)
+        self.assertEqual(response["Retry-After"], "300")
+        cache.clear()
+        self.client.force_login(self.user)
+        self.assertEqual(self.signup().status_code, 409)
+
+    def test_username_constraint_is_case_insensitive(self):
+        from django.db import IntegrityError, transaction
+        with self.assertRaises(IntegrityError), transaction.atomic():
+            get_user_model().objects.create_user(username="LISTENER", password="unused")
