@@ -2,3 +2,13 @@ node_modules/
 dist/
 .env
 .env.local
+# Python / local backend data
+.venv/
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.sqlite3-*
+.dev-secret-key
+.env.*
+!.env.example
+backend/staticfiles/

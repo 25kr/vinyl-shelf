@@ -2,7 +2,7 @@
 
 ## Current status
 
-The React site is a browser-only prototype. Collections, wishlists, saved albums and diary entries are stored on the current device. The login dialog is a preview. Demo reviews are fictional and never saved as real user entries. No Django server, real accounts, shared reviews or production security controls have been implemented yet.
+The React site is a browser-only prototype. Collections, wishlists, saved albums and diary entries are stored on the current device. The login dialog is a preview. Demo reviews are fictional and never saved as real user entries. The local Django foundation now runs with SQLite, a custom user model, a read-only health endpoint and a Vite development proxy. Real account flows, shared reviews and private-beta deployment controls have not been implemented yet. See backend/README.md for local setup.
 
 ## Frontend work completed, in order
 
