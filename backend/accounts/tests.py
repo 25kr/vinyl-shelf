@@ -191,7 +191,7 @@ class MemberProfileTests(TestCase):
         url = f"/api/auth/profiles/{self.owner.pk}/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(set(response.json()["profile"]), {"id", "username", "bio", "avatarUrl"})
+        self.assertEqual(set(response.json()["profile"]), {"id", "username", "bio", "avatarUrl", "bannerUrl"})
         self.assertNotIn("private@example.test", response.content.decode())
         self.assertIn("no-store", response["Cache-Control"])
         self.client.logout()
@@ -334,3 +334,30 @@ class FollowingTests(TestCase):
         self.assertEqual(self.client.get(f"/api/auth/profiles/{self.a.pk}/following/").json()["results"][0]["id"], self.b.pk)
         self.assertEqual(self.client.get(f"/api/auth/profiles/{self.b.pk}/followers/?page=0").status_code, 400)
         self.assertEqual(self.client.get(f"/api/auth/profiles/{self.b.pk}/unknown/").status_code, 404)
+
+
+class BannerTests(MemberProfileTests):
+    def test_banner_stored_reencoded_and_removed(self):
+        from io import BytesIO
+        from PIL import Image
+        response = self.client.post("/api/auth/profile/", {"banner": self.picture(size=(900, 500))})
+        self.assertEqual(response.status_code, 200)
+        url = response.json()["profile"]["bannerUrl"]
+        self.owner.refresh_from_db()
+        with Image.open(BytesIO(bytes(self.owner.banner_data))) as image:
+            self.assertEqual(image.size, (1200, 400))
+            self.assertFalse(image.getexif())
+        self.assertEqual(self.client.get(url)["Content-Type"], "image/jpeg")
+        self.client.logout()
+        self.assertEqual(self.client.get(url).status_code, 401)
+        self.client.force_login(self.owner)
+        self.assertEqual(self.client.post("/api/auth/profile/", {"removeBanner": "true"}).status_code, 200)
+        self.assertEqual(self.client.get(url).status_code, 404)
+
+    def test_invalid_banner_does_not_save_other_changes(self):
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        invalid = SimpleUploadedFile("bad.jpg", b"not a picture", content_type="image/jpeg")
+        self.assertEqual(self.client.post("/api/auth/profile/", {"bio": "should not save", "banner": invalid}).status_code, 400)
+        self.owner.refresh_from_db()
+        self.assertEqual(self.owner.bio, "")
+        self.assertFalse(self.owner.banner_data)

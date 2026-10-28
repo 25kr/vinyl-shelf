@@ -280,3 +280,40 @@ a.feed-avatar:focus-visible { outline: 3px solid #9876ab; outline-offset: 3px; }
 .profile-people small { display: block; margin-top: 4px; color: #8a7b90; font-size: 12px; overflow-wrap: anywhere; }
 .profile-people .feed-avatar { flex-shrink: 0; }
 @media(max-width: 600px) { .profile-stats { gap: 4px 14px; } .profile-people { padding: 16px; } }
+
+.profile-banner { margin-top: 24px; height: 80px; border-radius: 18px; background: linear-gradient(115deg, #d1c2dc, #ede0e8 48%, #d9dfcd); overflow: hidden; }
+.profile-banner.has-banner { height: auto; aspect-ratio: 3; }
+.profile-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.banner-picker { margin: 4px 0 24px; }
+.banner-upload { width: 100%; aspect-ratio: 3; position: relative; padding: 0; border: 1px solid #cfc0d8; border-radius: 12px; overflow: hidden; background: linear-gradient(115deg, #d1c2dc, #ede0e8, #d9dfcd); cursor: pointer; }
+.banner-upload img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.banner-placeholder { font-size: 14px; color: #766480; }
+.banner-upload-action { position: absolute; right: 10px; bottom: 10px; padding: 8px 12px; border-radius: 20px; background: #fffdf9e8; color: #63506e; font-size: 11px; }
+.banner-picker-help { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #8a7c91; }
+.photo-crop-stage.banner-crop-stage { width: 100%; }
+.banner-crop-stage .photo-crop-mask { border-radius: 0; box-shadow: none; }
+.review-social { margin-top: 14px; border-top: 1px solid #e6dfe9; }
+.review-reaction-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding-top: 10px; }
+.review-reaction-bar button { min-height: 44px; padding: 8px 13px; border: 1px solid transparent; border-radius: 22px; background: transparent; color: #77667f; font-size: 12px; cursor: pointer; }
+.review-reaction-bar button span { font-size: 20px; vertical-align: middle; }
+.review-reaction-bar button[aria-pressed=true] { background: #eee5f3; color: #624475; border-color: #d6c2e0; }
+.review-reaction-bar button:hover { background: #eee8f1; }
+.review-social button:disabled { opacity: .5; cursor: wait; }
+.review-comments { padding: 16px 0 0; }
+.review-comments h3 { font: 600 14px Arial,sans-serif; margin: 0 0 16px; }
+.review-comments ul { list-style: none; padding: 0; margin: 0; }
+.review-comments li { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid #e8e1eb; }
+.review-comments li > div { flex: 1; min-width: 0; }
+.review-comments .feed-avatar { width: 36px; height: 36px; flex-shrink: 0; }
+.comment-author { color: inherit; font-size: 12px; font-weight: 600; text-decoration: none; }
+.review-comments li p { margin: 6px 0; font-size: 13px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+.review-comments time, .comment-empty { color: #8f8195; font-size: 11px; }
+.comment-delete { border: 0; background: none; color: #947483; font-size: 11px; padding: 10px; min-height: 44px; cursor: pointer; }
+.comment-delete-confirm { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 12px; }
+.comment-delete-confirm button { min-height: 44px; }
+.comment-form { margin-top: 18px; }
+.comment-form label { display: block; font-size: 12px; margin-bottom: 8px; }
+.comment-form textarea { width: 100%; box-sizing: border-box; font: inherit; font-size: 16px; padding: 12px; border: 1px solid #d8cbdf; border-radius: 10px; resize: vertical; background: #fffdf9; }
+.comment-form > div { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 12px; }
+.comment-form span { font-size: 11px; color: #95869d; }
+.comment-form .collection-button { padding: 10px 16px; border-radius: 8px; }

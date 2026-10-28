@@ -52,7 +52,7 @@ def review_list(request):
                 raise ValueError
         except ValueError:
             return JsonResponse({"error": "Invalid review page."}, status=400)
-        pages = Paginator(Review.objects.select_related("owner").defer("owner__avatar_data").all(), 20)
+        pages = Paginator(Review.objects.select_related("owner").defer("owner__avatar_data", "owner__banner_data").all(), 20)
         try:
             page = pages.page(page_number)
         except EmptyPage:

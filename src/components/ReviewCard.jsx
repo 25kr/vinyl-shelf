@@ -1,3 +1,5 @@
+import ReviewSocial from "./ReviewSocial";
+import { authEnabled } from "../lib/auth";
 import DiaryStars from "./DiaryStars";
 
 export default function ReviewCard({ entry, album, track, arriving, arrivalRef, confirmingDelete, onEdit, onAskDelete, onDelete, onKeep, canManage = false }) {
@@ -20,6 +22,7 @@ export default function ReviewCard({ entry, album, track, arriving, arrivalRef, 
         <span>{entry.date ? `Listened ${new Date(`${entry.date}T12:00:00`).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}` : "No listening date"}</span>
         {canManage && <div className="diary-entry-actions"><button type="button" onClick={onEdit}>Edit entry</button><button type="button" onClick={onAskDelete}>Delete entry</button></div>}
       </footer>
+      {authEnabled && entry.author?.id && <ReviewSocial reviewId={entry.id} />}
       {canManage && confirmingDelete && <div className="review-delete-confirm" role="group" aria-label="Confirm deletion"><p>Delete this diary entry?</p><button type="button" className="delete-button" onClick={onDelete}>Delete</button><button type="button" className="text-button" onClick={onKeep}>Keep entry</button></div>}
     </article>
   );

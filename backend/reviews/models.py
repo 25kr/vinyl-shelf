@@ -22,3 +22,25 @@ class Review(models.Model):
             models.CheckConstraint(condition=models.Q(rating__gte=1, rating__lte=5), name="review_rating_1_to_5"),
             models.UniqueConstraint(fields=["owner", "client_id"], name="review_import_once_per_owner"),
         ]
+
+
+class Reaction(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="reactions")
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    value = models.SmallIntegerField()
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["review", "owner"], name="review_one_reaction_per_user"),
+                       models.CheckConstraint(condition=models.Q(value__in=[-1, 1]), name="review_reaction_valid")]
+
+
+class Comment(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name="comments")
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    text = models.CharField(max_length=1000)
+    client_id = models.UUIDField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at", "-pk"]
+        constraints = [models.UniqueConstraint(fields=["owner", "client_id"], name="comment_once_per_client")]

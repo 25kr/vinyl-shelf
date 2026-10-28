@@ -6,6 +6,8 @@ from django.db.models.functions import Lower
 class User(AbstractUser):
     """Listener accounts; username spelling is unique regardless of case."""
 
+    banner_data = models.BinaryField(blank=True, default=bytes)
+    banner_version = models.CharField(max_length=64, blank=True)
     bio = models.CharField(max_length=240, blank=True)
     avatar_data = models.BinaryField(blank=True, default=bytes)
     avatar_version = models.CharField(max_length=64, blank=True)

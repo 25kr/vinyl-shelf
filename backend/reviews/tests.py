@@ -120,3 +120,85 @@ class ReviewOwnershipTests(TestCase):
         self.assertEqual(cleared.status_code, 200)
         self.assertIsNone(cleared.json()["date"])
         self.assertEqual(self.client.get("/api/reviews/").json()["count"], 3)
+
+
+class SocialReviewTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        from django.contrib.auth import get_user_model
+        from .models import Review
+        cls.owner = get_user_model().objects.create_user(username="post-owner")
+        cls.reader = get_user_model().objects.create_user(username="post-reader")
+        cls.review = Review.objects.create(owner=cls.owner, album_id="2hollis-star", rating=5, client_id="social-post")
+
+    def setUp(self):
+        from django.core.cache import cache
+        cache.clear()
+        self.client.force_login(self.reader)
+        self.root = f"/api/reviews/{self.review.pk}/"
+
+    def send(self, path, data):
+        import json
+        return self.client.post(self.root + path, json.dumps(data), content_type="application/json")
+
+    def test_reaction_switch_clear_and_retry(self):
+        from .models import Reaction
+        for _ in range(2):
+            self.assertEqual(self.send("reactions/", {"value": 1}).json()["likes"], 1)
+        result = self.send("reactions/", {"value": -1}).json()
+        self.assertEqual((result["likes"], result["dislikes"], result["myReaction"]), (0, 1, -1))
+        self.assertEqual(Reaction.objects.count(), 1)
+        self.assertEqual(self.send("reactions/", {"value": 0}).json()["dislikes"], 0)
+        for value in [True, 2, "1", None]:
+            self.assertEqual(self.send("reactions/", {"value": value}).status_code, 400)
+
+    def test_comment_retry_ownership_and_plain_text(self):
+        import uuid
+        from .models import Comment
+        data = {"text": "<script>this stays text</script>", "clientId": str(uuid.uuid4())}
+        response = self.send("comments/", data)
+        self.assertEqual(response.status_code, 201)
+        comment = response.json()["comment"]
+        self.assertEqual(comment["author"]["id"], self.reader.pk)
+        self.assertTrue(comment["canDelete"])
+        self.assertEqual(self.send("comments/", data).status_code, 200)
+        self.assertEqual(Comment.objects.count(), 1)
+        self.assertEqual(self.send("comments/", {**data, "text": "different"}).status_code, 409)
+        self.client.force_login(self.owner)
+        listed = self.client.get(self.root + "comments/").json()["results"][0]
+        self.assertFalse(listed["canDelete"])
+        self.assertEqual(self.client.delete(self.root + f"comments/{comment['id']}/").status_code, 404)
+        self.client.force_login(self.reader)
+        self.assertEqual(self.client.delete(self.root + f"comments/{comment['id']}/").status_code, 200)
+        self.assertEqual(Comment.objects.count(), 0)
+
+    def test_authentication_csrf_and_input_limits(self):
+        import uuid
+        from django.test import Client
+        self.client.logout()
+        for path in ["comments/", "reactions/"]:
+            self.assertEqual(self.client.get(self.root + path).status_code, 401)
+            self.assertEqual(self.send(path, {}).status_code, 401)
+        client = Client(enforce_csrf_checks=True)
+        client.force_login(self.reader)
+        for path in ["comments/", "reactions/"]:
+            self.assertEqual(client.post(self.root + path, "{}", content_type="application/json").status_code, 403)
+        self.client.force_login(self.reader)
+        for text in ["", "   ", "x" * 1001]:
+            self.assertEqual(self.send("comments/", {"text": text, "clientId": str(uuid.uuid4())}).status_code, 400)
+        self.assertEqual(self.send("comments/", {"text": "valid", "clientId": "bad"}).status_code, 400)
+        self.assertEqual(self.send("comments/", {"text": "valid", "clientId": str(uuid.uuid4()), "owner": self.owner.pk}).status_code, 400)
+
+    def test_comment_pagination_and_rate_limit(self):
+        import uuid
+        from .models import Comment
+        for _ in range(21):
+            Comment.objects.create(review=self.review, owner=self.reader, text="A thought", client_id=uuid.uuid4())
+        response = self.client.get(self.root + "comments/").json()
+        self.assertEqual((response["count"], len(response["results"]), response["nextPage"]), (21, 20, 2))
+        self.assertEqual(len(self.client.get(self.root + "comments/?page=2").json()["results"]), 1)
+        from django.core.cache import cache
+        cache.set(f"social:comment:{self.reader.pk}", 30, 300)
+        self.assertEqual(self.send("comments/", {"text": "limited", "clientId": str(uuid.uuid4())}).status_code, 429)
+        self.review.delete()
+        self.assertEqual(Comment.objects.count(), 0)
