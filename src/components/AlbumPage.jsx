@@ -40,6 +40,7 @@ export default function AlbumPage({ backPage = "home", album, tracks, isCollecte
               {isWishlisted ? "On my wishlist" : "Add to wishlist"}
             </button>
             </> : <button className="collection-button" aria-pressed={Boolean(isSaved)} onClick={onToggleSaved}>{isSaved ? "Remove saved album" : "Save album"}</button>}
+            <a className="wishlist-button album-review-link" href={`#/diary/review?album=${encodeURIComponent(album.id)}`}>Write a review ↗</a>
           </div>
         </div>
       </header>
@@ -47,7 +48,7 @@ export default function AlbumPage({ backPage = "home", album, tracks, isCollecte
       <div className="album-content album-content-tracks">
         <section className="track-section" aria-labelledby="tracklist-heading">
           <h2 id="tracklist-heading">Track list</h2>
-          <table className="track-table">
+          {tracks.length ? <table className="track-table">
             <caption className="visually-hidden">Tracks on {album.title} by {album.artist}</caption>
             <thead><tr><th scope="col">#</th><th scope="col">Title</th><th scope="col">Time</th></tr></thead>
             {discGroups.map(([disc, discTracks]) => <tbody key={disc}>
@@ -60,7 +61,7 @@ export default function AlbumPage({ backPage = "home", album, tracks, isCollecte
                 </tr>
               ))}
             </tbody>)}
-          </table>
+          </table> : <p className="tracks-empty">The track list for this album is not available yet.</p>}
           <a className="source-link" href={album.source} target="_blank" rel="noreferrer">Album and track information from Apple Music ↗</a>
         </section>
       </div>

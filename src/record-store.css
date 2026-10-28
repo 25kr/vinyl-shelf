@@ -93,3 +93,20 @@ input, select, textarea { background: #f9f9f5c9; border-color: #19191930; border
 .feature-record .vinyl-disc { animation: featured-vinyl-spin 12s linear infinite; }
 @keyframes featured-vinyl-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @media(prefers-reduced-motion:reduce) { .feature-record .vinyl-disc { animation: none; } }
+
+/* Keep actions comfortable to tap without changing the record-wall design. */
+.album-review-link { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+.diary-entry-actions button { min-height: 44px; padding: 10px 4px; }
+.diary-repeat { touch-action: manipulation; }
+.diary-composer-page .star-option { width: 44px; min-height: 44px; }
+.review-counter { margin: 8px 0; }
+.save-warning { overflow-wrap: anywhere; }
+.save-warning p { margin: 0 0 6px; }
+.tracks-empty { color: var(--muted); font-size: 13px; line-height: 1.7; }
+@media(max-width:700px) {
+  .album-buttons > button, .album-buttons > a { flex: 1 1 150px; min-height: 44px; }
+  .diary-page-bar { flex-wrap: wrap; }
+  .feed-reviewer { flex-wrap: wrap; }
+  .feed-reviewer time { white-space: nowrap; }
+  .diary-dialog-actions { flex-wrap: wrap; }
+}

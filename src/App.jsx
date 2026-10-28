@@ -7,20 +7,15 @@ import ListeningDiary from "./components/ListeningDiary";
 import albums from "./data/albums";
 import { getPressing } from "./data/pressings";
 import tracklists from "./data/tracklists.json";
+import useShelfFlags from "./hooks/useShelfFlags";
 
-function readFlags(prefix) {
-  return Object.fromEntries(albums.map(({ id }) => {
-    try { return [id, localStorage.getItem(`${prefix}-${id}`) === "true"]; }
-    catch { return [id, false]; }
-  }));
-}
 function readRoute() {
-  const hash = window.location.hash || "#/";
+  const [hash, query = ""] = (window.location.hash || "#/").split("?");
   if (hash.startsWith("#/album/")) {
     try { return { page: "album", id: decodeURIComponent(hash.slice(8)) }; }
     catch { return { page: "album", id: "unknown" }; }
   }
-  if (hash === "#/diary/review") return { page: "review" };
+  if (hash === "#/diary/review") return { page: "review", albumId: new URLSearchParams(query).get("album") };
   const page = hash.slice(2);
   return { page: ["explore", "collection", "wishlist", "diary"].includes(page) ? page : "home" };
 }
@@ -47,9 +42,9 @@ export default function App() {
   useEffect(() => {
     try { if (featuredRecord) sessionStorage.setItem("vinyl-shelf-featured-record", featuredRecord.id); } catch { /* Browser storage is optional. */ }
   }, [featuredRecord]);
-  const [collection, setCollection] = useState(() => readFlags("collection"));
-  const [wishlist, setWishlist] = useState(() => readFlags("wishlist"));
-  const [savedAlbums, setSavedAlbums] = useState(() => readFlags("saved"));
+  const [collection, toggleCollectionFlag, collectionError] = useShelfFlags("collection", albums);
+  const [wishlist, toggleWishlistFlag, wishlistError] = useShelfFlags("wishlist", albums);
+  const [savedAlbums, toggleSaved, savedError] = useShelfFlags("saved", albums);
   const [route, setRoute] = useState(readRoute);
   // Keep each shelf's preferences while opening albums or visiting another page.
   const [shelfPreferences, setShelfPreferences] = useState({});
@@ -62,7 +57,7 @@ export default function App() {
   const setFilter = value => setPreference("filter", value);
   const setGenre = value => setPreference("genre", value);
   const setSort = value => setPreference("sort", value);
-  const [saveError, setSaveError] = useState(false);
+  const saveError = collectionError || wishlistError || savedError;
   const [loginOpen, setLoginOpen] = useState(false);
 
   useEffect(() => {
@@ -75,28 +70,16 @@ export default function App() {
     window.addEventListener("hashchange", handleNavigation);
     return () => window.removeEventListener("hashchange", handleNavigation);
   }, []);
-  useEffect(() => {
-    try {
-      for (const { id } of albums) {
-        localStorage.setItem(`collection-${id}`, String(Boolean(collection[id])));
-        localStorage.setItem(`wishlist-${id}`, String(Boolean(wishlist[id])));
-        localStorage.setItem(`saved-${id}`, String(Boolean(savedAlbums[id])));
-      }
-      setSaveError(false);
-    } catch { setSaveError(true); }
-  }, [collection, wishlist, savedAlbums]);
-
   const selectedAlbum = albums.find((album) => album.id === route.id);
   useEffect(() => {
     document.title = selectedAlbum ? `${selectedAlbum.title} by ${selectedAlbum.artist} | Vinyl Shelf` : "Vinyl Shelf";
   }, [selectedAlbum]);
   function toggleCollection(id) {
-    if (getPressing(id).available) setCollection((current) => ({ ...current, [id]: !current[id] }));
+    if (getPressing(id).available) toggleCollectionFlag(id);
   }
   function toggleWishlist(id) {
-    if (getPressing(id).available) setWishlist((current) => ({ ...current, [id]: !current[id] }));
+    if (getPressing(id).available) toggleWishlistFlag(id);
   }
-  function toggleSaved(id) { setSavedAlbums((current) => ({ ...current, [id]: !current[id] })); }
   function resetFilters() { setSearch(""); setFilter("all"); setGenre("all"); setSort("catalogue"); }
 
   const saveWarning = saveError && <p className="save-warning" role="alert">Your browser could not save these changes. They may reset after refreshing.</p>;
@@ -128,7 +111,7 @@ export default function App() {
         </nav>
         <button className="login-button" onClick={() => setLoginOpen(true)}>Log in <span aria-hidden="true">↗</span></button>
       </div></header>
-      {["diary", "review"].includes(route.page) ? <ListeningDiary albums={albums} tracklists={tracklists} writing={route.page === "review"} /> : route.page === "album" ? (
+      {["diary", "review"].includes(route.page) ? <ListeningDiary albums={albums} tracklists={tracklists} writing={route.page === "review"} requestedAlbumId={route.albumId} /> : route.page === "album" ? (
         selectedAlbum ? <AlbumPage
           backPage={returnPage} key={selectedAlbum.id} album={selectedAlbum} tracks={tracklists[selectedAlbum.id] || []}
           isCollected={collection[selectedAlbum.id]} isWishlisted={wishlist[selectedAlbum.id]}
@@ -153,7 +136,7 @@ export default function App() {
           </section>}
           {saveWarning}
           <section className="record-grid" aria-label={route.page === "explore" ? "Album gallery" : "Vinyl gallery"}>{visibleAlbums.map((album) => <RecordCard key={album.id} {...album} />)}</section>
-          {!visibleAlbums.length && <div className="empty-shelf"><p className="eyebrow">ROOM FOR SOMETHING GOOD</p><h2>{route.page === "collection" ? "Your collection starts here." : route.page === "wishlist" ? "Dream a little. Dig a little." : "Nothing here just yet."}</h2><p>{route.page === "explore" ? "Try another search, or save an album from its page." : "Open an album to add a record to your shelf."}</p>{route.page === "explore" ? <button className="collection-button" onClick={resetFilters}>Show all albums</button> : <a className="primary-link" href="#/explore">Explore albums ↗</a>}</div>}
+          {!visibleAlbums.length && <div className="empty-shelf"><p className="eyebrow">ROOM FOR SOMETHING GOOD</p><h2>{route.page === "collection" ? "Your collection starts here." : route.page === "wishlist" ? "Dream a little. Dig a little." : "Nothing here just yet."}</h2><p>{route.page === "explore" ? "No albums match those filters. Try another search or clear your filters." : "Open an album to add a record to your shelf."}</p>{route.page === "explore" ? <button className="collection-button" onClick={resetFilters}>Show all albums</button> : <a className="primary-link" href="#/explore">Explore albums ↗</a>}</div>}
         </main>
       )}
       <footer className="site-footer"><a className="footer-brand" href="#/">shelf.</a><p>Keep what moves you.</p><span>For the love of the record.</span></footer>
