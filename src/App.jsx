@@ -113,8 +113,8 @@ export default function App() {
         </nav>
         <button className="login-button" onClick={() => setLoginOpen(true)} aria-label={auth.user ? `Account: ${auth.user.username}` : "Log in"}><span className="login-button-label">{auth.user ? auth.user.username : "Log in"}</span><span aria-hidden="true">↗</span></button>
       </div></header>
-      {auth.user && <p className="auth-storage-notice" role="status">Signed in as {auth.user.username}. Your collection and reviews are still saved on this device.</p>}
-      {["diary", "review"].includes(route.page) ? <ListeningDiary albums={albums} tracklists={tracklists} writing={route.page === "review"} requestedAlbumId={route.albumId} /> : route.page === "album" ? (
+      {auth.user && <p className="auth-storage-notice" role="status">Signed in as {auth.user.username}. Reviews are saved to your account. Your collection and wishlist are still saved on this device.</p>}
+      {["diary", "review"].includes(route.page) ? <ListeningDiary key={auth.enabled ? auth.user?.id || "guest" : "demo"} auth={auth} onLogin={() => setLoginOpen(true)} albums={albums} tracklists={tracklists} writing={route.page === "review"} requestedAlbumId={route.albumId} /> : route.page === "album" ? (
         selectedAlbum ? <AlbumPage
           backPage={returnPage} key={selectedAlbum.id} album={selectedAlbum} tracks={tracklists[selectedAlbum.id] || []}
           isCollected={collection[selectedAlbum.id]} isWishlisted={wishlist[selectedAlbum.id]}

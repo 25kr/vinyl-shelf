@@ -2,7 +2,7 @@
 
 ## Current status
 
-The React site is a browser-only prototype. Collections, wishlists, saved albums and diary entries are stored on the current device. The public demo still shows a login preview; the local development site now has real session login/logout. Demo reviews are fictional and never saved as real user entries. The local Django foundation now runs with SQLite, a custom user model, a read-only health endpoint and a Vite development proxy. Local login/logout and a private terminal command to create a listener are implemented and tested. Public registration, invitations, account-specific collections/reviews and private-beta deployment controls are not implemented yet. See backend/README.md for local setup.
+The React site is a browser-only prototype. Collections, wishlists and saved albums are still stored on the current device. Diary entries created on the local signed-in site now use the Django review database; the public demo retains device-only reviews. The public demo still shows a login preview; the local development site now has real session login/logout. Demo reviews are fictional and never saved as real user entries. The local Django foundation now runs with SQLite, a custom user model, a read-only health endpoint and a Vite development proxy. Local login/logout and a private terminal command to create a listener are implemented and tested. Account-owned reviews, a member-only paginated feed, owner-only API mutations and explicit browser-review imports are implemented and tested. Public registration, invitations, account-specific collections/wishlists and private-beta deployment controls are not implemented yet. See backend/README.md for local setup.
 
 ## Frontend work completed, in order
 

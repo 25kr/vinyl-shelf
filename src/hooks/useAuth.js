@@ -23,5 +23,6 @@ export default function useAuth() {
     try { const data = await authMutation("logout"); setUser(data.user); }
     finally { setBusy(false); }
   }
-  return { enabled: authEnabled, user, loading, busy, login, logout };
+  async function refresh() { const data = await authRequest("session"); setUser(data.user); return data; }
+  return { enabled: authEnabled, user, loading, busy, login, logout, refresh };
 }

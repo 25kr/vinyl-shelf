@@ -32,7 +32,7 @@ class SessionAuthenticationTests(TestCase):
         token = self.csrf()
         response = self.post("/api/auth/login/", {"username": "listener", "password": "test-password-for-auth"}, token)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json()["user"], {"id": self.user.pk, "username": "listener"})
+        self.assertEqual(response.json()["user"], {"id": self.user.pk, "username": "listener", "isStaff": False})
         self.assertNotIn("password", response.content.decode())
         self.assertNotIn("email", response.json()["user"])
         self.assertTrue(response.cookies["sessionid"]["httponly"])

@@ -30,7 +30,8 @@ export default function LoginDialog({ onClose, auth }) {
         <button className="dialog-close" type="button" onClick={onClose} aria-label="Close login" disabled={auth.busy}>×</button>
         <span className="brand-record login-record" aria-hidden="true" />
         <h2 id="login-title" tabIndex="-1">{auth.user ? "Your account" : "Welcome back."}</h2>
-        <p id="login-description">{!auth.enabled ? "This public demo saves collections and reviews in your browser. Account sign-in is not available here yet." : auth.user ? `Signed in as ${auth.user.username}. Collections and reviews are still saved on this device while account storage is being built.` : "Log in with your username and password. New accounts are not open for registration yet."}</p>
+        <p id="login-description">{!auth.enabled ? "This public demo saves collections and reviews in your browser. Account sign-in is not available here yet." : auth.user ? `Signed in as ${auth.user.username}. Reviews are saved to your account. Collections and wishlists are still saved on this device.` : "Log in with your username and password. New accounts are not open for registration yet."}</p>
+        {auth.user?.isStaff && <a className="primary-link admin-link" href="/admin/" target="_blank" rel="noreferrer">Open admin ↗</a>}
         {error && <p className="auth-error" role="alert">{error}</p>}
         {!auth.enabled ? <button className="collection-button" onClick={onClose}>Keep exploring ↗</button> : auth.user ? <button className="collection-button" type="button" onClick={logout} disabled={auth.busy}>{auth.busy ? "Logging out…" : "Log out"}</button> :
           <form className="login-form" onSubmit={submit} aria-busy={auth.busy}>

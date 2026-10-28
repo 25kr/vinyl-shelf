@@ -144,3 +144,11 @@ input, select, textarea { background: #f9f9f5c9; border-color: #19191930; border
 .auth-storage-notice { margin: 0; padding: 10px 22px; background: #e0e7d3; color: #3d4937; text-align: center; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
 .login-form button:disabled, .login-dialog button:disabled { opacity: .6; cursor: wait; }
 #login-title:focus { outline: none; }
+
+.diary-account-prompt { margin: 20px 0; font-size: 13px; line-height: 1.7; }
+.diary-browser-archive { padding: 18px; border: 1px solid var(--line); border-radius: 4px; }
+.diary-browser-archive summary { cursor: pointer; font-size: 13px; font-weight: 600; min-height: 32px; }
+.diary-browser-archive > p { color: var(--muted); font-size: 12px; line-height: 1.7; }
+.diary-browser-archive > div { margin-top: 16px; }
+.diary-form button:disabled { opacity: .6; cursor: wait; }
+.admin-link { margin: 0 0 20px; }

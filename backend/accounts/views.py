@@ -14,7 +14,7 @@ from django.views.decorators.http import require_GET, require_POST
 def session_data(request):
     user = request.user
     return {
-        "user": {"id": user.pk, "username": user.username} if user.is_authenticated else None,
+        "user": {"id": user.pk, "username": user.username, "isStaff": user.is_staff} if user.is_authenticated else None,
         "csrfToken": get_token(request),
     }
 

@@ -2,7 +2,8 @@
 
 This is the first backend milestone: a Django project, a local SQLite database,
 a custom user model, a read-only health check and session login/logout connected
-to the local React form. Signup, shared collections/reviews and private-beta
+to the local React form. Account-owned reviews now use the Django database.
+Signup, shared collections/wishlists and private-beta
 deployment are not implemented yet.
 The React site's existing browser data is not imported or modified.
 
@@ -42,8 +43,7 @@ Do not upload them or use local settings for hosting.
     npm.cmd run backend:check
     npm.cmd run backend:test
 
-The tests use a separate temporary test database. No real accounts have been
-created. /admin/ uses Django's authentication but no superuser is set up yet.
+Tests use a separate temporary database and never create real accounts. Local users are created explicitly via backend:user. No administrator is created automatically; admin roles are granted only with the owner's approval.
 
 ## Files to learn first
 
@@ -75,10 +75,7 @@ overwrite an existing username. No default credentials or public signup exist.
 
 Open the local Vite site and click Log in. Username/password are checked by
 Django, which stores the session in an HttpOnly cookie. A refresh restores the
-session. Click your username to open account details and Log out. Collections,
-wishlists and reviews are still device-local, not per-account or shared; a banner
-states this when signed in. Do not use a shared browser as if those records were
-private account data. Account-specific storage is a later milestone.
+session. Click your username to open account details and Log out. Collections and wishlists remain device-local. New reviews are account-owned and visible to signed-in members only.
 
 ## Authentication endpoints
 
@@ -100,3 +97,39 @@ limiter, a reviewed proxy/IP policy and deployment testing. Invite-only signup,
 password reset and account deletion remain future work. Do not deploy local DEBUG
 settings. Tests exercise CSRF/origin rejection, generic failures, persistence,
 logout invalidation, request validation and rate limits.
+
+## Account-owned reviews and local admin
+
+New reviews on the local signed-in site are stored in Django, with the author
+set from the authenticated session. The private member feed is paginated at 20
+entries. Only the owner may change/delete a review through the API; even a
+superuser uses this owner-only API. Moderation is a separate Django admin action.
+Real reviews and their edit controls are removed from React when the user logs
+out or switches accounts. Public GitHub Pages remains a device-only demo.
+
+- GET/POST /api/reviews/: authenticated member feed / create a review.
+- PATCH/DELETE /api/reviews/<uuid>/: owner-only changes, with CSRF protection.
+- Invalid albums, wrong-album tracks, future dates, ratings outside 1-5 and text
+  over 500 characters are rejected by Django, not only by React.
+- clientId is unique per owner: retrying a save/import does not create a second
+  copy. Conflicting content with the same import ID must be edited explicitly.
+
+Older browser entries are not silently assigned to whichever account signs in.
+After login, expand Reviews saved on this browser and choose Import review as
+<username>. This opens the form to check the date/rating and upload explicitly.
+Original browser JSON is kept unchanged, including on error. Older undated
+album-page reviews remain a read-only archive; no listening dates are invented.
+Never import another person's entries from a shared device.
+
+The account menu shows Open admin to staff. It links to /admin/ through the local
+Vite proxy; the direct backend address is http://127.0.0.1:8000/admin/. Use your
+existing username and password. Staff permissions are never granted by a public
+endpoint. Superuser access permits user administration and review moderation;
+owner and import identifiers cannot be reassigned through the review admin.
+This milestone does not make the app production-ready: invitations, moderation
+policy, shared login throttling, hosting and backups still need completing.
+
+The review validation snapshot is backend/reviews/catalogue.json. When changing
+the album catalogue, update this snapshot from src/data/tracklists.json as well;
+each album maps to its list of disc-number track identifiers. Keep existing IDs
+stable so saved reviews retain their album/track relationships.
