@@ -130,3 +130,7 @@ input, select, textarea { background: #f9f9f5c9; border-color: #19191930; border
   input, select, textarea { font-size: 16px; }
   .diary-form-row { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Clear heavyweight pressing preview for ODESZA. */
+.vinyl-clear .vinyl-disc { --disc-base: #d5dedb; opacity: .82; }
+.vinyl-clear .pressing-swatch { background: #d5dedb; }

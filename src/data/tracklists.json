@@ -3380,5 +3380,842 @@
       "durationMs": 2238872,
       "url": "https://music.apple.com/us/album/mx-including-hidden-tracks-bong-hit-damone/1099843198?i=1099843340&uo=4"
     }
+  ],
+  "zedd-clarity": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "Hourglass (feat. LIZ)",
+      "durationMs": 313360,
+      "url": "https://music.apple.com/us/album/hourglass-feat-liz/1440818485?i=1440818487&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "Shave It Up",
+      "durationMs": 190600,
+      "url": "https://music.apple.com/us/album/shave-it-up/1440818485?i=1440818490&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Spectrum (feat. Matthew Koma)",
+      "durationMs": 243440,
+      "url": "https://music.apple.com/us/album/spectrum-feat-matthew-koma/1440818485?i=1440818492&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "Lost At Sea (feat. Ryan Tedder)",
+      "durationMs": 225253,
+      "url": "https://music.apple.com/us/album/lost-at-sea-feat-ryan-tedder/1440818485?i=1440818494&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "Clarity (feat. Foxes)",
+      "durationMs": 271707,
+      "url": "https://music.apple.com/us/album/clarity-feat-foxes/1440818485?i=1440818495&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "Codec",
+      "durationMs": 361453,
+      "url": "https://music.apple.com/us/album/codec/1440818485?i=1440818497&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "Stache",
+      "durationMs": 244613,
+      "url": "https://music.apple.com/us/album/stache/1440818485?i=1440818499&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "Fall Into the Sky (feat. Ellie Goulding)",
+      "durationMs": 217347,
+      "url": "https://music.apple.com/us/album/fall-into-the-sky-feat-ellie-goulding/1440818485?i=1440818681&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "Follow You Down (feat. Bright Lights)",
+      "durationMs": 347320,
+      "url": "https://music.apple.com/us/album/follow-you-down-feat-bright-lights/1440818485?i=1440818683&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "Epos",
+      "durationMs": 336040,
+      "url": "https://music.apple.com/us/album/epos/1440818485?i=1440818684&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "Stay the Night (feat. Hayley Williams)",
+      "durationMs": 217344,
+      "url": "https://music.apple.com/us/album/stay-the-night-feat-hayley-williams/1440818485?i=1440818685&uo=4"
+    },
+    {
+      "number": 12,
+      "disc": 1,
+      "title": "Push Play (feat. Miriam Bryant)",
+      "durationMs": 217939,
+      "url": "https://music.apple.com/us/album/push-play-feat-miriam-bryant/1440818485?i=1440818687&uo=4"
+    },
+    {
+      "number": 13,
+      "disc": 1,
+      "title": "Alive",
+      "durationMs": 225943,
+      "url": "https://music.apple.com/us/album/alive/1440818485?i=1440818688&uo=4"
+    },
+    {
+      "number": 14,
+      "disc": 1,
+      "title": "Breakn' a Sweat (Zedd Remix)",
+      "durationMs": 273440,
+      "url": "https://music.apple.com/us/album/breakn-a-sweat-zedd-remix/1440818485?i=1440818694&uo=4"
+    }
+  ],
+  "zedd-true-colors": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "Addicted To A Memory (feat. Bahari)",
+      "durationMs": 303160,
+      "url": "https://music.apple.com/us/album/addicted-to-a-memory-feat-bahari/1470706630?i=1470706633&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "I Want You To Know (feat. Selena Gomez)",
+      "durationMs": 240000,
+      "url": "https://music.apple.com/us/album/i-want-you-to-know-feat-selena-gomez/1470706630?i=1470706637&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Beautiful Now (feat. Jon Bellion)",
+      "durationMs": 218293,
+      "url": "https://music.apple.com/us/album/beautiful-now-feat-jon-bellion/1470706630?i=1470706638&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "Transmission (feat. Logic & X Ambassadors)",
+      "durationMs": 242213,
+      "url": "https://music.apple.com/us/album/transmission-feat-logic-x-ambassadors/1470706630?i=1470706909&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "Done With Love",
+      "durationMs": 296280,
+      "url": "https://music.apple.com/us/album/done-with-love/1470706630?i=1470706910&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "True Colors",
+      "durationMs": 228147,
+      "url": "https://music.apple.com/us/album/true-colors/1470706630?i=1470706912&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "Straight Into The Fire",
+      "durationMs": 221533,
+      "url": "https://music.apple.com/us/album/straight-into-the-fire/1470706630?i=1470706913&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "Papercut (feat. Troye Sivan)",
+      "durationMs": 443293,
+      "url": "https://music.apple.com/us/album/papercut-feat-troye-sivan/1470706630?i=1470706914&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "Bumble Bee",
+      "durationMs": 247507,
+      "url": "https://music.apple.com/us/album/bumble-bee/1470706630?i=1470706915&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "Daisy",
+      "durationMs": 174413,
+      "url": "https://music.apple.com/us/album/daisy/1470706630?i=1470706948&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "Illusion (feat. Echosmith)",
+      "durationMs": 385560,
+      "url": "https://music.apple.com/us/album/illusion-feat-echosmith/1470706630?i=1470706950&uo=4"
+    }
+  ],
+  "zedd-telos": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "Out of Time",
+      "durationMs": 222909,
+      "url": "https://music.apple.com/us/album/out-of-time/1752598985?i=1752599124&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "Tangerine Rays",
+      "durationMs": 252373,
+      "url": "https://music.apple.com/us/album/tangerine-rays/1752598985?i=1752599135&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Shanti",
+      "durationMs": 205086,
+      "url": "https://music.apple.com/us/album/shanti/1752598985?i=1752599137&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "No Gravity",
+      "durationMs": 211313,
+      "url": "https://music.apple.com/us/album/no-gravity/1752598985?i=1752599140&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "Sona",
+      "durationMs": 188438,
+      "url": "https://music.apple.com/us/album/sona/1752598985?i=1752599144&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "Lucky",
+      "durationMs": 127380,
+      "url": "https://music.apple.com/us/album/lucky/1752598985?i=1752599146&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "Dream Brother",
+      "durationMs": 298062,
+      "url": "https://music.apple.com/us/album/dream-brother/1752598985?i=1752599181&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "Descensus",
+      "durationMs": 184785,
+      "url": "https://music.apple.com/us/album/descensus/1752598985?i=1752599182&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "Automatic Yes",
+      "durationMs": 205309,
+      "url": "https://music.apple.com/us/album/automatic-yes/1752598985?i=1752599185&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "1685",
+      "durationMs": 371006,
+      "url": "https://music.apple.com/us/album/1685/1752598985?i=1752599187&uo=4"
+    }
+  ],
+  "daft-punk-discovery": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "One More Time",
+      "durationMs": 320357,
+      "url": "https://music.apple.com/us/album/one-more-time/697194953?i=697195462&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "Aerodynamic",
+      "durationMs": 212547,
+      "url": "https://music.apple.com/us/album/aerodynamic/697194953?i=697195570&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Digital Love",
+      "durationMs": 301373,
+      "url": "https://music.apple.com/us/album/digital-love/697194953?i=697195633&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "Harder Better Faster Stronger",
+      "durationMs": 224693,
+      "url": "https://music.apple.com/us/album/harder-better-faster-stronger/697194953?i=697195787&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "Crescendolls",
+      "durationMs": 211640,
+      "url": "https://music.apple.com/us/album/crescendolls/697194953?i=697195813&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "Nightvision",
+      "durationMs": 104467,
+      "url": "https://music.apple.com/us/album/nightvision/697194953?i=697195819&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "Superheroes",
+      "durationMs": 237800,
+      "url": "https://music.apple.com/us/album/superheroes/697194953?i=697195890&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "High Life",
+      "durationMs": 201800,
+      "url": "https://music.apple.com/us/album/high-life/697194953?i=697195929&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "Something About Us",
+      "durationMs": 232667,
+      "url": "https://music.apple.com/us/album/something-about-us/697194953?i=697195941&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "Voyager",
+      "durationMs": 227867,
+      "url": "https://music.apple.com/us/album/voyager/697194953?i=697195991&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "Veridis Quo",
+      "durationMs": 345187,
+      "url": "https://music.apple.com/us/album/veridis-quo/697194953?i=697196125&uo=4"
+    },
+    {
+      "number": 12,
+      "disc": 1,
+      "title": "Short Circuit",
+      "durationMs": 206867,
+      "url": "https://music.apple.com/us/album/short-circuit/697194953?i=697196212&uo=4"
+    },
+    {
+      "number": 13,
+      "disc": 1,
+      "title": "Face to Face",
+      "durationMs": 240173,
+      "url": "https://music.apple.com/us/album/face-to-face/697194953?i=697196420&uo=4"
+    },
+    {
+      "number": 14,
+      "disc": 1,
+      "title": "Too Long",
+      "durationMs": 600293,
+      "url": "https://music.apple.com/us/album/too-long/697194953?i=697196490&uo=4"
+    }
+  ],
+  "daft-punk-random-access-memories": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "Give Life Back to Music",
+      "durationMs": 274403,
+      "url": "https://music.apple.com/us/album/give-life-back-to-music/617154241?i=617154353&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "The Game of Love",
+      "durationMs": 322149,
+      "url": "https://music.apple.com/us/album/the-game-of-love/617154241?i=617154354&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Giorgio by Moroder",
+      "durationMs": 544629,
+      "url": "https://music.apple.com/us/album/giorgio-by-moroder/617154241?i=617154360&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "Within",
+      "durationMs": 228509,
+      "url": "https://music.apple.com/us/album/within/617154241?i=617154361&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "Instant Crush",
+      "durationMs": 337562,
+      "url": "https://music.apple.com/us/album/instant-crush/617154241?i=617154362&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "Lose Yourself to Dance",
+      "durationMs": 353896,
+      "url": "https://music.apple.com/us/album/lose-yourself-to-dance/617154241?i=617154363&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "Touch",
+      "durationMs": 498962,
+      "url": "https://music.apple.com/us/album/touch/617154241?i=617154364&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "Get Lucky",
+      "durationMs": 369629,
+      "url": "https://music.apple.com/us/album/get-lucky/617154241?i=617154366&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "Beyond",
+      "durationMs": 290242,
+      "url": "https://music.apple.com/us/album/beyond/617154241?i=617154367&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "Motherboard",
+      "durationMs": 341656,
+      "url": "https://music.apple.com/us/album/motherboard/617154241?i=617154368&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "Fragments of Time",
+      "durationMs": 279776,
+      "url": "https://music.apple.com/us/album/fragments-of-time/617154241?i=617154569&uo=4"
+    },
+    {
+      "number": 12,
+      "disc": 1,
+      "title": "Doin' it Right",
+      "durationMs": 251302,
+      "url": "https://music.apple.com/us/album/doin-it-right/617154241?i=617154645&uo=4"
+    },
+    {
+      "number": 13,
+      "disc": 1,
+      "title": "Contact",
+      "durationMs": 381351,
+      "url": "https://music.apple.com/us/album/contact/617154241?i=617154647&uo=4"
+    }
+  ],
+  "avicii-true": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "Wake Me Up",
+      "durationMs": 249688,
+      "url": "https://music.apple.com/us/album/wake-me-up/1440872730?i=1440872929&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "You Make Me",
+      "durationMs": 233217,
+      "url": "https://music.apple.com/us/album/you-make-me/1440872730?i=1440872944&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Hey Brother",
+      "durationMs": 254062,
+      "url": "https://music.apple.com/us/album/hey-brother/1440872730?i=1440873108&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "Addicted To You",
+      "durationMs": 148387,
+      "url": "https://music.apple.com/us/album/addicted-to-you/1440872730?i=1440873120&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "Dear Boy",
+      "durationMs": 479330,
+      "url": "https://music.apple.com/us/album/dear-boy/1440872730?i=1440873129&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "Liar Liar",
+      "durationMs": 238858,
+      "url": "https://music.apple.com/us/album/liar-liar/1440872730?i=1440873197&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "Shame On Me",
+      "durationMs": 253492,
+      "url": "https://music.apple.com/us/album/shame-on-me/1440872730?i=1440873323&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "Lay Me Down",
+      "durationMs": 300118,
+      "url": "https://music.apple.com/us/album/lay-me-down/1440872730?i=1440873337&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "Hope There's Someone",
+      "durationMs": 381278,
+      "url": "https://music.apple.com/us/album/hope-theres-someone/1440872730?i=1440873401&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "Heart Upon My Sleeve",
+      "durationMs": 279950,
+      "url": "https://music.apple.com/us/album/heart-upon-my-sleeve/1440872730?i=1440873412&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "Long Road To Hell",
+      "durationMs": 222767,
+      "url": "https://music.apple.com/us/album/long-road-to-hell/1440872730?i=1440873422&uo=4"
+    },
+    {
+      "number": 12,
+      "disc": 1,
+      "title": "Edom",
+      "durationMs": 495022,
+      "url": "https://music.apple.com/us/album/edom/1440872730?i=1440873427&uo=4"
+    }
+  ],
+  "porter-robinson-worlds": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "Divinity (feat. Amy Millan)",
+      "durationMs": 368373,
+      "url": "https://music.apple.com/us/album/divinity-feat-amy-millan/1440857923?i=1440858139&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "Sad Machine",
+      "durationMs": 350690,
+      "url": "https://music.apple.com/us/album/sad-machine/1440857923?i=1440858256&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Years of War (feat. Breanne Duren & Sean Caskey)",
+      "durationMs": 236053,
+      "url": "https://music.apple.com/us/album/years-of-war-feat-breanne-duren-sean-caskey/1440857923?i=1440858265&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "Flicker",
+      "durationMs": 279032,
+      "url": "https://music.apple.com/us/album/flicker/1440857923?i=1440858275&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "Fresh Static Snow",
+      "durationMs": 358760,
+      "url": "https://music.apple.com/us/album/fresh-static-snow/1440857923?i=1440858401&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "Polygon Dust (feat. Lemaitre)",
+      "durationMs": 209467,
+      "url": "https://music.apple.com/us/album/polygon-dust-feat-lemaitre/1440857923?i=1440858408&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "Hear the Bells (feat. Imaginary Cities)",
+      "durationMs": 286880,
+      "url": "https://music.apple.com/us/album/hear-the-bells-feat-imaginary-cities/1440857923?i=1440858415&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "Natural Light",
+      "durationMs": 141227,
+      "url": "https://music.apple.com/us/album/natural-light/1440857923?i=1440858422&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "Lionhearted (feat. Urban Cone)",
+      "durationMs": 266107,
+      "url": "https://music.apple.com/us/album/lionhearted-feat-urban-cone/1440857923?i=1440858429&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "Sea of Voices",
+      "durationMs": 298981,
+      "url": "https://music.apple.com/us/album/sea-of-voices/1440857923?i=1440858646&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "Fellow Feeling",
+      "durationMs": 350173,
+      "url": "https://music.apple.com/us/album/fellow-feeling/1440857923?i=1440858655&uo=4"
+    },
+    {
+      "number": 12,
+      "disc": 1,
+      "title": "Goodbye To a World",
+      "durationMs": 328507,
+      "url": "https://music.apple.com/us/album/goodbye-to-a-world/1440857923?i=1440858738&uo=4"
+    }
+  ],
+  "odesza-a-moment-apart": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "Intro",
+      "durationMs": 63972,
+      "url": "https://music.apple.com/us/album/intro/1240361817?i=1240362776&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "A Moment Apart",
+      "durationMs": 234244,
+      "url": "https://music.apple.com/us/album/a-moment-apart/1240361817?i=1240362777&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Higher Ground (feat. Naomi Wild)",
+      "durationMs": 215131,
+      "url": "https://music.apple.com/us/album/higher-ground-feat-naomi-wild/1240361817?i=1240362778&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "Boy",
+      "durationMs": 183680,
+      "url": "https://music.apple.com/us/album/boy/1240361817?i=1240362781&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "Line of Sight (feat. Mansionair & WYNNE)",
+      "durationMs": 237140,
+      "url": "https://music.apple.com/us/album/line-of-sight-feat-mansionair-wynne/1240361817?i=1240362782&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "Late Night",
+      "durationMs": 228155,
+      "url": "https://music.apple.com/us/album/late-night/1240361817?i=1240362783&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "Across the Room (feat. Leon Bridges)",
+      "durationMs": 283538,
+      "url": "https://music.apple.com/us/album/across-the-room-feat-leon-bridges/1240361817?i=1240362784&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "Meridian",
+      "durationMs": 235861,
+      "url": "https://music.apple.com/us/album/meridian/1240361817?i=1240362788&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "Everything at Your Feet (feat. The Chamanas)",
+      "durationMs": 208018,
+      "url": "https://music.apple.com/us/album/everything-at-your-feet-feat-the-chamanas/1240361817?i=1240362789&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "Just a Memory (feat. Regina Spektor)",
+      "durationMs": 236795,
+      "url": "https://music.apple.com/us/album/just-a-memory-feat-regina-spektor/1240361817?i=1240362912&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "Divide (feat. Kelsey Bulkin)",
+      "durationMs": 241849,
+      "url": "https://music.apple.com/us/album/divide-feat-kelsey-bulkin/1240361817?i=1240362915&uo=4"
+    },
+    {
+      "number": 12,
+      "disc": 1,
+      "title": "Thin Floors and Tall Ceilings",
+      "durationMs": 178308,
+      "url": "https://music.apple.com/us/album/thin-floors-and-tall-ceilings/1240361817?i=1240362924&uo=4"
+    },
+    {
+      "number": 13,
+      "disc": 1,
+      "title": "La Ciudad",
+      "durationMs": 271136,
+      "url": "https://music.apple.com/us/album/la-ciudad/1240361817?i=1240362926&uo=4"
+    },
+    {
+      "number": 14,
+      "disc": 1,
+      "title": "Falls (feat. Sasha Alex Sloan)",
+      "durationMs": 232937,
+      "url": "https://music.apple.com/us/album/falls-feat-sasha-alex-sloan/1240361817?i=1240362927&uo=4"
+    },
+    {
+      "number": 15,
+      "disc": 1,
+      "title": "Show Me",
+      "durationMs": 218549,
+      "url": "https://music.apple.com/us/album/show-me/1240361817?i=1240362953&uo=4"
+    },
+    {
+      "number": 16,
+      "disc": 1,
+      "title": "Corners of the Earth (feat. RY X)",
+      "durationMs": 305349,
+      "url": "https://music.apple.com/us/album/corners-of-the-earth-feat-ry-x/1240361817?i=1240363029&uo=4"
+    }
+  ],
+  "calvin-harris-18-months": [
+    {
+      "number": 1,
+      "disc": 1,
+      "title": "Green Valley",
+      "durationMs": 109107,
+      "url": "https://music.apple.com/us/album/green-valley/1713469222?i=1713469223&uo=4"
+    },
+    {
+      "number": 2,
+      "disc": 1,
+      "title": "Bounce (feat. Kelis) [Radio Edit]",
+      "durationMs": 222187,
+      "url": "https://music.apple.com/us/album/bounce-feat-kelis-radio-edit/1713469222?i=1713469224&uo=4"
+    },
+    {
+      "number": 3,
+      "disc": 1,
+      "title": "Feel So Close (Radio Edit)",
+      "durationMs": 206413,
+      "url": "https://music.apple.com/us/album/feel-so-close-radio-edit/1713469222?i=1713469225&uo=4"
+    },
+    {
+      "number": 4,
+      "disc": 1,
+      "title": "We Found Love (feat. Rihanna)",
+      "durationMs": 215520,
+      "url": "https://music.apple.com/us/album/we-found-love-feat-rihanna/1713469222?i=1713469226&uo=4"
+    },
+    {
+      "number": 5,
+      "disc": 1,
+      "title": "We'll Be Coming Back (feat. Example)",
+      "durationMs": 234360,
+      "url": "https://music.apple.com/us/album/well-be-coming-back-feat-example/1713469222?i=1713469227&uo=4"
+    },
+    {
+      "number": 6,
+      "disc": 1,
+      "title": "Mansion",
+      "durationMs": 127733,
+      "url": "https://music.apple.com/us/album/mansion/1713469222?i=1713469228&uo=4"
+    },
+    {
+      "number": 7,
+      "disc": 1,
+      "title": "Iron",
+      "durationMs": 219653,
+      "url": "https://music.apple.com/us/album/iron/1713469222?i=1713469229&uo=4"
+    },
+    {
+      "number": 8,
+      "disc": 1,
+      "title": "I Need Your Love (feat. Ellie Goulding)",
+      "durationMs": 234507,
+      "url": "https://music.apple.com/us/album/i-need-your-love-feat-ellie-goulding/1713469222?i=1713469230&uo=4"
+    },
+    {
+      "number": 9,
+      "disc": 1,
+      "title": "Drinking from the Bottle (feat. Tinie Tempah)",
+      "durationMs": 240347,
+      "url": "https://music.apple.com/us/album/drinking-from-the-bottle-feat-tinie-tempah/1713469222?i=1713469231&uo=4"
+    },
+    {
+      "number": 10,
+      "disc": 1,
+      "title": "Sweet Nothing (feat. Florence Welch)",
+      "durationMs": 213973,
+      "url": "https://music.apple.com/us/album/sweet-nothing-feat-florence-welch/1713469222?i=1713469232&uo=4"
+    },
+    {
+      "number": 11,
+      "disc": 1,
+      "title": "School",
+      "durationMs": 107440,
+      "url": "https://music.apple.com/us/album/school/1713469222?i=1713469233&uo=4"
+    },
+    {
+      "number": 12,
+      "disc": 1,
+      "title": "Here 2 China (feat. Dizzee Rascal)",
+      "durationMs": 152453,
+      "url": "https://music.apple.com/us/album/here-2-china-feat-dizzee-rascal/1713469222?i=1713469234&uo=4"
+    },
+    {
+      "number": 13,
+      "disc": 1,
+      "title": "Let's Go (feat. Ne-Yo) [Radio Edit]",
+      "durationMs": 226107,
+      "url": "https://music.apple.com/us/album/lets-go-feat-ne-yo-radio-edit/1713469222?i=1713469235&uo=4"
+    },
+    {
+      "number": 14,
+      "disc": 1,
+      "title": "Awooga",
+      "durationMs": 231240,
+      "url": "https://music.apple.com/us/album/awooga/1713469222?i=1713469236&uo=4"
+    },
+    {
+      "number": 15,
+      "disc": 1,
+      "title": "Thinking About You (feat. Ayah Marar)",
+      "durationMs": 247933,
+      "url": "https://music.apple.com/us/album/thinking-about-you-feat-ayah-marar/1713469222?i=1713469237&uo=4"
+    }
   ]
 }

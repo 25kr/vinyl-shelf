@@ -40,3 +40,7 @@ Checked 20 October 2026. Previews show a selected photographed edition and side;
 | lana-del-rey-ocean-blvd | [Edition / photo](https://shoplanadelrey.com/products/did-you-know-that-there-s-a-tunnel-under-ocean-blvd-exclusive-white-vinyl) | [Original image](https://cdn.shopify.com/s/files/1/1828/6307/products/LDREXCLUWHITELP-UPDATED.png?v=1670361173) | Centre label photograph |
 | deftones-white-pony | [Edition / photo](https://uk.rarevinyl.com/products/deftones-white-pony-us-2-lp-vinyl-record-double-524901-1-823128) | [Original image](https://uk.rarevinyl.com/cdn/shop/products/deftones-white-pony-us-2-lp-vinyl-record-double-dft2lwh823128-823128b.jpg?v=1705369022&width=1280) | Centre label photograph |
 | deftones-around-the-fur | [Edition / photo](https://uk.rarevinyl.com/products/deftones-around-the-fur-180gram-us-vinyl-lp-album-record-45831-1-823123) | [Original image](https://uk.rarevinyl.com/cdn/shop/products/deftones-around-the-fur-180gram-us-vinyl-lp-album-record-dftlpar823123-823123b.jpg?v=1705401317&width=1280) | Centre label photograph |
+
+## EDM additions — 28 October 2026
+
+Telos: official Zedd black-vinyl product photograph, cropped to its unobstructed centre label. Worlds: official pearl 10th anniversary mockup, cropped to the unobstructed right disc label. Source image files are unchanged; crops are applied in CSS. Both preserve the photographed spindle hole. Other new albums use explicitly illustrative previews until exact unobstructed pressing photographs are available.

@@ -444,5 +444,31 @@
     "label": "Black vinyl · Maverick 45831-1 · Side One",
     "source": "https://uk.rarevinyl.com/products/deftones-around-the-fur-180gram-us-vinyl-lp-album-record-45831-1-823123",
     "photoSource": "https://uk.rarevinyl.com/cdn/shop/products/deftones-around-the-fur-180gram-us-vinyl-lp-album-record-dftlpar823123-823123b.jpg?v=1705401317&width=1280"
+  },
+  "zedd-telos": {
+    "file": "zedd-telos.png",
+    "crop": [
+      56.4,
+      44.8,
+      13.3,
+      10.66
+    ],
+    "source": "https://store.zedd.net/products/telos-standard-black-vinyl",
+    "photoSource": "https://store.zedd.net/cdn/shop/files/TELOS_VINYL2_BG.png?v=1719527630",
+    "preservePhotoHole": true
+  },
+  "porter-robinson-worlds": {
+    "file": "porter-robinson-worlds.png",
+    "crop": [
+      67.3,
+      41.3,
+      15,
+      15
+    ],
+    "colour": "white",
+    "source": "https://store.porterrobinson.com/products/porter-robinson-worlds-vinyl-1",
+    "photoSource": "https://store.porterrobinson.com/cdn/shop/files/Web-1.png?v=1741809881",
+    "preservePhotoHole": true,
+    "artworkNote": "Pearl anniversary edition confirmed by the artist. The preview uses a photographed centre label with stylised disc lighting. Track list follows the original digital album; the anniversary pressing also adds Hollowheart."
   }
 }

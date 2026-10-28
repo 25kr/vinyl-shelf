@@ -1,3 +1,4 @@
+import edmPressings from "./edmPressings";
 // Checked 20 October 2026. A fallback preview does not confirm a physical release.
 import pressingAdditions from "./pressingAdditions";
 import vinylArtwork from "./vinylArtwork.json";
@@ -26,6 +27,7 @@ const pressings = {
   "fakemink-the-boy-who-cried-terrified": { colour: "none", available: false, label: "No vinyl release confirmed", note: "Keep this album in your saved albums while you explore the music." },
   "fakemink-londons-saviour": { colour: "none", available: false, label: "No vinyl release confirmed", note: "Keep this album in your saved albums while you explore the music." },
   ...pressingAdditions,
+  ...edmPressings,
 };
 
 export function getPressing(id) {

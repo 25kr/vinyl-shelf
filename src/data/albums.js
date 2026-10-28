@@ -1,3 +1,4 @@
+import edmAdditions from "./edmAdditions";
 // Released album catalogue checked against Apple Music on 19 October 2026.
 // The Boy who cried Terrified is an EP, included in Apple Music's Albums section.
 // Pirouette is upcoming (11 November 2026), so it is not included yet.
@@ -76,6 +77,7 @@ const albums = [
     source: "https://music.apple.com/us/album/londons-saviour/6804850775",
   },
   ...catalogueAdditions,
+  ...edmAdditions,
 ];
 
 export default albums;
