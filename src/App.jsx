@@ -3,6 +3,7 @@ import RecordCard from "./components/RecordCard";
 import RecordSleeve from "./components/RecordSleeve";
 import AlbumPage from "./components/AlbumPage";
 import LoginDialog from "./components/LoginDialog";
+import useAuth from "./hooks/useAuth";
 import ListeningDiary from "./components/ListeningDiary";
 import albums from "./data/albums";
 import { getPressing } from "./data/pressings";
@@ -59,6 +60,7 @@ export default function App() {
   const setSort = value => setPreference("sort", value);
   const saveError = collectionError || wishlistError || savedError;
   const [loginOpen, setLoginOpen] = useState(false);
+  const auth = useAuth();
 
   useEffect(() => {
     function handleNavigation() {
@@ -109,8 +111,9 @@ export default function App() {
         <nav aria-label="Main navigation">
           {[["home", "Home", "#/"], ["explore", "Explore", "#/explore"], ["collection", "My collection", "#/collection"], ["wishlist", "Wishlist", "#/wishlist"], ["diary", "Diary", "#/diary"]].map(([page, label, href]) => <a key={page} href={href} aria-current={(route.page === page || (page === "diary" && route.page === "review")) ? "page" : undefined}>{label}</a>)}
         </nav>
-        <button className="login-button" onClick={() => setLoginOpen(true)}>Log in <span aria-hidden="true">↗</span></button>
+        <button className="login-button" onClick={() => setLoginOpen(true)} aria-label={auth.user ? `Account: ${auth.user.username}` : "Log in"}><span className="login-button-label">{auth.user ? auth.user.username : "Log in"}</span><span aria-hidden="true">↗</span></button>
       </div></header>
+      {auth.user && <p className="auth-storage-notice" role="status">Signed in as {auth.user.username}. Your collection and reviews are still saved on this device.</p>}
       {["diary", "review"].includes(route.page) ? <ListeningDiary albums={albums} tracklists={tracklists} writing={route.page === "review"} requestedAlbumId={route.albumId} /> : route.page === "album" ? (
         selectedAlbum ? <AlbumPage
           backPage={returnPage} key={selectedAlbum.id} album={selectedAlbum} tracks={tracklists[selectedAlbum.id] || []}
@@ -140,7 +143,7 @@ export default function App() {
         </main>
       )}
       <footer className="site-footer"><a className="footer-brand" href="#/">shelf.</a><p>Keep what moves you.</p><span>For the love of the record.</span></footer>
-      {loginOpen && <LoginDialog onClose={() => setLoginOpen(false)} />}
+      {loginOpen && <LoginDialog onClose={() => setLoginOpen(false)} auth={auth} />}
     </>
   );
 }

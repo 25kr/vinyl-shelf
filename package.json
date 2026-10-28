@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "backend": ".\\backend\\.venv\\Scripts\\python.exe backend/manage.py runserver 127.0.0.1:8000",
     "backend:check": ".\\backend\\.venv\\Scripts\\python.exe backend/manage.py check",
-    "backend:test": ".\\backend\\.venv\\Scripts\\python.exe backend/manage.py test api"
+    "backend:test": ".\\backend\\.venv\\Scripts\\python.exe backend/manage.py test api accounts",
+    "backend:user": ".\\backend\\.venv\\Scripts\\python.exe backend/manage.py create_listener"
   },
   "dependencies": {
     "react": "^19.3.1",

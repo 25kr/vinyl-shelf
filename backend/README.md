@@ -1,8 +1,9 @@
 # Local Django backend
 
 This is the first backend milestone: a Django project, a local SQLite database,
-a custom user model and a read-only health check. Real login, signup, shared
-collections, reviews and private-beta deployment are not implemented yet.
+a custom user model, a read-only health check and session login/logout connected
+to the local React form. Signup, shared collections/reviews and private-beta
+deployment are not implemented yet.
 The React site's existing browser data is not imported or modified.
 
 ## Run on this Windows laptop
@@ -59,3 +60,43 @@ an accidental deployment. Base settings alone are not a completed hosting setup.
 Production hosting, account/ownership checks, invite-only access, login limits,
 password reset, database backups and deployment checks are future milestones.
 See ../docs/BACKEND_PLAN.md.
+
+## Create your own local listener account
+
+From the project root:
+
+    npm.cmd run backend:user -- yourname
+
+Replace yourname with the username you want. The terminal asks you to type and
+confirm a password privately; it will not echo what you type. Do not paste your
+password into chat. The command checks Django's password rules, hashes the
+password and creates an ordinary user with no admin permissions. It refuses to
+overwrite an existing username. No default credentials or public signup exist.
+
+Open the local Vite site and click Log in. Username/password are checked by
+Django, which stores the session in an HttpOnly cookie. A refresh restores the
+session. Click your username to open account details and Log out. Collections,
+wishlists and reviews are still device-local, not per-account or shared; a banner
+states this when signed in. Do not use a shared browser as if those records were
+private account data. Account-specific storage is a later milestone.
+
+## Authentication endpoints
+
+- GET /api/auth/session/: public user fields (or null), plus a masked CSRF token.
+- POST /api/auth/login/: JSON username/password; CSRF header and cookie required.
+- POST /api/auth/logout/: invalidates the server session; CSRF required.
+
+Responses are not cached. Passwords and session tokens are never placed in
+localStorage. Wrong passwords, unknown names and inactive accounts share the
+same error. State-changing GET requests are rejected. Django enforces origin
+checks; the Vite proxy preserves the original Host rather than disabling CSRF.
+The default public build keeps login in demo mode and makes no auth requests.
+Only enable VITE_ENABLE_BACKEND=true for a build served with its own /api backend.
+
+The current login limiter allows 20 attempts per five-minute window per remote
+address using Django's local-process cache. This is a development guard, not a
+completed production brute-force defence. Hosting needs a shared cache or gateway
+limiter, a reviewed proxy/IP policy and deployment testing. Invite-only signup,
+password reset and account deletion remain future work. Do not deploy local DEBUG
+settings. Tests exercise CSRF/origin rejection, generic failures, persistence,
+logout invalidation, request validation and rate limits.

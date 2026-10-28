@@ -134,3 +134,13 @@ input, select, textarea { background: #f9f9f5c9; border-color: #19191930; border
 /* Clear heavyweight pressing preview for ODESZA. */
 .vinyl-clear .vinyl-disc { --disc-base: #d5dedb; opacity: .82; }
 .vinyl-clear .pressing-swatch { background: #d5dedb; }
+
+.login-form { display: grid; gap: 10px; text-align: left; margin-top: 22px; }
+.login-form label { font-size: 12px; font-weight: 600; margin-top: 8px; }
+.login-form input { font-size: 16px; min-width: 0; }
+.login-form .collection-button { margin-top: 14px; width: 100%; }
+.login-button-label { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.auth-error { background: #f5e4e0; color: #792e23; padding: 12px; font-size: 13px; line-height: 1.6; border-radius: 3px; }
+.auth-storage-notice { margin: 0; padding: 10px 22px; background: #e0e7d3; color: #3d4937; text-align: center; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.login-form button:disabled, .login-dialog button:disabled { opacity: .6; cursor: wait; }
+#login-title:focus { outline: none; }
