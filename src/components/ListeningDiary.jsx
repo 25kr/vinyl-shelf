@@ -38,7 +38,7 @@ export default function ListeningDiary({ albums, tracklists, writing, requestedA
   ].filter(item => albums.some(album => album.id === item.albumId)).map((item, index) => ({ ...item, id: `demo-${index}`, demo: true, target: "album", repeat: false, date: dateValue(new Date(new Date().setDate(new Date().getDate() - index - 1))), createdAt: new Date(new Date().setHours(0, 0, 0, 0) - (index + 1) * 86400000).toISOString() }));
   const sortedEntries = [...stored.entries, ...demos].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   useEffect(() => {
-    if (writing) document.getElementById("diary-album")?.focus();
+    if (writing) document.getElementById("diary-form-heading")?.focus({ preventScroll: true });
     else if (arrivingId) {
       arrivalRef.current?.focus({ preventScroll: true });
       arrivalRef.current?.scrollIntoView({ block: "center", behavior: "instant" });
@@ -70,7 +70,7 @@ export default function ListeningDiary({ albums, tracklists, writing, requestedA
     const entry = { id: previous?.id || crypto.randomUUID(), albumId, target, date, rating, note: note.trim(), repeat, createdAt: previous?.createdAt || new Date().toISOString() };
     const next = editingId ? stored.entries.map((item) => item.id === editingId ? entry : item) : [entry, ...stored.entries];
     submitting.current = true;
-    if (save(next)) { setArrivingId(entry.id); resetForm(); window.location.hash = "#/diary"; setStatus(editingId ? "Review updated." : "Your review has landed. Saved on this device."); }
+    if (save(next)) { if (event.currentTarget.contains(document.activeElement)) document.activeElement?.blur(); setArrivingId(entry.id); resetForm(); window.location.hash = "#/diary"; setStatus(editingId ? "Review updated." : "Your review has landed. Saved on this device."); }
     submitting.current = false;
   }
   function edit(entry) {
@@ -107,7 +107,7 @@ export default function ListeningDiary({ albums, tracklists, writing, requestedA
       </>}
       {writing && <section className="diary-composer-page" aria-labelledby="diary-form-heading">
         <a className="back-link" href="#/diary">← Back to diary</a>
-        <header className="diary-dialog-heading"><img src={selectedAlbum?.cover} alt="" width="44" height="44" /><h1 id="diary-form-heading">{editingId ? "Edit your review" : "Write a review"}</h1></header>
+        <header className="diary-dialog-heading"><img src={selectedAlbum?.cover} alt="" width="44" height="44" /><h1 id="diary-form-heading" tabIndex="-1">{editingId ? "Edit your review" : "Write a review"}</h1></header>
         {error && <p className="save-warning" role="alert">{error}</p>}
         <ReviewForm {...{ albums, albumId, setAlbumId, target, setTarget, tracks, multipleDiscs, date, setDate, rating, setRating, note, setNote, repeat, setRepeat, editingId }} onSubmit={handleSubmit} />
       </section>}

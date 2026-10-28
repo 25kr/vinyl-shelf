@@ -110,3 +110,23 @@ input, select, textarea { background: #f9f9f5c9; border-color: #19191930; border
   .feed-reviewer time { white-space: nowrap; }
   .diary-dialog-actions { flex-wrap: wrap; }
 }
+
+/* Mobile Safari: keep native date controls inside the form and avoid focus zoom. */
+.diary-composer-page, .diary-form, .diary-form-row { min-width: 0; }
+.diary-form input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  min-inline-size: 0;
+  box-sizing: border-box;
+}
+.diary-form input[type="date"]::-webkit-date-and-time-value { min-width: 0; text-align: left; }
+.diary-form input[type="date"]::-webkit-datetime-edit { min-width: 0; padding: 0; }
+#diary-form-heading:focus { outline: none; }
+@media (max-width: 700px), (hover: none) and (pointer: coarse) {
+  /* iOS zooms into small text fields; retain the user's ability to pinch zoom. */
+  input, select, textarea { font-size: 16px; }
+  .diary-form-row { grid-template-columns: minmax(0, 1fr); }
+}
