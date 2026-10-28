@@ -170,7 +170,7 @@ class SocialReviewTests(TestCase):
         self.assertEqual(self.client.delete(self.root + f"comments/{comment['id']}/").status_code, 404)
         self.client.force_login(self.reader)
         self.assertEqual(self.client.delete(self.root + f"comments/{comment['id']}/").status_code, 200)
-        self.assertEqual(Comment.objects.count(), 0)
+        self.assertEqual(Comment.objects.filter(is_deleted=False).count(), 0)
 
     def test_authentication_csrf_and_input_limits(self):
         import uuid
@@ -202,3 +202,58 @@ class SocialReviewTests(TestCase):
         self.assertEqual(self.send("comments/", {"text": "limited", "clientId": str(uuid.uuid4())}).status_code, 429)
         self.review.delete()
         self.assertEqual(Comment.objects.count(), 0)
+
+
+class CommentReplyTests(SocialReviewTests):
+    def test_reply_is_in_its_thread_and_retry_safe(self):
+        import uuid
+        from .models import Comment
+        parent = Comment.objects.create(review=self.review, owner=self.owner, text="Original", client_id=uuid.uuid4())
+        data = {"text": "A reply", "clientId": str(uuid.uuid4()), "parentId": parent.pk}
+        first = self.send("comments/", data)
+        self.assertEqual(first.status_code, 201)
+        self.assertEqual(first.json()["comment"]["parentId"], parent.pk)
+        self.assertEqual(self.send("comments/", data).status_code, 200)
+        roots = self.client.get(self.root + "comments/").json()
+        self.assertEqual(len(roots["results"]), 1)
+        self.assertEqual(roots["results"][0]["replyCount"], 1)
+        replies = self.client.get(self.root + f"comments/?parent={parent.pk}").json()
+        self.assertEqual(replies["results"][0]["text"], "A reply")
+        self.assertEqual(Comment.objects.count(), 2)
+
+    def test_wrong_review_nested_or_deleted_target_rejected(self):
+        import uuid
+        from .models import Comment, Review
+        other = Review.objects.create(owner=self.owner, album_id="another", rating=4, client_id="other")
+        wrong = Comment.objects.create(review=other, owner=self.owner, text="Other", client_id=uuid.uuid4())
+        root = Comment.objects.create(review=self.review, owner=self.owner, text="Root", client_id=uuid.uuid4())
+        reply = Comment.objects.create(review=self.review, owner=self.owner, parent=root, text="Nested", client_id=uuid.uuid4())
+        deleted = Comment.objects.create(review=self.review, owner=self.owner, text="", is_deleted=True, client_id=uuid.uuid4())
+        for target in [wrong.pk, reply.pk, deleted.pk, 999999]:
+            self.assertEqual(self.send("comments/", {"text": "Reply", "clientId": str(uuid.uuid4()), "parentId": target}).status_code, 404)
+        self.assertEqual(self.send("comments/", {"text": "Reply", "clientId": str(uuid.uuid4()), "parentId": True}).status_code, 400)
+
+    def test_deleting_parent_preserves_other_users_replies(self):
+        import uuid
+        from .models import Comment
+        parent = Comment.objects.create(review=self.review, owner=self.owner, text="Original", client_id=uuid.uuid4())
+        reply = Comment.objects.create(review=self.review, owner=self.reader, parent=parent, text="Kept reply", client_id=uuid.uuid4())
+        self.client.force_login(self.owner)
+        self.assertEqual(self.client.delete(self.root + f"comments/{parent.pk}/").status_code, 200)
+        self.assertTrue(Comment.objects.filter(pk=reply.pk, is_deleted=False).exists())
+        roots = self.client.get(self.root + "comments/").json()["results"]
+        self.assertEqual(roots[0]["text"], "Comment deleted.")
+        self.assertTrue(roots[0]["deleted"])
+        self.assertFalse(roots[0]["canDelete"])
+        self.assertEqual(self.client.delete(self.root + f"comments/{reply.pk}/").status_code, 404)
+
+    def test_reply_pages_remain_ordered(self):
+        import uuid
+        from .models import Comment
+        parent = Comment.objects.create(review=self.review, owner=self.owner, text="Root", client_id=uuid.uuid4())
+        for number in range(21):
+            Comment.objects.create(review=self.review, owner=self.reader, parent=parent, text=str(number), client_id=uuid.uuid4())
+        page = self.client.get(self.root + f"comments/?parent={parent.pk}").json()
+        self.assertEqual((page["count"], page["nextPage"]), (21, 2))
+        self.assertEqual(page["results"][0]["text"], "0")
+        self.assertEqual(self.client.get(self.root + f"comments/?parent={parent.pk}&page=2").json()["results"][0]["text"], "20")

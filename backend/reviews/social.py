@@ -14,7 +14,7 @@ from .models import Review, Reaction, Comment
 def counts(review, user):
     totals = review.reactions.filter(owner__is_active=True).aggregate(likes=Count("id", filter=Q(value=1)), dislikes=Count("id", filter=Q(value=-1)))
     return {**totals, "myReaction": review.reactions.filter(owner=user).values_list("value", flat=True).first() or 0,
-            "comments": review.comments.filter(owner__is_active=True).count()}
+            "comments": review.comments.filter(owner__is_active=True, is_deleted=False).count()}
 
 
 def payload(request):
@@ -59,9 +59,9 @@ def reactions(request, review_id):
 
 
 def serialize_comment(comment, user):
-    return {"id": comment.pk, "text": comment.text, "createdAt": comment.created_at.isoformat(),
+    return {"id": comment.pk, "text": "Comment deleted." if comment.is_deleted else comment.text, "parentId": comment.parent_id, "deleted": comment.is_deleted, "replyCount": comment.replies.filter(is_deleted=False, owner__is_active=True).count(), "createdAt": comment.created_at.isoformat(),
             "author": {"id": comment.owner_id, "username": comment.owner.username, "avatarUrl": avatar_url(comment.owner)},
-            "canDelete": comment.owner_id == user.pk}
+            "canDelete": comment.owner_id == user.pk and not comment.is_deleted}
 
 
 @never_cache
@@ -74,7 +74,7 @@ def comments(request, review_id):
         return JsonResponse({"error": "Review not found."}, status=404)
     if request.method == "POST":
         data = payload(request)
-        if data is None or set(data) != {"text", "clientId"} or not isinstance(data["text"], str) or not 1 <= len(data["text"].strip()) <= 1000:
+        if data is None or not {"text", "clientId"}.issubset(data) or set(data) - {"text", "clientId", "parentId"} or not isinstance(data["text"], str) or not 1 <= len(data["text"].strip()) <= 1000:
             return JsonResponse({"error": "Write a comment of 1 to 1,000 characters."}, status=400)
         try:
             client_id = uuid.UUID(data["clientId"]) if isinstance(data["clientId"], str) else None
@@ -82,17 +82,30 @@ def comments(request, review_id):
             client_id = None
         if client_id is None:
             return JsonResponse({"error": "Invalid comment request."}, status=400)
+        parent_id = data.get("parentId")
+        if parent_id is not None and (type(parent_id) is not int or parent_id < 1):
+            return JsonResponse({"error": "Invalid reply target."}, status=400)
+        if parent_id is not None and not Comment.objects.filter(pk=parent_id, review=review, parent__isnull=True, is_deleted=False, owner__is_active=True).exists():
+            return JsonResponse({"error": "That comment is no longer available."}, status=404)
         if limited(request.user, "comment", 30):
             return JsonResponse({"error": "Too many comments. Try again in five minutes."}, status=429)
-        comment, created = Comment.objects.get_or_create(owner=request.user, client_id=client_id, defaults={"review": review, "text": data["text"].strip()})
-        if comment.review_id != review.pk or comment.text != data["text"].strip():
+        comment, created = Comment.objects.get_or_create(owner=request.user, client_id=client_id, defaults={"review": review, "text": data["text"].strip(), "parent_id": parent_id})
+        if comment.review_id != review.pk or comment.text != data["text"].strip() or comment.parent_id != parent_id or comment.is_deleted:
             return JsonResponse({"error": "This comment was already submitted."}, status=409)
         return JsonResponse({"comment": serialize_comment(comment, request.user), "counts": counts(review, request.user)}, status=201 if created else 200)
     try:
         number = int(request.GET.get("page", "1"))
         if number < 1:
             raise ValueError
-        pages = Paginator(review.comments.filter(owner__is_active=True).select_related("owner").defer("owner__avatar_data", "owner__banner_data"), 20)
+        parent_value = request.GET.get("parent")
+        if parent_value is not None:
+            parent_id = int(parent_value)
+            if not review.comments.filter(pk=parent_id, parent__isnull=True).exists():
+                return JsonResponse({"error": "Comment not found."}, status=404)
+            rows = review.comments.filter(parent_id=parent_id, is_deleted=False, owner__is_active=True).order_by("created_at", "pk")
+        else:
+            rows = review.comments.filter(parent__isnull=True, owner__is_active=True).annotate(visible_replies=Count("replies", filter=Q(replies__is_deleted=False, replies__owner__is_active=True))).filter(Q(is_deleted=False) | Q(visible_replies__gt=0)).order_by("-created_at", "-pk")
+        pages = Paginator(rows.select_related("owner").defer("owner__avatar_data", "owner__banner_data"), 20)
         page = pages.page(number)
     except ValueError:
         return JsonResponse({"error": "Invalid page."}, status=400)
@@ -110,5 +123,7 @@ def delete_comment(request, review_id, comment_id):
     comment = Comment.objects.filter(pk=comment_id, review_id=review_id, owner=request.user).first()
     if not comment:
         return JsonResponse({"error": "Comment not found."}, status=404)
-    comment.delete()
+    comment.text = ""
+    comment.is_deleted = True
+    comment.save(update_fields=["text", "is_deleted"])
     return JsonResponse({"deleted": True})

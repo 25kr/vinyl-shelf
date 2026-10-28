@@ -317,3 +317,12 @@ a.feed-avatar:focus-visible { outline: 3px solid #9876ab; outline-offset: 3px; }
 .comment-form > div { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 12px; }
 .comment-form span { font-size: 11px; color: #95869d; }
 .comment-form .collection-button { padding: 10px 16px; border-radius: 8px; }
+
+.comment-thread-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+.comment-thread-actions button, .comment-replies > button { min-height: 44px; border: 0; background: transparent; color: #7c628b; font-size: 12px; padding: 8px 0; cursor: pointer; }
+.comment-thread-actions button:hover { text-decoration: underline; }
+.comment-replies { border-left: 2px solid #e3d8e9; padding-left: 14px; margin-top: 4px; }
+.comment-replies .feed-avatar { width: 28px; height: 28px; font-size: 11px; }
+.comment-replies li { gap: 10px; }
+.reply-form { margin-bottom: 12px; }
+@media(max-width: 420px) { .comment-replies { padding-left: 10px; } }
