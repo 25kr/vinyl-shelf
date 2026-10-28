@@ -103,3 +103,20 @@ class ReviewOwnershipTests(TestCase):
         self.assertEqual(len(second["results"]), 3)
         self.assertIsNone(second["nextPage"])
         self.assertEqual(self.client.get("/api/reviews/?page=-1").status_code, 400)
+
+    def test_listening_date_is_optional_and_can_be_cleared(self):
+        for index, value in enumerate(["", None]):
+            response = self.write("post", "/api/reviews/", {**self.payload, "date": value, "clientId": f"undated-{index}"})
+            self.assertEqual(response.status_code, 201)
+            self.assertIsNone(response.json()["date"])
+        payload = dict(self.payload)
+        payload.pop("date")
+        response = self.write("post", "/api/reviews/", payload)
+        self.assertEqual(response.status_code, 201)
+        path = f'/api/reviews/{response.json()["id"]}/'
+        dated = self.write("patch", path, self.payload)
+        self.assertEqual(dated.json()["date"], "2020-01-01")
+        cleared = self.write("patch", path, {**self.payload, "date": ""})
+        self.assertEqual(cleared.status_code, 200)
+        self.assertIsNone(cleared.json()["date"])
+        self.assertEqual(self.client.get("/api/reviews/").json()["count"], 3)

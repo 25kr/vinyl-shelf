@@ -152,3 +152,6 @@ input, select, textarea { background: #f9f9f5c9; border-color: #19191930; border
 .diary-browser-archive > div { margin-top: 16px; }
 .diary-form button:disabled { opacity: .6; cursor: wait; }
 .admin-link { margin: 0 0 20px; }
+
+/* Keep the account label below the composer divider. */
+.diary-composer-page .diary-preview-note { margin: 16px 0; }

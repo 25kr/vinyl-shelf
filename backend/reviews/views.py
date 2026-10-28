@@ -10,7 +10,7 @@ from .models import Review
 
 def serialize(review):
     return {"id": str(review.pk), "albumId": review.album_id, "target": review.target,
-            "date": review.listened_on.isoformat(), "rating": review.rating,
+            "date": review.listened_on.isoformat() if review.listened_on else None, "rating": review.rating,
             "note": review.note, "repeat": review.repeat, "clientId": review.client_id,
             "createdAt": review.created_at.isoformat(), "updatedAt": review.updated_at.isoformat(),
             "author": {"id": review.owner_id, "username": review.owner.username}}

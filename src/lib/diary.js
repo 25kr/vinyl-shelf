@@ -19,7 +19,7 @@ export function readDiary(albums, tracklists) {
       const valid = entry && typeof entry.id === "string" && !seen.has(entry.id)
         && albums.some(album => album.id === entry.albumId)
         && (entry.target === "album" || (tracklists[entry.albumId] || []).some(track => trackId(track) === entry.target))
-        && validDate(entry.date) && typeof entry.note === "string" && typeof entry.repeat === "boolean"
+        && (entry.date === "" || entry.date === null || validDate(entry.date)) && typeof entry.note === "string" && typeof entry.repeat === "boolean"
         && (entry.rating === undefined || (Number.isInteger(entry.rating) && entry.rating >= 1 && entry.rating <= 5))
         && typeof entry.createdAt === "string" && Number.isFinite(Date.parse(entry.createdAt));
       if (valid) seen.add(entry.id);

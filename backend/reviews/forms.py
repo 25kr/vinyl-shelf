@@ -13,7 +13,7 @@ def catalogue():
 class ReviewForm(forms.Form):
     albumId = forms.CharField(max_length=100)
     target = forms.CharField(max_length=30)
-    date = forms.DateField(input_formats=["%Y-%m-%d"])
+    date = forms.DateField(input_formats=["%Y-%m-%d"], required=False)
     rating = forms.IntegerField(min_value=1, max_value=5)
     note = forms.CharField(max_length=500, required=False, strip=True)
     repeat = forms.BooleanField(required=False)

@@ -8,7 +8,7 @@ class Review(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reviews")
     album_id = models.CharField(max_length=100)
     target = models.CharField(max_length=30, default="album")
-    listened_on = models.DateField()
+    listened_on = models.DateField(null=True, blank=True)
     rating = models.PositiveSmallIntegerField()
     note = models.TextField(max_length=500, blank=True)
     repeat = models.BooleanField(default=False)

@@ -15,7 +15,7 @@ export default function ListeningDiary({ albums, tracklists, writing, requestedA
   const [stored, setStored] = useState(() => readDiary(albums, tracklists));
   const [albumId, setAlbumId] = useState(() => albums.find(album => album.id === requestedAlbumId)?.id || albums[0]?.id || "");
   const [target, setTarget] = useState("album");
-  const [date, setDate] = useState(dateValue);
+  const [date, setDate] = useState("");
   const [note, setNote] = useState("");
   const [rating, setRating] = useState(0);
   const [arrivingId, setArrivingId] = useState(null);
@@ -36,13 +36,7 @@ export default function ListeningDiary({ albums, tracklists, writing, requestedA
   const selectedAlbum = albums.find((album) => album.id === albumId);
   const tracks = tracklists[albumId] || [];
   const multipleDiscs = new Set(tracks.map(track => track.disc)).size > 1;
-  // Demo entries stay separate from the listener's saved reviews.
-  const demos = [
-    { name: "Maya", albumId: "2hollis-star", rating: 5, note: "Put this on for one song and ended up staying for the whole record. The production feels huge with headphones on." },
-    { name: "Eli", albumId: "2hollis-boy", rating: 4, note: "A late-night walk kind of album. I keep finding little sounds I missed the first time." },
-    { name: "Noor", albumId: "2hollis-white_tiger", rating: 5, note: "A friend sent me this and it has been on repeat ever since. Love how it moves between softer moments and all that energy." },
-  ].filter(item => albums.some(album => album.id === item.albumId)).map((item, index) => ({ ...item, id: `demo-${index}`, demo: true, target: "album", repeat: false, date: dateValue(new Date(new Date().setDate(new Date().getDate() - index - 1))), createdAt: new Date(new Date().setHours(0, 0, 0, 0) - (index + 1) * 86400000).toISOString() }));
-  const sortedEntries = [...(accountMode ? auth.user ? remote.entries : [] : stored.entries), ...demos].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const sortedEntries = [...(accountMode ? auth.user ? remote.entries : [] : stored.entries)].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   useEffect(() => {
     if (writing) document.getElementById("diary-form-heading")?.focus({ preventScroll: true });
     else if (arrivingId) {
@@ -62,7 +56,7 @@ export default function ListeningDiary({ albums, tracklists, writing, requestedA
     } catch { setError("Could not save your diary. Your entry is still in the form; keep a copy and try again."); return false; }
   }
   function resetForm() {
-    setTarget("album"); setDate(dateValue()); setNote(""); setRating(0); setRepeat(false); setEditingId(null); setClientId(crypto.randomUUID()); setImporting(false);
+    setTarget("album"); setDate(""); setNote(""); setRating(0); setRepeat(false); setEditingId(null); setClientId(crypto.randomUUID()); setImporting(false);
   }
   function startListen() { resetForm(); setError(""); setStatus(""); window.location.hash = "#/diary/review"; }
   async function handleSubmit(event) {
@@ -70,7 +64,7 @@ export default function ListeningDiary({ albums, tracklists, writing, requestedA
     const formElement = event.currentTarget;
     if (submitting.current) return;
     if (accountMode && !auth.user) { onLogin(); return; }
-    if (!selectedAlbum || !validDate(date) || date > dateValue()) { setError("Choose an album and a valid listening date, today or earlier."); return; }
+    if (!selectedAlbum || (date && (!validDate(date) || date > dateValue()))) { setError("Choose an album. If you add a listening date, choose today or earlier."); return; }
     if (!Number.isInteger(rating) || rating < 1 || rating > 5) { setError("Choose a rating from 1 to 5 stars before logging your listen."); return; }
     if (target !== "album" && !tracks.some(track => trackId(track) === target)) { setError("Choose a track from this album."); return; }
     if (note.length > 500) { setError("Keep your review to 500 characters or fewer."); return; }
@@ -94,7 +88,7 @@ export default function ListeningDiary({ albums, tracklists, writing, requestedA
   function edit(entry) {
     if (accountMode && entry.author?.id !== auth.user?.id) return;
     setClientId(entry.clientId || entry.id); setImporting(false);
-    setAlbumId(entry.albumId); setTarget(entry.target); setDate(entry.date); setNote(entry.note); setRating(Number.isInteger(entry.rating) && entry.rating >= 1 && entry.rating <= 5 ? entry.rating : 0); setRepeat(entry.repeat);
+    setAlbumId(entry.albumId); setTarget(entry.target); setDate(entry.date || ""); setNote(entry.note); setRating(Number.isInteger(entry.rating) && entry.rating >= 1 && entry.rating <= 5 ? entry.rating : 0); setRepeat(entry.repeat);
     setEditingId(entry.id); setDeletingId(null); setStatus(""); setError("");
     window.location.hash = "#/diary/review";
   }
@@ -110,7 +104,7 @@ export default function ListeningDiary({ albums, tracklists, writing, requestedA
     finally { submitting.current = false; }
   }
   function importEntry(entry) {
-    setAlbumId(entry.albumId); setTarget(entry.target); setDate(entry.date);
+    setAlbumId(entry.albumId); setTarget(entry.target); setDate(entry.date || "");
     setNote(entry.note); setRating(entry.rating || 0); setRepeat(entry.repeat);
     setClientId(entry.id); setEditingId(null); setImporting(true); setError("");
     window.location.hash = "#/diary/review";
@@ -123,7 +117,7 @@ export default function ListeningDiary({ albums, tracklists, writing, requestedA
         <div className="diary-title"><h1>Diary</h1><span>{accountMode ? auth.user ? remote.count : 0 : stored.entries.length} reviews</span></div>
         <button type="button" className="diary-create-button" onClick={startListen}><span aria-hidden="true">＋</span> Write a review</button>
       </header>
-      <p className="diary-preview-note">{accountMode ? auth.user ? "Reviews from signed-in members · Sample reviews are labelled." : "Log in to view and write member reviews. These examples are demos." : "Demo mode · Your reviews are saved only on this device."}</p>
+      <p className="diary-preview-note">{accountMode ? auth.user ? "Reviews from signed-in members." : "Log in to view and write member reviews." : "Your reviews are saved only on this device."}</p>
       <p className="diary-feedback" role="status">{status}</p>
       {(!accountMode || auth.user) && stored.warning && <div className="save-warning" role="alert"><p>{accountMode ? "Older browser data could not be read. Account reviews still work; download a browser backup before recovering the archive." : stored.warning}</p>{stored.raw !== null && <button className="text-button" type="button" onClick={() => downloadDiaryBackup(stored.raw)}>Download diary backup</button>}</div>}
       {error && <p className="save-warning" role="alert">{error}</p>}
@@ -131,10 +125,11 @@ export default function ListeningDiary({ albums, tracklists, writing, requestedA
       {accountMode && auth.user && remote.error && <div className="save-warning" role="alert"><p>{remote.error}</p><button className="text-button" onClick={remote.retry}>Try loading reviews again</button></div>}
       {accountMode && auth.user && remote.loading && <p role="status">Loading reviews…</p>}
       <section className="diary-review-feed" aria-label="Listening reviews">
+          {!sortedEntries.length && (!accountMode || (auth.user && !remote.loading && !remote.error)) && <p className="diary-preview-note">No reviews yet. Write a review to start the diary.</p>}
           {sortedEntries.map(entry => {
             const album = albums.find(item => item.id === entry.albumId);
             const track = (tracklists[entry.albumId] || []).find(item => trackId(item) === entry.target);
-            return <ReviewCard key={entry.id} entry={entry} album={album} track={track} canManage={!entry.demo && (!accountMode || entry.author?.id === auth.user?.id)} arriving={entry.id === arrivingId} arrivalRef={arrivalRef} confirmingDelete={deletingId === entry.id} onEdit={() => edit(entry)} onAskDelete={() => setDeletingId(entry.id)} onDelete={() => remove(entry.id)} onKeep={() => setDeletingId(null)} />;
+            return <ReviewCard key={entry.id} entry={entry} album={album} track={track} canManage={!accountMode || entry.author?.id === auth.user?.id} arriving={entry.id === arrivingId} arrivalRef={arrivalRef} confirmingDelete={deletingId === entry.id} onEdit={() => edit(entry)} onAskDelete={() => setDeletingId(entry.id)} onDelete={() => remove(entry.id)} onKeep={() => setDeletingId(null)} />;
           })}
           {accountMode && auth.user && remote.nextPage && <button className="diary-create-button" disabled={remote.loading} onClick={remote.loadMore}>Load more reviews</button>}
           {accountMode && auth.user && stored.entries.length > 0 && <details className="diary-browser-archive"><summary>Reviews saved on this browser ({stored.entries.length})</summary><p>These older entries have no confirmed account owner. Open one to import it as {auth.user.username}. The original browser copy will be kept.</p>{stored.entries.map(entry => <div key={entry.id}><ReviewCard entry={entry} album={albums.find(album => album.id === entry.albumId)} track={(tracklists[entry.albumId] || []).find(track => trackId(track) === entry.target)} canManage={false} /><button type="button" className="text-button" disabled={Boolean(stored.warning)} onClick={() => importEntry(entry)}>Import review as {auth.user.username}…</button></div>)}</details>}

@@ -2,14 +2,14 @@
 
 ## Current status
 
-The React site is a browser-only prototype. Collections, wishlists and saved albums are still stored on the current device. Diary entries created on the local signed-in site now use the Django review database; the public demo retains device-only reviews. The public demo still shows a login preview; the local development site now has real session login/logout. Demo reviews are fictional and never saved as real user entries. The local Django foundation now runs with SQLite, a custom user model, a read-only health endpoint and a Vite development proxy. Local login/logout and a private terminal command to create a listener are implemented and tested. Account-owned reviews, a member-only paginated feed, owner-only API mutations and explicit browser-review imports are implemented and tested. Public registration, invitations, account-specific collections/wishlists and private-beta deployment controls are not implemented yet. See backend/README.md for local setup.
+The React site is a browser-only prototype. Collections, wishlists and saved albums are still stored on the current device. Diary entries created on the local signed-in site now use the Django review database; the public demo retains device-only reviews. The public demo still shows a login preview; the local development site now has real session login/logout. The diary shows real reviews only; fictional sample reviews have been removed. The local Django foundation now runs with SQLite, a custom user model, a read-only health endpoint and a Vite development proxy. Local login/logout and a private terminal command to create a listener are implemented and tested. Account-owned reviews, a member-only paginated feed, owner-only API mutations and explicit browser-review imports are implemented and tested. Public registration, invitations, account-specific collections/wishlists and private-beta deployment controls are not implemented yet. See backend/README.md for local setup.
 
 ## Frontend work completed, in order
 
 1. Listener journey: search/filter -> album -> collection/wishlist -> Write a review -> preselected album -> album/track rating and date -> diary -> refresh. An album page links to the separate review form; reviews remain in the diary.
 2. Mobile: checked Explore, album, diary and writing pages at 900, 700, 390 and 320 pixels; no horizontal overflow. Review actions and rating choices have 44-pixel touch targets.
 3. Empty and error states: empty collection/wishlist guidance, no search matches with reset, missing album, unavailable track list, browser storage warnings, and a downloadable backup when diary data is unreadable. The app does not overwrite unreadable diary data.
-4. Forms: rating required (1-5), valid listening date no later than today, selected track belongs to the album, review limited to 500 characters, character counter, explicit deletion confirmation, and failed saves keep the form intact for retry.
+4. Forms: rating required (1-5), optional listening date no later than today, selected track belongs to the album, review limited to 500 characters, character counter, explicit deletion confirmation, and failed saves keep the form intact for retry.
 5. Organisation: ReviewCard controls the appearance of a feed entry; ReviewForm controls the writing UI; DiaryStars renders ratings; lib/diary handles diary parsing and backup; useShelfFlags handles collection/wishlist persistence without rewriting every saved flag on page load.
 6. Account data and backend boundaries are planned below.
 
@@ -24,7 +24,7 @@ Changing a review card's layout should not require changing its stored data or f
 | Collection | owner, pressing/edition, added date | Visible to signed-in beta members; owner alone can change it |
 | Wishlist | owner, pressing/edition, added date | Owner-only initially |
 | Saved album | owner, album, added date | Owner-only initially |
-| Diary entry | owner, album, optional track, listening date, rating, text, repeat flag, created/updated timestamps | Visible to signed-in beta members; owner alone can edit/delete |
+| Diary entry | owner, album, optional track, optional listening date, rating, text, created/updated timestamps | Visible to signed-in beta members; owner alone can edit/delete |
 | Invitation | hashed token, expiry, used time | Server/admin only; not part of public profiles |
 
 Collections should eventually reference a particular pressing, while reviews reference an album or track. Keep catalogue IDs stable; allow repeated listens as separate entries. One user must not get duplicate collection rows for the same pressing.
