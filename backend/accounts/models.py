@@ -24,3 +24,16 @@ class Invitation(models.Model):
 
     def __str__(self):
         return self.label or f"Invitation {self.pk}"
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following_connections")
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name="follower_connections")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at", "-pk"]
+        constraints = [
+            models.UniqueConstraint(fields=["follower", "following"], name="account_follow_unique"),
+            models.CheckConstraint(condition=~models.Q(follower=models.F("following")), name="account_no_self_follow"),
+        ]

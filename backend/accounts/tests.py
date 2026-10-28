@@ -257,3 +257,80 @@ class MemberProfileTests(TestCase):
         from django.db import IntegrityError, transaction
         with self.assertRaises(IntegrityError), transaction.atomic():
             get_user_model().objects.create_user(username="PROFILE-OWNER")
+
+
+class FollowingTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.a = get_user_model().objects.create_user(username="follow-a")
+        cls.b = get_user_model().objects.create_user(username="follow-b")
+        cls.c = get_user_model().objects.create_user(username="follow-c")
+        cls.inactive = get_user_model().objects.create_user(username="follow-inactive", is_active=False)
+
+    def setUp(self):
+        self.client.force_login(self.a)
+
+    def follow(self, user, value=True, **extra):
+        return self.client.post(f"/api/auth/profiles/{user.pk}/follow/", json.dumps({"following": value, **extra}), content_type="application/json")
+
+    def test_follow_is_idempotent_and_survives_new_session(self):
+        from .models import Follow
+        for _ in range(2):
+            response = self.follow(self.b)
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json()["connections"], {"followers": 1, "following": 0, "isFollowing": True})
+        self.assertEqual(Follow.objects.count(), 1)
+        self.client.logout()
+        self.client.force_login(self.a)
+        self.assertTrue(self.client.get(f"/api/auth/profiles/{self.b.pk}/").json()["connections"]["isFollowing"])
+        self.assertEqual(self.client.get(f"/api/auth/profiles/{self.a.pk}/").json()["connections"]["following"], 1)
+        self.client.force_login(self.c)
+        self.follow(self.b)
+        self.client.force_login(self.a)
+        for _ in range(2):
+            self.assertFalse(self.follow(self.b, False).json()["connections"]["isFollowing"])
+        self.assertTrue(Follow.objects.filter(follower=self.c, following=self.b).exists())
+
+    def test_authentication_and_csrf_required(self):
+        self.client.logout()
+        self.assertEqual(self.follow(self.b).status_code, 401)
+        self.assertEqual(self.client.get(f"/api/auth/profiles/{self.b.pk}/followers/").status_code, 401)
+        client = Client(enforce_csrf_checks=True)
+        client.force_login(self.a)
+        self.assertEqual(client.post(f"/api/auth/profiles/{self.b.pk}/follow/", "{\"following\":true}", content_type="application/json").status_code, 403)
+
+    def test_no_self_inactive_or_forged_follower(self):
+        from .models import Follow
+        self.assertEqual(self.follow(self.a).status_code, 400)
+        self.assertEqual(self.follow(self.inactive).status_code, 404)
+        self.assertEqual(self.follow(self.b, follower=self.c.pk).status_code, 400)
+        self.assertEqual(self.follow(self.b, "true").status_code, 400)
+        self.assertEqual(Follow.objects.count(), 0)
+        self.assertEqual(self.client.get(f"/api/auth/profiles/{self.b.pk}/follow/").status_code, 405)
+
+    def test_database_rejects_duplicates_and_self_follow(self):
+        from .models import Follow
+        from django.db import transaction, IntegrityError
+        Follow.objects.create(follower=self.a, following=self.b)
+        with self.assertRaises(IntegrityError), transaction.atomic():
+            Follow.objects.create(follower=self.a, following=self.b)
+        with self.assertRaises(IntegrityError), transaction.atomic():
+            Follow.objects.create(follower=self.a, following=self.a)
+
+    def test_lists_are_paginated_private_and_correct(self):
+        from .models import Follow
+        for number in range(21):
+            person = get_user_model().objects.create_user(username=f"fan-{number}", email="not-public@example.test")
+            Follow.objects.create(follower=person, following=self.b)
+        Follow.objects.create(follower=self.inactive, following=self.b)
+        first = self.client.get(f"/api/auth/profiles/{self.b.pk}/followers/")
+        self.assertEqual(first.json()["count"], 21)
+        self.assertEqual(len(first.json()["results"]), 20)
+        self.assertEqual(first.json()["nextPage"], 2)
+        self.assertNotIn("not-public@example.test", first.content.decode())
+        self.assertIn("no-store", first["Cache-Control"])
+        self.assertEqual(len(self.client.get(f"/api/auth/profiles/{self.b.pk}/followers/?page=2").json()["results"]), 1)
+        self.follow(self.b)
+        self.assertEqual(self.client.get(f"/api/auth/profiles/{self.a.pk}/following/").json()["results"][0]["id"], self.b.pk)
+        self.assertEqual(self.client.get(f"/api/auth/profiles/{self.b.pk}/followers/?page=0").status_code, 400)
+        self.assertEqual(self.client.get(f"/api/auth/profiles/{self.b.pk}/unknown/").status_code, 404)

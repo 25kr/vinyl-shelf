@@ -1,5 +1,7 @@
 """Member-only profiles and bounded, re-encoded account pictures."""
 import hashlib
+import json
+from .models import Follow
 from io import BytesIO
 import warnings
 from PIL import Image, ImageOps, UnidentifiedImageError
@@ -38,7 +40,7 @@ def profile(request, user_id):
     except EmptyPage:
         return JsonResponse({"error": "Review page not found."}, status=404)
     from reviews.views import serialize
-    return JsonResponse({"profile": public_user(user), "results": [serialize(item) for item in page],
+    return JsonResponse({"profile": public_user(user), "connections": connection_data(user, request.user), "results": [serialize(item) for item in page],
                          "count": pages.count, "nextPage": page.next_page_number() if page.has_next() else None})
 
 
@@ -118,3 +120,62 @@ def edit_profile(request):
     user.bio = bio
     user.save(update_fields=fields)
     return JsonResponse({"profile": public_user(user)})
+
+
+def connection_data(user, viewer):
+    return {"followers": user.follower_connections.filter(follower__is_active=True).count(),
+            "following": user.following_connections.filter(following__is_active=True).count(),
+            "isFollowing": Follow.objects.filter(follower=viewer, following=user).exists()}
+
+
+@require_POST
+@never_cache
+def follow(request, user_id):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Log in to follow listeners."}, status=401)
+    if request.content_type != "application/json" or len(request.body) > 1024:
+        return JsonResponse({"error": "Send a small JSON follow request."}, status=400)
+    try:
+        data = json.loads(request.body)
+    except (ValueError, UnicodeDecodeError):
+        return JsonResponse({"error": "Invalid follow request."}, status=400)
+    if not isinstance(data, dict) or set(data) != {"following"} or type(data["following"]) is not bool:
+        return JsonResponse({"error": "Choose whether to follow this listener."}, status=400)
+    user = get_user_model().objects.defer("avatar_data").filter(pk=user_id, is_active=True).first()
+    if not user:
+        return JsonResponse({"error": "Profile not found."}, status=404)
+    if user.pk == request.user.pk:
+        return JsonResponse({"error": "You can’t follow yourself."}, status=400)
+    # Idempotent writes: retries cannot duplicate or accidentally undo a follow.
+    if data["following"]:
+        Follow.objects.get_or_create(follower=request.user, following=user)
+    else:
+        Follow.objects.filter(follower=request.user, following=user).delete()
+    return JsonResponse({"connections": connection_data(user, request.user)})
+
+
+@require_GET
+@never_cache
+def connections(request, user_id, kind):
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "Log in to view listeners."}, status=401)
+    user = get_user_model().objects.filter(pk=user_id, is_active=True).only("id").first()
+    if not user:
+        return JsonResponse({"error": "Profile not found."}, status=404)
+    if kind not in {"followers", "following"}:
+        return JsonResponse({"error": "List not found."}, status=404)
+    rows = Follow.objects.filter(following=user, follower__is_active=True) if kind == "followers" else Follow.objects.filter(follower=user, following__is_active=True)
+    member = "follower" if kind == "followers" else "following"
+    rows = rows.select_related(member).defer(f"{member}__avatar_data")
+    try:
+        number = int(request.GET.get("page", "1"))
+        if number < 1:
+            raise ValueError
+        pages = Paginator(rows, 20)
+        page = pages.page(number)
+    except ValueError:
+        return JsonResponse({"error": "Invalid page."}, status=400)
+    except EmptyPage:
+        return JsonResponse({"error": "Page not found."}, status=404)
+    return JsonResponse({"results": [public_user(getattr(row, member)) for row in page], "count": pages.count,
+                         "nextPage": page.next_page_number() if page.has_next() else None})

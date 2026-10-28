@@ -262,3 +262,21 @@ a.feed-avatar:focus-visible { outline: 3px solid #9876ab; outline-offset: 3px; }
 .photo-crop-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 12px; }
 .photo-crop-actions .collection-button { padding: 12px 20px; border-radius: 8px; background: #66506f; }
 @media(max-width: 420px) { .account-menu-links { flex-direction: column; } .photo-cropper { padding: 14px; } .photo-crop-actions button { flex: 1; } }
+
+.profile-stats { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 20px; margin-top: 10px; color: #796d7e; font-size: 12px; }
+.profile-stats button { border: 0; background: transparent; padding: 10px 0; min-height: 44px; font: inherit; color: inherit; cursor: pointer; }
+.profile-stats strong { color: #352b3b; font-weight: 600; }
+.profile-stats button:hover { text-decoration: underline; }
+.profile-follow { min-width: 130px; border-radius: 8px; }
+.profile-follow.is-following { background: #ede5f0; color: #685171; border: 1px solid #cfc0d5; }
+.profile-people { max-width: 660px; margin: 24px auto; padding: 20px 24px; background: #fffdf9da; border: 1px solid #d9cddd; border-radius: 18px; }
+.profile-people header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.profile-people h2 { margin: 0; font-size: 26px; }
+.profile-people h2 > span { font: 14px Arial,sans-serif; color: #88748f; }
+.profile-people ul { list-style: none; padding: 0; margin: 12px 0; }
+.profile-people li + li { border-top: 1px solid #e8e0eb; }
+.profile-people li > a { display: flex; align-items: center; gap: 14px; padding: 14px 0; text-decoration: none; color: inherit; }
+.profile-people li > a > span:nth-child(2) { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.profile-people small { display: block; margin-top: 4px; color: #8a7b90; font-size: 12px; overflow-wrap: anywhere; }
+.profile-people .feed-avatar { flex-shrink: 0; }
+@media(max-width: 600px) { .profile-stats { gap: 4px 14px; } .profile-people { padding: 16px; } }
