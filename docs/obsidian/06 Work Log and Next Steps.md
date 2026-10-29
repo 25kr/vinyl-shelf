@@ -45,3 +45,7 @@ Next: persisted catalogue models/import, legacy identifiers and online album det
 
 ## 29 October — Search deployment verified
 Render deployment of `0a9abd4` succeeded and showed Live. Verified through the signed-in production Explore → Search music UI: “2hollis star” returned one match, star by 2hollis (Album, 2025), with its existing shelf artwork and Open album link. This deploy includes backend endpoint `a01c6e2`. Browser tabs left open. No catalogue records imported.
+
+
+## 29 October — Search recovery fix
+User reported generic unavailable error searching “nicole dollganger”. The exact misspelling returned zero results in a local live probe; a subsequent correctly spelled “Nicole Dollanganger” request reproduced MusicBrainz temporary unavailability. Do not claim every error was caused by spelling. Added separate queue/provider/cache error codes, accurate remaining global cooldown, safe diagnostic logging without query/account details, and one cancellable frontend automatic retry respecting Retry-After. Completed paced results remain usable if only the cache write fails; cache failure before provider access still fails closed. Frontend timeout covers the retry wait. All 76 backend tests and isolated browser recovery/cancellation checks passed. Provider availability remains external.

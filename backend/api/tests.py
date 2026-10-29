@@ -90,7 +90,9 @@ class CatalogueSearchTests(TestCase):
         self.assertEqual(first.status_code, 503)
         self.assertEqual(first["Retry-After"], "30")
         self.assertNotIn("traceback", first.content.decode().lower())
-        self.client.get(self.path, {"q": "another album"})
+        blocked = self.client.get(self.path, {"q": "another album"})
+        self.assertEqual(blocked.json()["code"], "provider_busy")
+        self.assertGreaterEqual(int(blocked["Retry-After"]), 29)
         self.assertEqual(search.call_count, 1)
 
     @patch("api.catalogue.musicbrainz.search")

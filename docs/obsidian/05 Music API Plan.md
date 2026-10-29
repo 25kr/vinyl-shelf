@@ -55,7 +55,7 @@ Files: `backend/api/musicbrainz.py`, `backend/api/catalogue.py`, `backend/api/ur
 
 Cache results for one hour; 30 requests per account per minute. An atomic shared two-second provider slot keeps outbound calls below MusicBrainz's one-call-per-second ceiling across production workers. Busy/cooldown gives 503 with Retry-After; per-account limit gives 429. Shared cache failure blocks provider access rather than bypassing throttling. Local memory cache only coordinates one process; production Redis is required for multiple workers.
 
-Provider URL/host is fixed HTTPS, redirects are rejected, timeout is eight seconds per socket operation, response body capped at 1 MiB. No API key or new package dependency. No automatic retries. Cache stores public catalogue metadata, not user credentials. Response bodies are not browser-cacheable.
+Provider URL/host is fixed HTTPS, redirects are rejected, timeout is eight seconds per socket operation, response body capped at 1 MiB. No API key or new package dependency. The frontend retries a 503 once after Retry-After (excluding cache outages), with a visible countdown and cancellation; the server does not retry. Cache stores public catalogue metadata, not user credentials. Response bodies are not browser-cacheable.
 
 This endpoint is read-only and creates no database records. It does not add fetched results to current frontend albums or fetch tracks/covers. Do not treat search results as verified vinyl editions. The MusicBrainz app identifier uses the public repository URL as contact information.
 

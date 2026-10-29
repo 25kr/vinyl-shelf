@@ -3,6 +3,7 @@ import { searchCatalogue } from "../lib/catalogue";
 
 export default function CatalogueSearch({ auth, onLogin, state, setState, albums }) {
   const [busy, setBusy] = useState(false);
+  const [waiting, setWaiting] = useState(false);
   const [error, setError] = useState("");
   const [retryAt, setRetryAt] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -12,7 +13,7 @@ export default function CatalogueSearch({ auth, onLogin, state, setState, albums
   const heading = useRef(null);
   const result = state.userId === auth.user?.id ? state.result : null;
   useEffect(() => {
-    sequence.current += 1; controller.current?.abort(); setBusy(false); setError(""); setAttempt(null); setRetryAt(0);
+    sequence.current += 1; controller.current?.abort(); setBusy(false); setWaiting(false); setError(""); setAttempt(null); setRetryAt(0);
     return () => { sequence.current += 1; controller.current?.abort(); };
   }, [auth.user?.id]);
   useEffect(() => {
@@ -26,10 +27,10 @@ export default function CatalogueSearch({ auth, onLogin, state, setState, albums
     controller.current?.abort(); const current = ++sequence.current;
     const request = new AbortController(); controller.current = request;
     let timedOut = false;
-    const timer = setTimeout(() => { timedOut = true; request.abort(); }, 12000);
-    setBusy(true); setError(""); setAttempt({ query: clean, page, append });
+    const timer = setTimeout(() => { timedOut = true; request.abort(); }, 90000);
+    setBusy(true); setWaiting(false); setError(""); setAttempt({ query: clean, page, append });
     try {
-      const data = await searchCatalogue(clean, page, request.signal);
+      const data = await searchCatalogue(clean, page, request.signal, delay => { if (sequence.current !== current) return; setWaiting(delay > 0); if (delay > 0) { setRetryAt(Date.now() + delay * 1000); setSeconds(delay); } });
       if (sequence.current !== current) return;
       setState(previous => ({ ...previous, userId: auth.user.id, result: { ...data, results: append && previous.result?.query === data.query ? [...new Map([...previous.result.results, ...data.results].map(item => [item.id, item])).values()] : data.results } }));
       if (!append) requestAnimationFrame(() => heading.current?.focus({ preventScroll: true }));
@@ -38,18 +39,18 @@ export default function CatalogueSearch({ auth, onLogin, state, setState, albums
       setError(timedOut ? "Search took too long. Try again in a moment." : failure instanceof TypeError ? "Couldn’t connect. Check your connection and try again." : failure.message);
       if (failure.status === 401) auth.refresh().catch(() => {});
       if (failure.retryAfter) { setRetryAt(Date.now() + failure.retryAfter * 1000); setSeconds(failure.retryAfter); }
-    } finally { clearTimeout(timer); if (sequence.current === current) setBusy(false); }
+    } finally { clearTimeout(timer); if (sequence.current === current) { setBusy(false); setWaiting(false); } }
   }
   function clear() {
-    sequence.current += 1; controller.current?.abort(); setBusy(false); setError(""); setAttempt(null);
+    sequence.current += 1; controller.current?.abort(); setBusy(false); setWaiting(false); setError(""); setAttempt(null);
     setState({ input: "", result: null, userId: auth.user?.id });
   }
   return <section className="catalogue-search" aria-label="Search the music catalogue">
     <form className="catalogue-search-form" onSubmit={event => { event.preventDefault(); search(state.input); }}>
-      <label htmlFor="catalogue-query">Find an album or artist</label><div><input id="catalogue-query" type="search" value={state.input} maxLength="120" placeholder="Try 2hollis star, Lana Del Rey…" autoComplete="off" onChange={event => setState(previous => ({ ...previous, input: event.target.value }))} /><button className="collection-button" disabled={busy || auth.loading || !auth.enabled || !auth.user || seconds > 0}>{busy ? "Searching…" : seconds > 0 ? `Wait ${seconds}s` : "Search music"}</button></div>
+      <label htmlFor="catalogue-query">Find an album or artist</label><div><input id="catalogue-query" type="search" value={state.input} maxLength="120" placeholder="Try 2hollis star, Lana Del Rey…" autoComplete="off" onChange={event => setState(previous => ({ ...previous, input: event.target.value }))} /><button className="collection-button" disabled={busy || auth.loading || !auth.enabled || !auth.user || seconds > 0}>{busy ? waiting ? `Retrying in ${seconds}s` : "Searching…" : seconds > 0 ? `Wait ${seconds}s` : "Search music"}</button></div>
     </form>
     {!auth.enabled ? <p className="catalogue-status">Online search is available on the <a href="https://vinyl-shelf-beta.onrender.com/#/explore">live beta</a>. You can still browse the shelf here.</p> : auth.loading ? <p role="status">Checking your account…</p> : !auth.user ? <div className="catalogue-signin"><p>Log in to search beyond the shelf.</p><button type="button" className="profile-cancel-button" onClick={onLogin}>Log in to search</button></div> : <>
-      {busy && <p className="catalogue-status" role="status">Looking for {attempt?.query}…</p>}
+      {busy && <div className="catalogue-search-progress"><p className="catalogue-status" role="status">{waiting ? `MusicBrainz is busy. Retrying once in ${seconds} seconds…` : `Looking for ${attempt?.query}…`}</p><button type="button" className="text-button" onClick={() => { sequence.current += 1; controller.current?.abort(); setBusy(false); setWaiting(false); setError(""); }}>Cancel search</button></div>}
       {error && <div className="catalogue-error" role="alert"><p>{error}</p>{attempt && <button type="button" className="profile-cancel-button" disabled={busy || seconds > 0} onClick={() => search(attempt.query, attempt.page, attempt.append)}>{seconds > 0 ? `Try again in ${seconds}s` : "Try again"}</button>}</div>}
       {result && <><div className="catalogue-results-heading"><h2 ref={heading} tabIndex="-1">Results for “{result.query}”</h2><button type="button" className="text-button" onClick={clear}>Clear search</button></div><p className="catalogue-status">{result.count.toLocaleString()} {result.count === 1 ? "match" : "matches"} · Albums and EPs</p>
         {!result.results.length ? <div className="catalogue-empty"><h3>No albums found.</h3><p>Try the album title, artist name, or a different spelling.</p></div> : <ul className="catalogue-results">{result.results.map(item => {

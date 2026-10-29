@@ -1,5 +1,10 @@
 """Member-only cached catalogue search; does not import or change albums."""
 import hashlib
+import math
+import time
+import logging
+
+logger = logging.getLogger(__name__)
 import unicodedata
 from django.core.cache import cache
 from django.http import JsonResponse
@@ -8,8 +13,11 @@ from django.views.decorators.http import require_GET
 from . import musicbrainz
 
 
-def unavailable(seconds=10):
-    response = JsonResponse({"error": "Album search is busy or unavailable. Please try again shortly."}, status=503)
+def unavailable(seconds=10, code="provider_unavailable"):
+    messages = {"search_queue_busy": "Another album search just started. Please wait a moment.",
+                "provider_busy": "MusicBrainz is temporarily busy. Please try again after the countdown.",
+                "cache_unavailable": "Album search is temporarily unavailable. Please try again shortly."}
+    response = JsonResponse({"error": messages.get(code, "MusicBrainz could not answer this search. Please try again shortly."), "code": code}, status=503)
     response["Retry-After"] = str(seconds)
     return response
 
@@ -51,21 +59,28 @@ def album_search(request):
         saved = cache.get(key)
         if saved is not None:
             return JsonResponse({**saved, "query": query})
-        if cache.get("musicbrainz:cooldown") or not cache.add("musicbrainz:request-slot", True, timeout=2):
-            return unavailable(2)
+        cooldown = cache.get("musicbrainz:cooldown:v2")
+        if cooldown:
+            return unavailable(max(1, math.ceil(cooldown - time.time())), "provider_busy")
+        if not cache.add("musicbrainz:request-slot", True, timeout=2):
+            return unavailable(2, "search_queue_busy")
     except Exception:
         # A broken shared cache must not allow an unthrottled provider request.
-        return unavailable()
+        logger.warning("Catalogue cache unavailable before provider request")
+        return unavailable(10, "cache_unavailable")
     try:
         result = musicbrainz.search(query, page)
     except musicbrainz.ProviderUnavailable as failure:
         try:
-            cache.set("musicbrainz:cooldown", True, timeout=failure.retry_after)
+            cache.set("musicbrainz:cooldown:v2", time.time() + failure.retry_after, timeout=failure.retry_after)
         except Exception:
             pass
-        return unavailable(failure.retry_after)
+        logger.warning("MusicBrainz search unavailable; retry in %s seconds", failure.retry_after)
+        return unavailable(failure.retry_after, "provider_busy")
     try:
         cache.set(key, result, timeout=3600)
     except Exception:
-        return unavailable()
+        logger.warning("Catalogue result could not be cached")
+        # A completed, paced provider response is still usable if its cache write fails.
+        pass
     return JsonResponse(result)
