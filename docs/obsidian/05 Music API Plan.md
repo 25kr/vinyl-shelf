@@ -1,6 +1,6 @@
 # Music API plan
 
-Status: backend MusicBrainz search implemented 29 October 2026. Existing catalogue remains curated frontend data. Dynamic import, artwork, track lookup and the React search interface are not implemented yet.
+Status: backend MusicBrainz search implemented 29 October 2026. Existing catalogue remains curated frontend data. The React search interface is implemented. Dynamic import, fetched cover artwork and track lookup are not implemented yet.
 
 ## What the user means
 The user wants visitors to search for music and fetch album details automatically rather than the developer adding every album by hand. Treat this as catalogue metadata (albums/artists/tracks/covers), not permission to upload or stream commercial audio. Actual playback is a separate feature with provider and rights requirements.
@@ -58,3 +58,11 @@ Cache results for one hour; 30 requests per account per minute. An atomic shared
 Provider URL/host is fixed HTTPS, redirects are rejected, timeout is eight seconds per socket operation, response body capped at 1 MiB. No API key or new package dependency. No automatic retries. Cache stores public catalogue metadata, not user credentials. Response bodies are not browser-cacheable.
 
 This endpoint is read-only and creates no database records. It does not add fetched results to current frontend albums or fetch tracks/covers. Do not treat search results as verified vinyl editions. The MusicBrainz app identifier uses the public repository URL as contact information.
+
+
+## Explore search interface — 29 October
+Explore has “On the shelf” and “Search music” modes. The existing shelf controls and gallery remain in shelf mode. Online search is submitted deliberately, rather than issuing provider requests on every keystroke. Member-only search has validation, loading/empty/error states, abort/timeout handling, Retry-After countdown, pagination and source attribution.
+
+`src/components/CatalogueSearch.jsx` renders results; `src/lib/catalogue.js` requests the Django endpoint. Search input/results and mode are held in App state, so navigating into an existing album and back preserves them. Results are scoped to the signed-in account; logging out hides them. Static GitHub Pages builds show a live-beta link rather than making unavailable backend requests.
+
+Exact title/artist matches to current local albums use their existing covers and link to their working local album page. Unimported results use an illustrated placeholder and a MusicBrainz source link. These matches are a display convenience, not the persistent provider-ID mapping needed for later imports. Nothing is imported yet; online album pages, full tracklists and remote cover fetching are future work.

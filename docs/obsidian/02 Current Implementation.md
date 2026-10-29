@@ -47,4 +47,4 @@ React uses same-origin cookies and refreshes CSRF tokens before writes. No React
 
 
 ## Catalogue search backend — 29 October
-Member-only `GET /api/catalogue/search/?q=<text>&page=1` now searches MusicBrainz album/EP release groups with caching, bounded pagination, provider throttling, attribution, and generic retryable errors. Existing album pages/reviews/shelves remain unchanged. No new React search interface, import database model, cover fetch or track lookup yet. See [[05 Music API Plan]].
+Member-only `GET /api/catalogue/search/?q=<text>&page=1` now searches MusicBrainz album/EP release groups with caching, bounded pagination, provider throttling, attribution, and generic retryable errors. Existing album pages/reviews/shelves remain unchanged. Explore now has a React online-search interface; import database models, remote cover fetch and track lookup remain future work. See [[05 Music API Plan]].

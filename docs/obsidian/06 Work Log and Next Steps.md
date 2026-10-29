@@ -35,3 +35,9 @@ Read [[00 Start Here]], inspect git status/log, read relevant source, and update
 Implemented the authenticated cached search adapter and endpoint, with album/EP matching, fixed external host, bounded responses, shared pacing and retryable errors. No credentials or account details are sent to MusicBrainz; search text and the application's public identifier are sent. Existing catalogue preserved. All 76 backend tests pass. Initial and final live checks returned star by 2hollis. After respecting temporary provider busy responses, the final focused search returned exactly one match through the Django endpoint (HTTP 200), and its repeat was cached. No accounts or catalogue records were created for the smoke test.
 
 Next: build the React search interface after the endpoint checkpoint, then implement catalogue persistence, legacy ID mapping and album details/track imports. Deployment status must be confirmed separately; do not infer it from a Git push.
+
+
+## 29 October — Explore search interface
+Added online album search to Explore while retaining the existing shelf. Tested validation, search submission, exact-match local album links, back-navigation state, paginated results, empty results, retry cooldown and member/static-preview states in an isolated browser at phone/desktop widths. Frontend build passed. Backend endpoint checkpoint was a01c6e2; this release includes it too.
+
+Next: persisted catalogue models/import, legacy identifiers and online album detail/track pages. Online search currently links unimported results to MusicBrainz and does not save new albums. No fake albums or reviews were added to the live database. Deployment must be confirmed independently below.

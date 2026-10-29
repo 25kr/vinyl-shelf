@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import CatalogueSearch from "./components/CatalogueSearch";
 import RecordCard from "./components/RecordCard";
 import RecordSleeve from "./components/RecordSleeve";
 import AlbumPage from "./components/AlbumPage";
@@ -63,6 +64,8 @@ export default function App() {
   const saveError = collectionError || wishlistError || savedError;
   const [loginOpen, setLoginOpen] = useState(false);
   const auth = useAuth();
+  const [exploreMode, setExploreMode] = useState("shelf");
+  const [catalogueSearch, setCatalogueSearch] = useState({ input: "", result: null, userId: null });
 
   useEffect(() => {
     function handleNavigation() {
@@ -131,7 +134,8 @@ export default function App() {
             {featuredRecord && <a className="feature-record record-artwork" href={`#/album/${encodeURIComponent(featuredRecord.id)}`} aria-label={`Discover ${featuredRecord.title} by ${featuredRecord.artist}`}><RecordSleeve id={featuredRecord.id} title={featuredRecord.title} artist={featuredRecord.artist} cover={featuredRecord.cover} /></a>}
           </section>}
           <header className="shelf-header compact-page-bar"><h1>{pageTitle}</h1>{route.page === "home" && <a className="browse-link" href="#/explore">Explore all albums <span aria-hidden="true">↗</span></a>}</header>
-          {route.page === "explore" && <section className="browse-controls" aria-label="Find albums">
+          {route.page === "explore" && <><div className="explore-modes" role="group" aria-label="Explore source"><button type="button" aria-pressed={exploreMode === "shelf"} onClick={() => setExploreMode("shelf")}>On the shelf</button><button type="button" aria-pressed={exploreMode === "online"} onClick={() => setExploreMode("online")}>Search music <span aria-hidden="true">↗</span></button></div><div hidden={exploreMode !== "online"}><CatalogueSearch auth={auth} onLogin={() => setLoginOpen(true)} state={catalogueSearch} setState={setCatalogueSearch} albums={albums} /></div></>}
+          {route.page === "explore" && exploreMode === "shelf" && <section className="browse-controls" aria-label="Find albums">
             <div className="shelf-controls">
               <div className="search-field"><label htmlFor="record-search">Search albums</label><input id="record-search" type="search" placeholder="Album, artist or genre…" value={search} onChange={(event) => setSearch(event.target.value)} /></div>
               <div className="select-field"><label htmlFor="genre-filter">Genre</label><select id="genre-filter" value={genre} onChange={(event) => setGenre(event.target.value)}><option value="all">All genres</option>{genres.map((name) => <option key={name}>{name}</option>)}</select></div>
@@ -140,8 +144,8 @@ export default function App() {
             <div className="shelf-tabs"><div className="filter-buttons" role="group" aria-label="Filter albums">{[["all", "All albums"], ["vinyl", "On vinyl"]].map(([value, label]) => <button key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{label}</button>)}</div>{(search || genre !== "all" || filter !== "all" || sort !== "catalogue") && <button className="text-button" onClick={resetFilters}>Clear filters</button>}</div>
           </section>}
           {saveWarning}
-          <section className="record-grid" aria-label={route.page === "explore" ? "Album gallery" : "Vinyl gallery"}>{visibleAlbums.map((album) => <RecordCard key={album.id} {...album} />)}</section>
-          {!visibleAlbums.length && <div className="empty-shelf"><p className="eyebrow">ROOM FOR SOMETHING GOOD</p><h2>{route.page === "collection" ? "Your collection starts here." : route.page === "wishlist" ? "Dream a little. Dig a little." : "Nothing here just yet."}</h2><p>{route.page === "explore" ? "No albums match those filters. Try another search or clear your filters." : "Open an album to add a record to your shelf."}</p>{route.page === "explore" ? <button className="collection-button" onClick={resetFilters}>Show all albums</button> : <a className="primary-link" href="#/explore">Explore albums ↗</a>}</div>}
+          {(route.page !== "explore" || exploreMode === "shelf") && <section className="record-grid" aria-label={route.page === "explore" ? "Album gallery" : "Vinyl gallery"}>{visibleAlbums.map((album) => <RecordCard key={album.id} {...album} />)}</section>}
+          {!visibleAlbums.length && (route.page !== "explore" || exploreMode === "shelf") && <div className="empty-shelf"><p className="eyebrow">ROOM FOR SOMETHING GOOD</p><h2>{route.page === "collection" ? "Your collection starts here." : route.page === "wishlist" ? "Dream a little. Dig a little." : "Nothing here just yet."}</h2><p>{route.page === "explore" ? "No albums match those filters. Try another search or clear your filters." : "Open an album to add a record to your shelf."}</p>{route.page === "explore" ? <button className="collection-button" onClick={resetFilters}>Show all albums</button> : <a className="primary-link" href="#/explore">Explore albums ↗</a>}</div>}
         </main>
       )}
       <footer className="site-footer"><a className="footer-brand" href="#/">shelf.</a><p>Keep what moves you.</p><span>For the love of the record.</span></footer>

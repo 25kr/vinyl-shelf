@@ -9,11 +9,11 @@ This folder is an Obsidian-compatible project notebook. Open it as a vault or op
 - [[02 Current Implementation]] — working features and code map.
 - [[03 Running and Deployment]] — local startup and hosting.
 - [[04 Security and Limitations]] — controls, unresolved work and audit boundaries.
-- [[05 Music API Plan]] — replacing manual album entry; proposed, not implemented.
+- [[05 Music API Plan]] — search backend and interface implemented; import roadmap.
 - [[06 Work Log and Next Steps]] — latest commits and next actions.
 
 ## Current work
-The user wants automatic music catalogue search instead of manually adding albums. The first requested implementation step is Django MusicBrainz search. The first backend catalogue-search endpoint is now implemented; the React search interface and album import remain next.
+The user wants automatic music catalogue search instead of manually adding albums. The first requested implementation step is Django MusicBrainz search. The first backend catalogue-search endpoint is now implemented; the React search interface is implemented too; catalogue import and full online album pages remain next.
 
 ## Maintaining continuity
 At the end of a meaningful change, update affected notes and the work log. Before continuing in a new chat, read this index and relevant pages, then verify the repository state. A notebook reduces repeated context recovery; it does not disable automatic chat context limits or guarantee that every future chat reads it.
