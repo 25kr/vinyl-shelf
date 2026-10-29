@@ -41,3 +41,7 @@ Next: build the React search interface after the endpoint checkpoint, then imple
 Added online album search to Explore while retaining the existing shelf. Tested validation, search submission, exact-match local album links, back-navigation state, paginated results, empty results, retry cooldown and member/static-preview states in an isolated browser at phone/desktop widths. Frontend build passed. Backend endpoint checkpoint was a01c6e2; this release includes it too.
 
 Next: persisted catalogue models/import, legacy identifiers and online album detail/track pages. Online search currently links unimported results to MusicBrainz and does not save new albums. No fake albums or reviews were added to the live database. Deployment must be confirmed independently below.
+
+
+## 29 October — Search deployment verified
+Render deployment of `0a9abd4` succeeded and showed Live. Verified through the signed-in production Explore → Search music UI: “2hollis star” returned one match, star by 2hollis (Album, 2025), with its existing shelf artwork and Open album link. This deploy includes backend endpoint `a01c6e2`. Browser tabs left open. No catalogue records imported.
