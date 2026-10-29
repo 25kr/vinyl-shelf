@@ -44,3 +44,7 @@ Code: `backend/reviews/models.py`, `views.py`, `social.py`, `urls.py`; `src/comp
 - `/api/reviews/<UUID>/comments/<comment id>/` — own deletion
 
 React uses same-origin cookies and refreshes CSRF tokens before writes. No React Router; do not replace navigation casually.
+
+
+## Catalogue search backend — 29 October
+Member-only `GET /api/catalogue/search/?q=<text>&page=1` now searches MusicBrainz album/EP release groups with caching, bounded pagination, provider throttling, attribution, and generic retryable errors. Existing album pages/reviews/shelves remain unchanged. No new React search interface, import database model, cover fetch or track lookup yet. See [[05 Music API Plan]].

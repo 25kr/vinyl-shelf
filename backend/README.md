@@ -171,3 +171,9 @@ and a moderation policy.
 Temporary Render deployment: see docs/HOSTING.md and render.yaml. Admins can now
 create single-use invites in Django admin; the terminal command is still available
 locally. The free deployment initializes 29kr once from a private hosting secret.
+
+
+## MusicBrainz catalogue search
+While signed in on the same local or Render origin, open `/api/catalogue/search/?q=2hollis%20star&page=1` to see JSON search results. This first endpoint does not yet replace the frontend catalogue. It searches albums and EPs, returns 20 results per page, and allows pages 1–10. No API key is needed.
+
+Search results are cached for one hour; upstream requests share a two-second gate. Retry after the indicated delay on 503; account limits return 429. Production uses the existing Redis cache. Source attribution and MusicBrainz links are returned for future display in the search interface. See `docs/obsidian/05 Music API Plan.md` for the import roadmap.

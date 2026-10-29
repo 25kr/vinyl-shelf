@@ -1,6 +1,6 @@
 # Vinyl Shelf — start here
 
-Updated: 29 October 2026. Verified source checkpoint: `a353afe` on `main`.
+Updated: 29 October 2026. The implementation checkpoint before this session was `5cfc77b`; see the work log for current changes.
 
 This folder is an Obsidian-compatible project notebook. Open it as a vault or open the Markdown files normally. No Obsidian plugin is required. These notes summarize durable decisions, not a verbatim transcript. Source code and live checks take precedence over stale notes.
 
@@ -13,7 +13,7 @@ This folder is an Obsidian-compatible project notebook. Open it as a vault or op
 - [[06 Work Log and Next Steps]] — latest commits and next actions.
 
 ## Current work
-The user wants automatic music catalogue search instead of manually adding albums. Explain API choices and implementation, then implement when asked. No catalogue API integration has been implemented yet.
+The user wants automatic music catalogue search instead of manually adding albums. The first requested implementation step is Django MusicBrainz search. The first backend catalogue-search endpoint is now implemented; the React search interface and album import remain next.
 
 ## Maintaining continuity
 At the end of a meaningful change, update affected notes and the work log. Before continuing in a new chat, read this index and relevant pages, then verify the repository state. A notebook reduces repeated context recovery; it does not disable automatic chat context limits or guarantee that every future chat reads it.

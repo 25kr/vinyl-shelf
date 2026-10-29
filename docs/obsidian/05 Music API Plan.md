@@ -1,6 +1,6 @@
 # Music API plan
 
-Status: proposal researched 29 October 2026; NOT implemented. Current catalogue is still manually curated frontend data.
+Status: backend MusicBrainz search implemented 29 October 2026. Existing catalogue remains curated frontend data. Dynamic import, artwork, track lookup and the React search interface are not implemented yet.
 
 ## What the user means
 The user wants visitors to search for music and fetch album details automatically rather than the developer adding every album by hand. Treat this as catalogue metadata (albums/artists/tracks/covers), not permission to upload or stream commercial audio. Actual playback is a separate feature with provider and rights requirements.
@@ -46,3 +46,15 @@ Keep our React vinyl animation. Exact disc colour/centre label belongs to a part
 - https://github.com/discogs/discogs_client/blob/master/docs/quickstart.md
 
 The direct Cover Art Archive documentation request returned 429, and Discogs developer portal returned 403 during this session. Recheck before claiming current endpoint details have been verified. MusicBrainz API/search documentation was accessible.
+
+
+## Implemented first endpoint
+`GET /api/catalogue/search/?q=2hollis%20star&page=1` requires a logged-in member. Search text is 2–120 characters; pages 1–10 with 20 provider results per page. Returns provider ID, title, credited artists, first release date, primary type, disambiguation, provider links, attribution and pagination. Album/EP filtering and quoted search terms keep this focused and prevent user-supplied query operators.
+
+Files: `backend/api/musicbrainz.py`, `backend/api/catalogue.py`, `backend/api/urls.py`, tests in `backend/api/tests.py`.
+
+Cache results for one hour; 30 requests per account per minute. An atomic shared two-second provider slot keeps outbound calls below MusicBrainz's one-call-per-second ceiling across production workers. Busy/cooldown gives 503 with Retry-After; per-account limit gives 429. Shared cache failure blocks provider access rather than bypassing throttling. Local memory cache only coordinates one process; production Redis is required for multiple workers.
+
+Provider URL/host is fixed HTTPS, redirects are rejected, timeout is eight seconds per socket operation, response body capped at 1 MiB. No API key or new package dependency. No automatic retries. Cache stores public catalogue metadata, not user credentials. Response bodies are not browser-cacheable.
+
+This endpoint is read-only and creates no database records. It does not add fetched results to current frontend albums or fetch tracks/covers. Do not treat search results as verified vinyl editions. The MusicBrainz app identifier uses the public repository URL as contact information.
